@@ -1,0 +1,17 @@
+:root{
+    --card1 : rgb(219 234 254);  /*bg-amber-100 */
+    --border1: rgb(96 165 250);
+}
+
+body{font-family: "Ubuntu", serif;}
+
+
+.maincontent{margin-left: 270px;padding: 8px;margin-right: 15px;margin-top: 15px;}
+.card{background-color: var(--card1);padding: 8px;border: 1px solid var(--border1);border-radius: 8px;}
+
+
+.iconsize{width: 20px !important;height: 20px !important;}
+
+@media (max-width: 768px) {
+    .maincontent{margin-left: 0px;margin-right: 0px;margin-top: 0px;}
+}
