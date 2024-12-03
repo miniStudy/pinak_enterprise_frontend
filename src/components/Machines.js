@@ -72,6 +72,21 @@ const Machines = () => {
         }
     };
 
+
+  // Close the modal
+  const closeModal = () => {
+    const modalInstance = Modal.getInstance(modalRef.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  // Open the modal
+  const openModal = () => {
+    const modalInstance = new Modal(modalRef.current);
+    modalInstance.show();
+  };
+
     // Fetch data for editing a specific machine
     const editDetailsGetData = async (id) => {
         try {
@@ -79,6 +94,7 @@ const Machines = () => {
                 `http://127.0.0.1:8000/insert_update_company_machine/?getdata_id=${id}`
             );
             setFormData(response.data.data);
+            openModal()
         } catch (err) {
             setError('Failed to load machine details');
         }
@@ -101,13 +117,6 @@ const Machines = () => {
         });
     };
 
-    // Close the modal
-    const closeModal = () => {
-        const modalInstance = Modal.getInstance(modalRef.current);
-        if (modalInstance) {
-            modalInstance.hide();
-        }
-    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -124,9 +133,7 @@ const Machines = () => {
                 <button
                     type="button"
                     className="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#machineModal"
-                    onClick={resetForm}
+                    onClick={openModal}
                 >
                     Add Machine
                 </button>
@@ -226,7 +233,8 @@ const Machines = () => {
                                 </div>
                                 <div>
                                     <label>Condition:</label>
-                                    <select name="machine_condition" onChange={handleChange}>
+                                    <select name="machine_condition" onChange={handleChange} required>
+                                    <option value="">-----</option>
                                         <option value="New">New</option>
                                         <option value="Second_hand">Second_hand</option>
                                     </select>

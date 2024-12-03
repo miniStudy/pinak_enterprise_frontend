@@ -53,7 +53,7 @@ const MachineTypes = () => {
         alert('Machine type saved successfully!');
         fetchMachineTypes(); // Reload data
         resetForm();
-        // closeModal();
+        closeModal();
       } else {
         alert('Failed to save machine type.');
       }
@@ -63,6 +63,20 @@ const MachineTypes = () => {
     }
   };
 
+  // Close the modal
+  const closeModal = () => {
+    const modalInstance = Modal.getInstance(modalRef.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  // Open the modal
+  const openModal = () => {
+    const modalInstance = new Modal(modalRef.current);
+    modalInstance.show();
+  };
+
   // Fetch data for editing a specific machine type
   const editDetailsGetData = async (id) => {
     try {
@@ -70,6 +84,7 @@ const MachineTypes = () => {
         `http://127.0.0.1:8000/insert_update_machine_type/?getdata_id=${id}`
       );
       setFormData(response.data.data);
+      openModal()
     } catch (err) {
       setError('Failed to load machine type details');
     }
@@ -83,13 +98,6 @@ const MachineTypes = () => {
     });
   };
 
-  // Close the modal
-  const closeModal = () => {
-    const modalInstance = Modal.getInstance(modalRef.current);
-    if (modalInstance) {
-      modalInstance.hide();
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -107,9 +115,7 @@ const MachineTypes = () => {
         <button
           type="button"
           className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#machineTypeModal"
-          onClick={resetForm}
+          onClick={openModal}
         >
           Add Machine Type
         </button>
