@@ -62,7 +62,7 @@ const Banks = () => {
         alert("Form submitted successfully!");
         fetchBankDetails(); // Reload data
         resetForm();
-        // closeModal();
+        closeModal();
       } else {
         alert("Failed to submit form.");
       }
@@ -72,6 +72,22 @@ const Banks = () => {
     }
   };
 
+  // Close the modal
+  const closeModal = () => {
+    const modalInstance = Modal.getInstance(modalRef.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  // Open the modal
+  const openModal = () => {
+    const modalInstance = new Modal(modalRef.current);
+    modalInstance.show();
+  };
+
+
+
   // Fetch data for editing a specific bank record
   const editDetailsGetData = async (id) => {
     try {
@@ -79,6 +95,7 @@ const Banks = () => {
         `http://127.0.0.1:8000/insert_update_bank_detail/?getdata_id=${id}`
       );
       setFormData(response.data.data);
+      openModal()
     } catch (err) {
       setError("Failed to load bank details");
     }
@@ -97,13 +114,7 @@ const Banks = () => {
     });
   };
 
-  // Close the modal
-  const closeModal = () => {
-    const modalInstance = Modal.getInstance(modalRef.current);
-    if (modalInstance) {
-      modalInstance.hide();
-    }
-  };
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -122,9 +133,7 @@ const Banks = () => {
         <button
           type="button"
           className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#bankModal"
-          onClick={resetForm}
+          onClick={openModal}
         >
           Add Bank
         </button>
@@ -157,8 +166,6 @@ const Banks = () => {
                 <td>
                   <i
                     className="fa-regular fa-pen-to-square"
-                    data-bs-toggle="modal"
-                    data-bs-target="#bankModal"
                     onClick={() => editDetailsGetData(bank.bank_id)}
                   ></i>
                 </td>
