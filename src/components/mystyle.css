@@ -12,6 +12,11 @@ body{font-family: "Ubuntu", serif;}
 
 .iconsize{width: 20px !important;height: 20px !important;}
 
+
+table,th,td{border: 1px solid black !important;}
+
+
+
 @media (max-width: 768px) {
     .maincontent{margin-left: 0px;margin-right: 0px;margin-top: 0px;}
 }
