@@ -7,6 +7,7 @@ const Machines = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [title, setTitle] = useState('');
+    const [machine_types, setmachine_types] = useState([]);
     const modalRef = useRef();
 
     // Form state for Add/Edit
@@ -30,6 +31,8 @@ const Machines = () => {
             const response = await axios.get('http://127.0.0.1:8000/show_company_machines/');
             setMachinesDetails(response.data.data || []);
             setTitle(response.data.title);
+            
+            
             setLoading(false);
         } catch (err) {
             setError('Failed to load machine details');
@@ -94,6 +97,7 @@ const Machines = () => {
                 `http://127.0.0.1:8000/insert_update_company_machine/?getdata_id=${id}`
             );
             setFormData(response.data.data);
+            setmachine_types(response.data.machine_types || []);
             openModal()
         } catch (err) {
             setError('Failed to load machine details');
@@ -173,8 +177,6 @@ const Machines = () => {
                                     <td>
                                         <i
                                             className="fa-regular fa-pen-to-square"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#machineModal"
                                             onClick={() => editDetailsGetData(y.machine_id)}
                                         ></i>
                                     </td>
@@ -235,8 +237,8 @@ const Machines = () => {
                                     <label>Condition:</label>
                                     <select name="machine_condition" onChange={handleChange} required>
                                     <option value="">-----</option>
-                                        <option value="New">New</option>
-                                        <option value="Second_hand">Second_hand</option>
+                                        <option value="New" selected={formData.machine_condition === "New"}>New</option>
+                                        <option value="Second_hand" selected={formData.machine_condition === "Second_hand"}>Second_hand</option>
                                     </select>
                                 </div>
                                 <div>
@@ -286,13 +288,17 @@ const Machines = () => {
                                 </div>
                                 <div>
                                     <label>Machine Type ID:</label>
-                                    <input
-                                        type="text"
-                                        name="machine_types_id"
-                                        value={formData.machine_types_id}
-                                        onChange={handleChange}
-                                    />
+                                    <select name="machine_types_id" onChange={handleChange}>
+                                    {machine_types.length > 0 ? (
+                                        machine_types.map((x) => (
+                                        <option value={x.machine_type_id} selected={formData.machine_types_id === x.machine_type_id}>{x.machine_type_name}</option>
+                                    ))
+                                    ) : (
+                                        <option>Data not available</option>
+                                    )}
+                                    </select>
                                 </div>
+                                
                                 <div>
                                     <label>Machine Details:</label>
                                     <textarea

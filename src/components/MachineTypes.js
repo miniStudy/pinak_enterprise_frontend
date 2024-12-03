@@ -137,8 +137,7 @@ const MachineTypes = () => {
                 <td>
                   <i
                     className="fa-regular fa-pen-to-square"
-                    data-bs-toggle="modal"
-                    data-bs-target="#machineTypeModal"
+                    
                     onClick={() => editDetailsGetData(type.machine_type_id)}
                   ></i>
                 </td>
