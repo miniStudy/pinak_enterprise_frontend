@@ -17,7 +17,7 @@ const Banks = () => {
                 setTitle(response.data.title); // Assuming 'title' is part of the response
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch(() => {
                 setError('Failed to load bank details');
                 setLoading(false);
             });
@@ -34,7 +34,7 @@ const Banks = () => {
         bank_account_number: "",
         bank_ifsc_code:"",
         bank_account_holder: "",
-        bank_open_closed:"",
+        bank_open_closed: false,
       });
     
       // Handle input changes
@@ -161,7 +161,7 @@ const Banks = () => {
             <input
                 type="text"
                 name="bank_name"
-                value={formData.name}
+                value={formData.bank_name}
                 onChange={handleChange}
             />
             </div>
@@ -170,7 +170,7 @@ const Banks = () => {
             <input
                 type="text"
                 name="bank_branch"
-                value={formData.email}
+                value={formData.bank_branch}
                 onChange={handleChange}
             />
             </div>
@@ -180,7 +180,7 @@ const Banks = () => {
             <input
                 type="text"
                 name="bank_account_number"
-                value={formData.email}
+                value={formData.bank_account_number}
                 onChange={handleChange}
             />
             </div>
@@ -190,7 +190,7 @@ const Banks = () => {
             <input
                 type="text"
                 name="bank_ifsc_code"
-                value={formData.email}
+                value={formData.bank_ifsc_code}
                 onChange={handleChange}
             />
             </div>
@@ -200,7 +200,7 @@ const Banks = () => {
             <input
                 type="text"
                 name="bank_account_holder"
-                value={formData.email}
+                value={formData.bank_account_holder}
                 onChange={handleChange}
             />
             </div>
