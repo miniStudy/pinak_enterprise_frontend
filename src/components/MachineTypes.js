@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';  // Import axios
-
 const MachineTypes = () => {
     const [machinetypesDetails, setMachineTypesDetails] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,7 +13,7 @@ const MachineTypes = () => {
                 setTitle(response.data.title);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch(() => {
                 setError('Failed to load bank details');
                 setLoading(false);
             });
@@ -34,7 +33,7 @@ const MachineTypes = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Bank ID</th>
+                        <th>Machine Type ID</th>
                         <th>Machine Type</th>
                     </tr>
                 </thead>
