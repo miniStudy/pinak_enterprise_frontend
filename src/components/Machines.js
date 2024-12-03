@@ -30,6 +30,7 @@ const Machines = () => {
         try {
             const response = await axios.get('http://127.0.0.1:8000/show_company_machines/');
             setMachinesDetails(response.data.data || []);
+            setmachine_types(response.data.machine_types || []);
             setTitle(response.data.title);
             
             
