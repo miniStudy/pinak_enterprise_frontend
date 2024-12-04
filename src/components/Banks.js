@@ -9,6 +9,9 @@ const Banks = () => {
   const [error, setError] = useState(null);
   const [title, setTitle] = useState("");
   const modalRef = useRef();
+  const deletemodel = useRef();
+  const [delid,setdelid] = useState("");
+  const [Messages, setMessages] = useState('');
 
   // Form states
   const [formData, setFormData] = useState({
@@ -40,6 +43,19 @@ const Banks = () => {
     fetchBankDetails();
   }, []);
 
+
+  useEffect(() => {
+    if (Messages) {
+      const timer = setTimeout(() => {
+        setMessages('');  // Clear success message after 3 seconds
+      }, 3000);  // 3000 milliseconds = 3 seconds
+
+      // Cleanup the timer if the component is unmounted or successMessage changes
+      return () => clearTimeout(timer);
+    }
+  }, [Messages]);
+
+
   // Handle input changes for form
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -59,7 +75,7 @@ const Banks = () => {
       );
 
       if (response.status === 200) {
-        alert("Form submitted successfully!");
+        setMessages(response.data.message)
         fetchBankDetails(); // Reload data
         resetForm();
         closeModal();
@@ -86,6 +102,20 @@ const Banks = () => {
     modalInstance.show();
   };
 
+  const closedeleteModal = () => {
+    const modalInstance = Modal.getInstance(deletemodel.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  const opendeleteModal = (id) => {
+    const modalInstance = new Modal(deletemodel.current);
+    setdelid(id);
+    modalInstance.show();
+
+  };
+
 
 
   // Fetch data for editing a specific bank record
@@ -100,6 +130,19 @@ const Banks = () => {
       setError("Failed to load bank details");
     }
   };
+
+  const deleteData = async (id) => {
+    try{
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/delete_bank_detail/?bank_id=${id}`
+      );
+      setMessages(response.data.message)
+      fetchBankDetails();
+      closedeleteModal();
+    } catch (err){
+      setError("Failed to delete Bank Data")
+    }
+  }
 
   // Reset the form state
   const resetForm = () => {
@@ -127,6 +170,7 @@ const Banks = () => {
   return (
     <>
       <div>
+      {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h1>{title}</h1>
 
         {/* Button to open modal */}
@@ -169,7 +213,7 @@ const Banks = () => {
                     onClick={() => editDetailsGetData(bank.bank_id)}
                   ></i>
                 </td>
-                <td></td>
+                <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(bank.bank_id)}></i></td>
               </tr>
             ))}
           </tbody>
@@ -262,6 +306,49 @@ const Banks = () => {
           </div>
         </div>
       </div>
+     {/* delete Model confirmation */}
+      <div
+        className="modal fade"
+        id="bankModal"
+        tabIndex="-1"
+        aria-labelledby="bankModalLabel"
+        aria-hidden="true"
+        ref={deletemodel}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="bankModalLabel">
+                Delete Bank Data
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              are you sure You want to delete this data?<br/>
+            
+            <div className="mt-2">
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={() => deleteData(delid)}
+              >Delete</button>
+
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ms-2"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >Cancel</button>
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>  
     </>
   );
 };
