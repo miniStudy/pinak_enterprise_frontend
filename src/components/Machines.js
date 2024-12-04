@@ -32,8 +32,6 @@ const Machines = () => {
             setMachinesDetails(response.data.data || []);
             setmachine_types(response.data.machine_types || []);
             setTitle(response.data.title);
-            
-            
             setLoading(false);
         } catch (err) {
             setError('Failed to load machine details');
@@ -289,7 +287,8 @@ const Machines = () => {
                                 </div>
                                 <div>
                                     <label>Machine Type ID:</label>
-                                    <select name="machine_types_id" onChange={handleChange}>
+                                    <select name="machine_types_id" onChange={handleChange} required>
+                                    <option value="">Select machine types</option>
                                     {machine_types.length > 0 ? (
                                         machine_types.map((x) => (
                                         <option value={x.machine_type_id} selected={formData.machine_types_id === x.machine_type_id}>{x.machine_type_name}</option>
