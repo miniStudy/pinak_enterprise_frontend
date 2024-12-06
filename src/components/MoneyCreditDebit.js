@@ -147,7 +147,7 @@ const MoneyCreditDebit = () => {
     const deleteData = async (id) => {
         try {
             const response = await axios.delete(
-                `http://127.0.0.1:8000/delete_money_debit_credit/?machine_id=${id}`
+                `http://127.0.0.1:8000/delete_money_debit_credit/?money_id=${id}`
             );
             setMessages(response.data.message)
             fetchMoneyCreditDebit();
