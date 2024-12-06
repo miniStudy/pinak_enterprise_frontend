@@ -188,9 +188,9 @@ const Persons = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Person ID</th>
+                            <th>S.N</th>
                             <th>Name</th>
-                            <th>Contact Number</th>
+                            <th>Contact</th>
                             <th>Register Date</th>
                             <th>Status</th>
                             <th>Address</th>
@@ -207,8 +207,8 @@ const Persons = () => {
                     </thead>
                     <tbody>
                         {personsDetails.length > 0 ? (
-                            personsDetails.map((person) => (
-                                <tr key={person.person_id}>
+                            personsDetails.map((person, index) => (
+                                <tr key={index+1}>
                                     <td>{person.person_id || 'N/A'}</td>
                                     <td>{person.person_name || 'N/A'}</td>
                                     <td>{person.person_contact_number || 'N/A'}</td>
@@ -273,80 +273,92 @@ const Persons = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+                            <div className="mb-3">
                                 <input
                                     type="text"
                                     name="person_name"
                                     value={formData.person_name}
                                     onChange={handleChange}
-                                    placeholder="Person Name"
+                                    className="form-control"
+                                    placeholder="Person Name*"
+                                    required
                                 />
+                            </div>
+
+                            <div className="mb-3">
                                 <input
                                     type="text"
                                     name="person_contact_number"
                                     value={formData.person_contact_number}
                                     onChange={handleChange}
-                                    placeholder="Contact Number"
+                                    className="form-control"
+                                    placeholder="Person Contact*"
+                                    required
                                 />
+                            </div>
+                            <div className="mb-3">
                                 <textarea
                                     name="person_address"
                                     value={formData.person_address}
                                     onChange={handleChange}
-                                    placeholder="Address"
+                                    className="form-control"
+                                    placeholder="Person Address"
                                 ></textarea>
-                                <textarea
-                                    name="person_other_details"
-                                    value={formData.person_other_details}
-                                    onChange={handleChange}
-                                    placeholder="Other Details"
-                                ></textarea>
+                            </div>
+
+                            <div className="mb-3">
                                 <input
                                     type="text"
                                     name="person_business_job_name"
                                     value={formData.person_business_job_name}
                                     onChange={handleChange}
                                     placeholder="Job/Business Name"
+                                    className="form-control"
                                 />
+                            </div>
+
+                            <div className="mb-3">
                                 <input
                                     type="text"
                                     name="person_business_job_company_num"
                                     value={formData.person_business_job_company_num}
                                     onChange={handleChange}
-                                    placeholder="Company Number"
+                                    className="form-control"
+                                    placeholder="Business/Job Number"
                                 />
+                            </div>
+
+                            <div className="mb-3">
                                 <textarea
                                     name="person_business_job_address"
                                     value={formData.person_business_job_address}
                                     onChange={handleChange}
+                                    className="form-control"
                                     placeholder="Business/Job Address"
+                                    
                                 ></textarea>
+                            </div>
+
+                            <div className="mb-3">
                                 <input
                                     type="text"
                                     name="person_gst"
                                     value={formData.person_gst}
                                     onChange={handleChange}
+                                    className="form-control"
                                     placeholder="GST Number"
                                 />
-                                <select
-                                    name="person_types_for_project"
-                                    value={formData.person_types_for_project}
-                                    onChange={handleChange}
-                                >
-                                    <option value="">Select Type for Project</option>
-                                    <option value="Worker">Worker</option>
-                                    <option value="Project">Project</option>
-                                    <option value="Material">Material</option>
-                                    <option value="Machine">Machine</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <div>
-                                    <label>Person Type:</label>
+                            </div>
+
+                            <div className="mb-3">
                                     <select
                                         name="person_type_id"
                                         value={formData.person_type_id}
                                         onChange={handleChange}
+                                        className="form-select"
                                         required
                                     >
-                                        <option value="">Select Person Type</option>
+                                        <option value="">Select Person Type*</option>
                                         {personTypes.map((type) => (
                                             <option
                                                 key={type.person_type_id}
@@ -357,14 +369,46 @@ const Persons = () => {
                                         ))}
                                     </select>
                                 </div>
+
+                            <div className="mb-3">
+                                <select
+                                    name="person_types_for_project"
+                                    value={formData.person_types_for_project}
+                                    onChange={handleChange}
+                                    className="form-select"
+                                    required
+                                >
+                                    <option value="">Select Person Type For Project*</option>
+                                    <option value="Worker">Worker</option>
+                                    <option value="Project">Project</option>
+                                    <option value="Material">Material</option>
+                                    <option value="Machine">Machine</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                                <div className="mb-3">       
                                 <select
                                     name="person_status"
                                     value={formData.person_status}
                                     onChange={handleChange}
+                                    className="form-select"
                                 >
-                                    <option value={true}>Active</option>
-                                    <option value={false}>Inactive</option>
+                                    <option value={1}>Active</option>
+                                    <option value={0}>Inactive</option>
                                 </select>
+                                </div> 
+
+                            
+                                <div className="mb-3">
+                                <textarea
+                                    name="person_other_details"
+                                    value={formData.person_other_details}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                    placeholder="Addtional details..."
+                                ></textarea>
+                                </div>
                                 <br/>
                                 <button type="submit" className="mt-3 btn btn-sm btn-primary">
                                     Submit
