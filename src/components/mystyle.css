@@ -20,7 +20,7 @@ td,th{padding: 4px;}
 .icondiv{text-align: center !important;}
 .iconimg{width: 50%;margin-bottom: 5px;margin: auto;}
 .iconsection{font-size: 0.8vw;}
-
+.typesmodel{background-color: yellow !important;}
 @media (max-width: 768px) {
     .maincontent{margin-left: 0px;margin-right: 0px;margin-top: 0px;}
     .iconsection{font-size: 12px;}
