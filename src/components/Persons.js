@@ -185,7 +185,8 @@ const Persons = () => {
                 >
                     Add Person
                 </button>
-                <table>
+                <div className="table-responsive">
+                <table className="table table-hover">
                     <thead>
                         <tr>
                             <th>S.N</th>
@@ -243,6 +244,7 @@ const Persons = () => {
                         )}
                     </tbody>
                 </table>
+                </div>
 
             </div>
 
