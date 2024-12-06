@@ -202,7 +202,6 @@ const Banks = () => {
               <th>Acc.Holder</th>
               <th>Initial Amt</th>
               <th>Status</th>
-              
               <th>Contact</th>
               <th>Update</th>
               <th>Remove</th>
