@@ -146,12 +146,12 @@ function BaseLayout() {
            <div className='icondiv'><img src='/static/icons/group.png' className='iconimg' /></div>
            Persons
            </div></Link>
-           <div className='card text-center'>
-           <div className='icondiv'><img src='/static/icons/salary (1).png' className='iconimg' /></div>Salary</div>
+           <Link to="salary/"><div className='card text-center'>
+           <div className='icondiv'><img src='/static/icons/salary (1).png' className='iconimg' /></div>Salary</div></Link>
            <Link to="machines/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/manufacturing.png' className='iconimg' /></div>Machines</div></Link>
            <Link to="projects/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/project-management.png' className='iconimg' /></div>Projects</div></Link>
-           <Link to="persons/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/credit.png' className='iconimg' /></div>Credit/Debit</div></Link>
-           <Link to=""><div className='card text-center'><div className='icondiv'><img src='/static/icons/bill.png' className='iconimg' /></div>Billing</div></Link>
+           <Link to="money-credit-debit/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/credit.png' className='iconimg' /></div>Credit/Debit</div></Link>
+           <Link to="billing/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/bill.png' className='iconimg' /></div>Billing</div></Link>
            
 
         </div>
