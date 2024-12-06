@@ -3,6 +3,7 @@
     --border1: rgb(96 165 250);
     --color2 : rgb(239 246 255);
     --color3 : rgb(219 234 254);
+    --color4 : rgb(191 219 254);
 }
 
 body{font-family: "Ubuntu", serif;}
@@ -21,9 +22,11 @@ td,th{padding: 4px;}
 .icondiv{text-align: center !important;}
 .iconimg{width: 50%;margin-bottom: 5px;margin: auto;}
 .iconsection{font-size: 0.8vw;}
-.typesmodel{background-color: rgb(191 219 254) !important;}
-.modal-dialog{background-color: transparent !important;}
-.modal-content{background-color: var(--color3) !important;border: none;outline: none;}
+
+.modal{max-height: 100%;}
+.modal-dialog{background-color: transparent !important;max-height: 100%;}
+.modal-content{background-color: var(--color3) !important;border: none;outline: none;max-height: 100% !important;overflow-y: auto;}
+.typesmodel{background-color: var(--color4) !important;}
 .form-control,.form-select{background-color: transparent !important; border: 1px solid var(--border1) !important;}
 .form-control,.form-select:hover{border: 2px solid var(--border1);outline: none;box-shadow: none;}
 @media (max-width: 768px) {
