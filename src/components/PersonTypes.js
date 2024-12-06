@@ -16,7 +16,7 @@ const PersonTypes = () => {
     person_type_id: "",
     person_type_name: "",
   });
-
+  
   // Fetch person types from API
   const fetchPersonTypes = async () => {
     try {
