@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
-import Person_types_insert from './insert_update/person_types_insert';
+import Person_insert from "./insert_update/person_insert";
 
 const Machines = () => {
   const [Salary, setSalary] = useState([]);
@@ -244,7 +244,7 @@ const Machines = () => {
               <h5 className="modal-title" id="machineModalLabel">
                 {formData.machine_id ? "Edit Salary" : "Add Salary"}
               </h5>
-              <Person_types_insert fetchdata={fetchSalary} />
+              <Person_insert fetchdata={fetchSalary} />
               <button
                 type="button"
                 className="btn-close"
