@@ -280,7 +280,7 @@ const MoneyCreditDebit = () => {
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
                             <div className="mb-3">
-                                    <select name="sender_person_id" value={formData.sender_person_id} onChange={handleChange} required className="form-select">
+                                    <select name="sender_person_id" value={formData.sender_person_id} onChange={handleChange} className="form-select" required>
                                         <option value="">Select Sender-Person</option>
                                         {PersonData.length > 0 ? (
                                             PersonData.map((x) => (
@@ -295,7 +295,7 @@ const MoneyCreditDebit = () => {
                             </div>
 
                             <div className="mb-3">
-                                    <select name="receiver_person_id" value={formData.receiver_person_id} onChange={handleChange} required className="form-select">
+                                    <select name="receiver_person_id" value={formData.receiver_person_id} onChange={handleChange} className="form-select" required>
                                         <option value="">Select Receiver-Person</option>
                                         {PersonData.length > 0 ? (
                                             PersonData.map((x) => (
@@ -321,9 +321,23 @@ const MoneyCreditDebit = () => {
                                     />
                                 </div>
 
+
                             <div className="mb-3">
-                                    <label>Pay Type:</label>
-                                    <select name="pay_type_id" value={formData.pay_type_id} onChange={handleChange} required>
+                                <select
+                                    name="money_payment_mode"
+                                    value={formData.money_payment_mode}
+                                    onChange={handleChange}
+                                    className="form-select"
+                                    required
+                                >
+                                    <option value="CASH">CASH</option>
+                                    <option value="BANK">BANK</option>
+                                </select>
+                            </div>
+
+
+                            <div className="mb-3">
+                                    <select name="pay_type_id" value={formData.pay_type_id} onChange={handleChange} className="form-select" required>
                                         <option value="">Select Pay Type</option>
                                         {PayTypeData.length > 0 ? (
                                             PayTypeData.map((x) => (
@@ -337,34 +351,21 @@ const MoneyCreditDebit = () => {
                                     </select>
                             </div>
 
-                                <div>
-                                    <label>Payment Mode:</label>
-                                    <select
-                                        name="money_payment_mode"
-                                        value={formData.money_payment_mode}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="CASH">CASH</option>
-                                        <option value="BANK">BANK</option>
-                                    </select>
-                                </div>
-
-                                
-
-                                <div>
-                                    <label>Date:</label>
+                            
+                            <div className="mb-3">
                                     <input
                                         type="date"
                                         name="money_date"
                                         value={formData.money_date}
                                         onChange={handleChange}
+                                        className="form-control"
+                                        required
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Sender Bank:</label>
-                                    <select name="sender_bank_id" value={formData.sender_bank_id} onChange={handleChange}>
-                                        <option value="">select sender-bank</option>
+                                <div className="mb-3">
+                                    <select name="sender_bank_id" value={formData.sender_bank_id} onChange={handleChange} className="form-select" required>
+                                        <option value="">Select Sender-Bank</option>
                                         {BankData.length > 0 ? (
                                             BankData.map((x) => (
                                                 <option key={x.bank_id} value={x.bank_id}>
@@ -377,20 +378,20 @@ const MoneyCreditDebit = () => {
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label>Sender's Cheque No:</label>
+                                <div className="mb-3">
                                     <input
                                         type="text"
                                         name="money_sender_cheque_no"
                                         value={formData.money_sender_cheque_no}
                                         onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Sender Cheque No."
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Receiver Bank:</label>
-                                    <select name="receiver_bank_id" value={formData.receiver_bank_id} onChange={handleChange}>
-                                        <option value="">select receiver-bank</option>
+                                <div className="mb-3">
+                                    <select name="receiver_bank_id" value={formData.receiver_bank_id} onChange={handleChange} className="form-select" required>
+                                        <option value="">Select Receiver-Bank</option>
                                         {BankData.length > 0 ? (
                                             BankData.map((x) => (
                                                 <option key={x.bank_id} value={x.bank_id}>
@@ -403,18 +404,20 @@ const MoneyCreditDebit = () => {
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label>Payment Details:</label>
+                                <div className="mb-3">
                                     <textarea
                                         name="money_payment_details"
                                         value={formData.money_payment_details}
                                         onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Payment Details"
                                     />
                                 </div>
-                                <div>
+
+                                <div className="mb-3">
                                     <label>Machine:</label>
-                                    <select name="machine_id" value={formData.machine_id} onChange={handleChange}>
-                                        <option value="">Select machine</option>
+                                    <select name="machine_id" value={formData.machine_id} onChange={handleChange} className="form-select">
+                                        <option value="">Select Machine</option>
                                         {MachineData.length > 0 ? (
                                             MachineData.map((x) => (
                                                 <option key={x.machine_id} value={x.machine_id}>
