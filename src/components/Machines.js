@@ -9,26 +9,35 @@ const Machines = () => {
     const [title, setTitle] = useState('');
     const [machine_types, setmachine_types] = useState([]);
     const modalRef = useRef();
+    const deletemodel = useRef();
+    const [delid, setdelid] = useState("");
+    const [Messages, setMessages] = useState('');
 
     // Form state for Add/Edit
     const [formData, setFormData] = useState({
         machine_id: '',
-        machine_owner: '',
-        machine_buy_date: '',
-        machine_condition: '',
+        machine_name: '',
         machine_number_plate: '',
-        machine_contact_number: '',
-        machine_sold_out_date: '',
-        machine_sold_price: '',
-        machine_working: false,
+        machine_register_date: '',
+        machine_own: '',
+        machine_condition: '',
+        machine_working: true,
         machine_types_id: '',
         machine_details: '',
+        machine_owner_name: '',
+        machine_owner_contact: '',
+        machine_buy_price: '',
+        machine_buy_date: '',
+        machine_sold_price: '',
+        machine_sold_out_date: '',
+        machine_other_details: '',
     });
+
 
     // Fetch machine details
     const fetchMachines = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/show_company_machines/');
+            const response = await axios.get('http://127.0.0.1:8000/show_machines/');
             setMachinesDetails(response.data.data || []);
             setmachine_types(response.data.machine_types || []);
             setTitle(response.data.title);
@@ -42,6 +51,17 @@ const Machines = () => {
     useEffect(() => {
         fetchMachines();
     }, []);
+
+    useEffect(() => {
+        if (Messages) {
+            const timer = setTimeout(() => {
+                setMessages('');  // Clear success message after 3 seconds
+            }, 3000);  // 3000 milliseconds = 3 seconds
+
+            // Cleanup the timer if the component is unmounted or successMessage changes
+            return () => clearTimeout(timer);
+        }
+    }, [Messages]);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -57,7 +77,7 @@ const Machines = () => {
         e.preventDefault();
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/insert_update_company_machine/',
+                'http://127.0.0.1:8000/insert_update_machine/',
                 formData
             );
             if (response.status === 200) {
@@ -75,25 +95,39 @@ const Machines = () => {
     };
 
 
-  // Close the modal
-  const closeModal = () => {
-    const modalInstance = Modal.getInstance(modalRef.current);
-    if (modalInstance) {
-      modalInstance.hide();
-    }
-  };
+    // Close the modal
+    const closeModal = () => {
+        const modalInstance = Modal.getInstance(modalRef.current);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    };
 
-  // Open the modal
-  const openModal = () => {
-    const modalInstance = new Modal(modalRef.current);
-    modalInstance.show();
-  };
+    // Open the modal
+    const openModal = () => {
+        const modalInstance = new Modal(modalRef.current);
+        modalInstance.show();
+    };
+
+    const closedeleteModal = () => {
+        const modalInstance = Modal.getInstance(deletemodel.current);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    };
+
+    const opendeleteModal = (id) => {
+        const modalInstance = new Modal(deletemodel.current);
+        setdelid(id);
+        modalInstance.show();
+
+    };
 
     // Fetch data for editing a specific machine
     const editDetailsGetData = async (id) => {
         try {
             const response = await axios.get(
-                `http://127.0.0.1:8000/insert_update_company_machine/?getdata_id=${id}`
+                `http://127.0.0.1:8000/insert_update_machine/?getdata_id=${id}`
             );
             setFormData(response.data.data);
             setmachine_types(response.data.machine_types || []);
@@ -103,20 +137,39 @@ const Machines = () => {
         }
     };
 
+
+    const deleteData = async (id) => {
+        try {
+            const response = await axios.delete(
+                `http://127.0.0.1:8000/delete_machine/?machine_id=${id}`
+            );
+            setMessages(response.data.message)
+            fetchMachines();
+            closedeleteModal();
+        } catch (err) {
+            setError("Failed to delete document type data")
+        }
+    }
+
     // Reset the form state
     const resetForm = () => {
         setFormData({
             machine_id: '',
-            machine_owner: '',
-            machine_buy_date: '',
-            machine_condition: '',
+            machine_name: '',
             machine_number_plate: '',
-            machine_contact_number: '',
-            machine_sold_out_date: '',
-            machine_sold_price: '',
-            machine_working: false,
+            machine_register_date: '',
+            machine_own: '',
+            machine_condition: '',
+            machine_working: true,
             machine_types_id: '',
             machine_details: '',
+            machine_owner_name: '',
+            machine_owner_contact: '',
+            machine_buy_price: '',
+            machine_buy_date: '',
+            machine_sold_price: '',
+            machine_sold_out_date: '',
+            machine_other_details: '',
         });
     };
 
@@ -132,6 +185,7 @@ const Machines = () => {
     return (
         <>
             <div>
+                {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
                 <h1>{title}</h1>
                 <button
                     type="button"
@@ -145,17 +199,22 @@ const Machines = () => {
                     <thead>
                         <tr>
                             <th>Machine ID</th>
-                            <th>Owner's Name</th>
-                            <th>Purchase Date</th>
-                            <th>Machine Condition</th>
+                            <th>Machine Name</th>
                             <th>Number Plate</th>
+                            <th>Register Date</th>
+                            <th>Owner's Name</th>
                             <th>Contact Number</th>
-                            <th>Sold Out Date</th>
-                            <th>Sold Amount</th>
-                            <th>Machine Working</th>
-                            <th>Machine Type Name</th>
+                            <th>Machine Condition</th>
+                            <th>Machine Type</th>
                             <th>Machine Details</th>
-                            <th>Edit</th>
+                            <th>Purchase Price</th>
+                            <th>Purchase Date</th>
+                            <th>Sold Price</th>
+                            <th>Sold Out Date</th>
+                            <th>Other Details</th>
+                            <th>Machine Working</th>
+                            <th>Update</th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -163,31 +222,39 @@ const Machines = () => {
                             machinesDetails.map((y) => (
                                 <tr key={y.machine_id}>
                                     <td>{y.machine_id || "N/A"}</td>
-                                    <td>{y.machine_owner || "N/A"}</td>
-                                    <td>{y.machine_buy_date || "N/A"}</td>
-                                    <td>{y.machine_condition || "N/A"}</td>
+                                    <td>{y.machine_name || "N/A"}</td>
                                     <td>{y.machine_number_plate || "N/A"}</td>
-                                    <td>{y.machine_contact_number || "N/A"}</td>
-                                    <td>{y.machine_sold_out_date || "N/A"}</td>
-                                    <td>{y.machine_sold_price || "N/A"}</td>
-                                    <td>{y.machine_working ? "Yes" : "No"}</td>
+                                    <td>{y.machine_register_date || "N/A"}</td>
+                                    <td>{y.machine_owner_name || "N/A"}</td>
+                                    <td>{y.machine_owner_contact || "N/A"}</td>
+                                    <td>{y.machine_condition || "N/A"}</td>
                                     <td>{y.machine_types_id__machine_type_name || "N/A"}</td>
                                     <td>{y.machine_details || "N/A"}</td>
+                                    <td>{y.machine_buy_price || "N/A"}</td>
+                                    <td>{y.machine_buy_date || "N/A"}</td>
+                                    <td>{y.machine_sold_price || "N/A"}</td>
+                                    <td>{y.machine_sold_out_date || "N/A"}</td>
+                                    <td>{y.machine_other_details || "N/A"}</td>
+                                    <td>{y.machine_working ? "Yes" : "No"}</td>
                                     <td>
                                         <i
                                             className="fa-regular fa-pen-to-square"
                                             onClick={() => editDetailsGetData(y.machine_id)}
                                         ></i>
                                     </td>
+                                    <td>
+                                        <i className="fa-regular fa-trash-can" onClick={() => opendeleteModal(y.machine_id)}></i>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="12">No machine details available.</td>
+                                <td colSpan="16">No machine details available.</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
+
             </div>
 
             {/* Modal for Add/Edit Machine */}
@@ -214,32 +281,56 @@ const Machines = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+
+                                <div>
+                                    <label>Machine Name:</label>
+                                    <input
+                                        type="text"
+                                        name="machine_name"
+                                        value={formData.machine_name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
                                 <div>
                                     <label>Owner's Name:</label>
                                     <input
                                         type="text"
-                                        name="machine_owner"
-                                        value={formData.machine_owner}
+                                        name="machine_owner_name"
+                                        value={formData.machine_owner_name}
                                         onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
-                                    <label>Purchase Date:</label>
+                                    <label>Contact Number:</label>
+                                    <input
+                                        type="text"
+                                        name="machine_owner_contact"
+                                        value={formData.machine_owner_contact}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label>Register Date:</label>
                                     <input
                                         type="date"
-                                        name="machine_buy_date"
-                                        value={formData.machine_buy_date}
+                                        name="machine_register_date"
+                                        value={formData.machine_register_date}
                                         onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
                                     <label>Condition:</label>
-                                    <select name="machine_condition" onChange={handleChange} required>
-                                    <option value="">-----</option>
-                                        <option value="New" selected={formData.machine_condition === "New"}>New</option>
-                                        <option value="Second_hand" selected={formData.machine_condition === "Second_hand"}>Second_hand</option>
+                                    <select name="machine_condition" value={formData.machine_condition} onChange={handleChange}>
+                                        <option value="">-----</option>
+                                        <option value="New">New</option>
+                                        <option value="Second_hand">Second hand</option>
                                     </select>
                                 </div>
+
                                 <div>
                                     <label>Number Plate:</label>
                                     <input
@@ -249,6 +340,7 @@ const Machines = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
                                     <label>Contact Number:</label>
                                     <input
@@ -258,6 +350,27 @@ const Machines = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
+
+                                <div>
+                                    <label>Machine Buy Price:</label>
+                                    <input
+                                        type="number"
+                                        name="machine_buy_price"
+                                        value={formData.machine_buy_price}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label>Machine Buy Date:</label>
+                                    <input
+                                        type="date"
+                                        name="machine_buy_date"
+                                        value={formData.machine_buy_date}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
                                 <div>
                                     <label>Sold Out Date:</label>
                                     <input
@@ -267,6 +380,7 @@ const Machines = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
                                     <label>Sold Price:</label>
                                     <input
@@ -276,8 +390,9 @@ const Machines = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
-                                    <label>Working:</label>
+                                    <label>Machine Working:</label>
                                     <input
                                         type="checkbox"
                                         name="machine_working"
@@ -285,20 +400,23 @@ const Machines = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
+
                                 <div>
-                                    <label>Machine Type ID:</label>
-                                    <select name="machine_types_id" onChange={handleChange} required>
-                                    <option value="">Select machine types</option>
-                                    {machine_types.length > 0 ? (
-                                        machine_types.map((x) => (
-                                        <option value={x.machine_type_id} selected={formData.machine_types_id === x.machine_type_id}>{x.machine_type_name}</option>
-                                    ))
-                                    ) : (
-                                        <option>Data not available</option>
-                                    )}
+                                    <label>Machine Type:</label>
+                                    <select name="machine_types_id" value={formData.machine_types_id} onChange={handleChange} required>
+                                        <option value="">Select machine type</option>
+                                        {machine_types.length > 0 ? (
+                                            machine_types.map((x) => (
+                                                <option key={x.machine_type_id} value={x.machine_type_id}>
+                                                    {x.machine_type_name}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <option>Data not available</option>
+                                        )}
                                     </select>
                                 </div>
-                                
+
                                 <div>
                                     <label>Machine Details:</label>
                                     <textarea
@@ -307,10 +425,64 @@ const Machines = () => {
                                         onChange={handleChange}
                                     ></textarea>
                                 </div>
+
+                                <div>
+                                    <label>Other Details:</label>
+                                    <textarea
+                                        name="machine_other_details"
+                                        value={formData.machine_other_details}
+                                        onChange={handleChange}
+                                    ></textarea>
+                                </div>
+
                                 <button type="submit" className="btn btn-primary">
                                     Submit
                                 </button>
                             </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* delete Model confirmation */}
+            <div
+                className="modal fade"
+                id="Modal"
+                tabIndex="-1"
+                aria-labelledby="ModalLabel"
+                aria-hidden="true"
+                ref={deletemodel}
+            >
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="ModalLabel">
+                                Delete Company-Machine Data
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            are you sure You want to delete this data?<br />
+
+                            <div className="mt-2">
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-primary"
+                                    onClick={() => deleteData(delid)}
+                                >Delete</button>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-primary ms-2"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                >Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>

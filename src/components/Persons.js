@@ -8,15 +8,26 @@ const Persons = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const modalRef = useRef();
+    const deletemodel = useRef();
+    const [delid, setdelid] = useState("");
+    const [Messages, setMessages] = useState('');
 
-    // Form state for Add/Edit
     const [formData, setFormData] = useState({
         person_id: '',
         person_name: '',
         person_contact_number: '',
-        person_work_type: '',
+        person_register_date: '',
+        person_status: true,
+        person_address: '',
+        person_other_details: '',
+        person_business_job_name: '',
+        person_business_job_company_num: '',
+        person_business_job_address: '',
+        person_gst: '',
+        person_types_for_project: '',
         person_type_id: '',
     });
+
 
     // Fetch person details
     const fetchPersons = async () => {
@@ -34,6 +45,17 @@ const Persons = () => {
     useEffect(() => {
         fetchPersons();
     }, []);
+
+    useEffect(() => {
+        if (Messages) {
+            const timer = setTimeout(() => {
+                setMessages('');  // Clear success message after 3 seconds
+            }, 3000);  // 3000 milliseconds = 3 seconds
+
+            // Cleanup the timer if the component is unmounted or successMessage changes
+            return () => clearTimeout(timer);
+        }
+    }, [Messages]);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -80,6 +102,20 @@ const Persons = () => {
         modalInstance.show();
     };
 
+    const closedeleteModal = () => {
+        const modalInstance = Modal.getInstance(deletemodel.current);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    };
+
+    const opendeleteModal = (id) => {
+        const modalInstance = new Modal(deletemodel.current);
+        setdelid(id);
+        modalInstance.show();
+
+    };
+
     // Fetch data for editing a specific person
     const editDetailsGetData = async (id) => {
         try {
@@ -94,13 +130,34 @@ const Persons = () => {
         }
     };
 
+    const deleteData = async (id) => {
+        try {
+            const response = await axios.delete(
+                `http://127.0.0.1:8000/delete_person/?person_id=${id}`
+            );
+            setMessages(response.data.message)
+            fetchPersons();
+            closedeleteModal();
+        } catch (err) {
+            setError("Failed to delete document type data")
+        }
+    }
+
     // Reset the form state
     const resetForm = () => {
         setFormData({
             person_id: '',
             person_name: '',
             person_contact_number: '',
-            person_work_type: '',
+            person_register_date: '',
+            person_status: true,
+            person_address: '',
+            person_other_details: '',
+            person_business_job_name: '',
+            person_business_job_company_num: '',
+            person_business_job_address: '',
+            person_gst: '',
+            person_types_for_project: '',
             person_type_id: '',
         });
     };
@@ -116,6 +173,7 @@ const Persons = () => {
     return (
         <>
             <div>
+                {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
                 <h1>Persons</h1>
                 <button
                     type="button"
@@ -131,9 +189,18 @@ const Persons = () => {
                             <th>Person ID</th>
                             <th>Name</th>
                             <th>Contact Number</th>
-                            <th>Work Type</th>
+                            <th>Register Date</th>
+                            <th>Status</th>
+                            <th>Address</th>
+                            <th>Other Details</th>
+                            <th>Job/Business Name</th>
+                            <th>Company Number</th>
+                            <th>Job Address</th>
+                            <th>GST</th>
+                            <th>Person Type For Project</th>
                             <th>Person Type</th>
-                            <th>Edit</th>
+                            <th>Update</th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -143,7 +210,15 @@ const Persons = () => {
                                     <td>{person.person_id || 'N/A'}</td>
                                     <td>{person.person_name || 'N/A'}</td>
                                     <td>{person.person_contact_number || 'N/A'}</td>
-                                    <td>{person.person_work_type || 'N/A'}</td>
+                                    <td>{person.person_register_date || 'N/A'}</td>
+                                    <td>{person.person_status ? 'Active' : 'Inactive'}</td>
+                                    <td>{person.person_address || 'N/A'}</td>
+                                    <td>{person.person_other_details || 'N/A'}</td>
+                                    <td>{person.person_business_job_name || 'N/A'}</td>
+                                    <td>{person.person_business_job_company_num || 'N/A'}</td>
+                                    <td>{person.person_business_job_address || 'N/A'}</td>
+                                    <td>{person.person_gst || 'N/A'}</td>
+                                    <td>{person.person_types_for_project || 'N/A'}</td>
                                     <td>{person.person_type_id__person_type_name || 'N/A'}</td>
                                     <td>
                                         <i
@@ -151,15 +226,22 @@ const Persons = () => {
                                             onClick={() => editDetailsGetData(person.person_id)}
                                         ></i>
                                     </td>
+                                    <td>
+                                        <i
+                                            className="fa-regular fa-trash-can"
+                                            onClick={() => opendeleteModal(person.person_id)}
+                                        ></i>
+                                    </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">No person details available.</td>
+                                <td colSpan="15">No person details available.</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
+
             </div>
 
             {/* Modal for Add/Edit Person */}
@@ -186,43 +268,71 @@ const Persons = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
-                                <div>
-                                    <label>Name:</label>
-                                    <input
-                                        type="text"
-                                        name="person_name"
-                                        value={formData.person_name}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Contact Number:</label>
-                                    <input
-                                        type="text"
-                                        name="person_contact_number"
-                                        value={formData.person_contact_number}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Work Type:</label>
-                                    <select
-                                        name="person_work_type"
-                                        value={formData.person_work_type}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Select Work Type</option>
-                                        <option value="Worker">Worker</option>
-                                        <option value="Project">Project</option>
-                                        <option value="Material">Material</option>
-                                        <option value="Machine">Machine</option>
-                                        <option value="Bhatthu">Bhatthu</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
+                                <input
+                                    type="text"
+                                    name="person_name"
+                                    value={formData.person_name}
+                                    onChange={handleChange}
+                                    placeholder="Person Name"
+                                />
+                                <input
+                                    type="text"
+                                    name="person_contact_number"
+                                    value={formData.person_contact_number}
+                                    onChange={handleChange}
+                                    placeholder="Contact Number"
+                                />
+                                <textarea
+                                    name="person_address"
+                                    value={formData.person_address}
+                                    onChange={handleChange}
+                                    placeholder="Address"
+                                ></textarea>
+                                <textarea
+                                    name="person_other_details"
+                                    value={formData.person_other_details}
+                                    onChange={handleChange}
+                                    placeholder="Other Details"
+                                ></textarea>
+                                <input
+                                    type="text"
+                                    name="person_business_job_name"
+                                    value={formData.person_business_job_name}
+                                    onChange={handleChange}
+                                    placeholder="Job/Business Name"
+                                />
+                                <input
+                                    type="text"
+                                    name="person_business_job_company_num"
+                                    value={formData.person_business_job_company_num}
+                                    onChange={handleChange}
+                                    placeholder="Company Number"
+                                />
+                                <textarea
+                                    name="person_business_job_address"
+                                    value={formData.person_business_job_address}
+                                    onChange={handleChange}
+                                    placeholder="Business/Job Address"
+                                ></textarea>
+                                <input
+                                    type="text"
+                                    name="person_gst"
+                                    value={formData.person_gst}
+                                    onChange={handleChange}
+                                    placeholder="GST Number"
+                                />
+                                <select
+                                    name="person_types_for_project"
+                                    value={formData.person_types_for_project}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Type for Project</option>
+                                    <option value="Worker">Worker</option>
+                                    <option value="Project">Project</option>
+                                    <option value="Material">Material</option>
+                                    <option value="Machine">Machine</option>
+                                    <option value="Other">Other</option>
+                                </select>
                                 <div>
                                     <label>Person Type:</label>
                                     <select
@@ -237,11 +347,19 @@ const Persons = () => {
                                                 key={type.person_type_id}
                                                 value={type.person_type_id}
                                             >
-                                                {type.person_type_name }
+                                                {type.person_type_name}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
+                                <select
+                                    name="person_status"
+                                    value={formData.person_status}
+                                    onChange={handleChange}
+                                >
+                                    <option value={true}>Active</option>
+                                    <option value={false}>Inactive</option>
+                                </select>
                                 <button type="submit" className="btn btn-primary">
                                     Submit
                                 </button>
@@ -250,6 +368,51 @@ const Persons = () => {
                     </div>
                 </div>
             </div>
+
+            {/* delete Model confirmation */}
+            <div
+                className="modal fade"
+                id="Modal"
+                tabIndex="-1"
+                aria-labelledby="ModalLabel"
+                aria-hidden="true"
+                ref={deletemodel}
+            >
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="ModalLabel">
+                                Delete Persons Data
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            are you sure You want to delete this data?<br />
+
+                            <div className="mt-2">
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-primary"
+                                    onClick={() => deleteData(delid)}
+                                >Delete</button>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-sm btn-primary ms-2"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                >Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </>
     );
 };

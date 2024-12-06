@@ -8,6 +8,9 @@ const MachineTypes = () => {
   const [error, setError] = useState(null);
   const [title, setTitle] = useState('');
   const modalRef = useRef();
+  const deletemodel = useRef();
+  const [delid,setdelid] = useState("");
+  const [Messages, setMessages] = useState('');
 
   // Form state for Add/Edit
   const [formData, setFormData] = useState({
@@ -31,6 +34,17 @@ const MachineTypes = () => {
   useEffect(() => {
     fetchMachineTypes();
   }, []);
+
+  useEffect(() => {
+    if (Messages) {
+      const timer = setTimeout(() => {
+        setMessages('');  // Clear success message after 3 seconds
+      }, 3000);  // 3000 milliseconds = 3 seconds
+
+      // Cleanup the timer if the component is unmounted or successMessage changes
+      return () => clearTimeout(timer);
+    }
+  }, [Messages]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -77,6 +91,20 @@ const MachineTypes = () => {
     modalInstance.show();
   };
 
+  const closedeleteModal = () => {
+    const modalInstance = Modal.getInstance(deletemodel.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  const opendeleteModal = (id) => {
+    const modalInstance = new Modal(deletemodel.current);
+    setdelid(id);
+    modalInstance.show();
+
+  };
+
   // Fetch data for editing a specific machine type
   const editDetailsGetData = async (id) => {
     try {
@@ -89,6 +117,19 @@ const MachineTypes = () => {
       setError('Failed to load machine type details');
     }
   };
+
+  const deleteData = async (id) => {
+    try{
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/delete_machine_type/?machine_type_id=${id}`
+      );
+      setMessages(response.data.message)
+      fetchMachineTypes();
+      closedeleteModal();
+    } catch (err){
+      setError("Failed to delete document type data")
+    }
+  }
 
   // Reset the form state
   const resetForm = () => {
@@ -110,6 +151,7 @@ const MachineTypes = () => {
   return (
     <>
       <div>
+      {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h1>{title}</h1>
         {/* Button to open modal */}
         <button
@@ -126,7 +168,8 @@ const MachineTypes = () => {
             <tr>
               <th>Machine Type ID</th>
               <th>Machine Type</th>
-              <th>Edit</th>
+              <th>Update</th>
+              <th>Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -141,6 +184,7 @@ const MachineTypes = () => {
                     onClick={() => editDetailsGetData(type.machine_type_id)}
                   ></i>
                 </td>
+                <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(type.machine_type_id)}></i></td>
               </tr>
             ))}
           </tbody>
@@ -188,6 +232,49 @@ const MachineTypes = () => {
           </div>
         </div>
       </div>
+      {/* delete Model confirmation */}
+      <div
+        className="modal fade"
+        id="Modal"
+        tabIndex="-1"
+        aria-labelledby="ModalLabel"
+        aria-hidden="true"
+        ref={deletemodel}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="ModalLabel">
+                Delete Machine-Type Data
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              are you sure You want to delete this data?<br/>
+            
+            <div className="mt-2">
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={() => deleteData(delid)}
+              >Delete</button>
+
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ms-2"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >Cancel</button>
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
     </>
   );
 };

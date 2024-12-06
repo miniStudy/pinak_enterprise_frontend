@@ -5,12 +5,13 @@ import { Modal } from 'bootstrap';
 
 const Banks = () => {
   const [bankDetails, setBankDetails] = useState([]);
+  const [PersonsData, setPersonsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState("");
   const modalRef = useRef();
   const deletemodel = useRef();
-  const [delid,setdelid] = useState("");
+  const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState('');
 
   // Form states
@@ -21,8 +22,11 @@ const Banks = () => {
     bank_account_number: "",
     bank_ifsc_code: "",
     bank_account_holder: "",
-    bank_open_closed: false,
+    bank_initial_amount: "",
+    bank_open_closed: true,
+    person_id: "",
   });
+
 
   // Fetch bank details
   const fetchBankDetails = async () => {
@@ -31,6 +35,7 @@ const Banks = () => {
         "http://127.0.0.1:8000/show_bank_details/"
       );
       setBankDetails(response.data.data);
+      setPersonsData(response.data.persons || []);
       setTitle(response.data.title);
       setLoading(false);
     } catch (err) {
@@ -116,8 +121,6 @@ const Banks = () => {
 
   };
 
-
-
   // Fetch data for editing a specific bank record
   const editDetailsGetData = async (id) => {
     try {
@@ -125,6 +128,7 @@ const Banks = () => {
         `http://127.0.0.1:8000/insert_update_bank_detail/?getdata_id=${id}`
       );
       setFormData(response.data.data);
+      setPersonsData(response.data.persons || []);
       openModal()
     } catch (err) {
       setError("Failed to load bank details");
@@ -132,14 +136,14 @@ const Banks = () => {
   };
 
   const deleteData = async (id) => {
-    try{
+    try {
       const response = await axios.delete(
         `http://127.0.0.1:8000/delete_bank_detail/?bank_id=${id}`
       );
       setMessages(response.data.message)
       fetchBankDetails();
       closedeleteModal();
-    } catch (err){
+    } catch (err) {
       setError("Failed to delete Bank Data")
     }
   }
@@ -153,7 +157,9 @@ const Banks = () => {
       bank_account_number: "",
       bank_ifsc_code: "",
       bank_account_holder: "",
-      bank_open_closed: false,
+      bank_initial_amount: "",
+      bank_open_closed: true,
+      person_id: "",
     });
   };
 
@@ -170,7 +176,7 @@ const Banks = () => {
   return (
     <>
       <div>
-      {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
+        {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h1>{title}</h1>
 
         {/* Button to open modal */}
@@ -192,9 +198,12 @@ const Banks = () => {
               <th>Account Number</th>
               <th>IFSC Code</th>
               <th>Account Holder</th>
+              <th>Initial Amount</th>
               <th>Status</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th>Person</th>
+              <th>Person Contact</th>
+              <th>Update</th>
+              <th>Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -205,19 +214,25 @@ const Banks = () => {
                 <td>{bank.bank_branch}</td>
                 <td>{bank.bank_account_number}</td>
                 <td>{bank.bank_ifsc_code}</td>
-                <td>{bank.bank_account_holder}</td>
-                <td>{bank.bank_open_closed ? "Yes" : "No"}</td>
+                <td>{bank.bank_account_holder || 'N/A'}</td>
+                <td>{bank.bank_initial_amount || 'N/A'}</td>
+                <td>{bank.bank_open_closed ? "Open" : "Closed"}</td>
+                <td>{bank.person_id__person_name || 'N/A'}</td>
+                <td>{bank.person_id__person_contact_number || 'N/A'}</td>
                 <td>
                   <i
                     className="fa-regular fa-pen-to-square"
                     onClick={() => editDetailsGetData(bank.bank_id)}
                   ></i>
                 </td>
-                <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(bank.bank_id)}></i></td>
+                <td>
+                  <i className="fa-regular fa-trash-can" onClick={() => opendeleteModal(bank.bank_id)}></i>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+
       </div>
 
       {/* Modal for Add/Edit Bank */}
@@ -281,6 +296,15 @@ const Banks = () => {
                   />
                 </div>
                 <div>
+                  <label>Initial Amount:</label>
+                  <input
+                    type="text"
+                    name="bank_initial_amount"
+                    value={formData.bank_initial_amount}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
                   <label>Account Holder:</label>
                   <input
                     type="text"
@@ -290,13 +314,32 @@ const Banks = () => {
                   />
                 </div>
                 <div>
-                  <label>Bank Open/Closed:</label>
-                  <input
-                    type="checkbox"
+                  <select
                     name="bank_open_closed"
-                    checked={formData.bank_open_closed}
+                    value={formData.bank_open_closed}
+                    onChange={handleChange}>
+                    <option value={true}>Open</option>
+                    <option value={false}>Closed</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Person</label>
+                  <select
+                    name="person_id"
+                    value={formData.person_id}
                     onChange={handleChange}
-                  />
+                    required
+                  >
+                    <option value="">Select Person</option>
+                    {PersonsData.map((type) => (
+                      <option
+                        key={type.person_id}
+                        value={type.person_id}
+                      >
+                        {type.person_name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <button type="submit" className="btn btn-primary">
                   Submit
@@ -306,19 +349,19 @@ const Banks = () => {
           </div>
         </div>
       </div>
-     {/* delete Model confirmation */}
+      {/* delete Model confirmation */}
       <div
         className="modal fade"
-        id="bankModal"
+        id="Modal"
         tabIndex="-1"
-        aria-labelledby="bankModalLabel"
+        aria-labelledby="ModalLabel"
         aria-hidden="true"
         ref={deletemodel}
       >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="bankModalLabel">
+              <h5 className="modal-title" id="ModalLabel">
                 Delete Bank Data
               </h5>
               <button
@@ -329,26 +372,26 @@ const Banks = () => {
               ></button>
             </div>
             <div className="modal-body">
-              are you sure You want to delete this data?<br/>
-            
-            <div className="mt-2">
-              <button
-                type="button"
-                className="btn btn-sm btn-primary"
-                onClick={() => deleteData(delid)}
-              >Delete</button>
+              are you sure You want to delete this data?<br />
 
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ms-2"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >Cancel</button>
-            </div>
+              <div className="mt-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={() => deleteData(delid)}
+                >Delete</button>
+
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary ms-2"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >Cancel</button>
+              </div>
             </div>
           </div>
         </div>
-        </div>  
+      </div>
     </>
   );
 };

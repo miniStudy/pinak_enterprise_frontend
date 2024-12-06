@@ -14,6 +14,9 @@ const PersonWorkMachines = () => {
   const [error, setError] = useState(null);
   const [title, setTitle] = useState(""); // State to store the title
   const modalRef = useRef();
+  const deletemodel = useRef();
+  const [delid,setdelid] = useState("");
+  const [Messages, setMessages] = useState('');
 
   const [formData, setFormData] = useState({
     pwm_id: "",
@@ -58,6 +61,17 @@ const PersonWorkMachines = () => {
   useEffect(() => {
     fetchMachines();
   }, []);
+
+  useEffect(() => {
+    if (Messages) {
+      const timer = setTimeout(() => {
+        setMessages('');  // Clear success message after 3 seconds
+      }, 3000);  // 3000 milliseconds = 3 seconds
+
+      // Cleanup the timer if the component is unmounted or successMessage changes
+      return () => clearTimeout(timer);
+    }
+  }, [Messages]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,6 +119,19 @@ const PersonWorkMachines = () => {
     }
   };
 
+  const deleteData = async (id) => {
+    try{
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/delete_person_work_machine/?pwm_id=${id}`
+      );
+      setMessages(response.data.message)
+      fetchMachines();
+      closedeleteModal();
+    } catch (err){
+      setError("Failed to delete document type data")
+    }
+  }
+
   const resetForm = () => {
     setFormData({
       pwm_id: "",
@@ -140,6 +167,20 @@ const PersonWorkMachines = () => {
     }
   };
 
+  const closedeleteModal = () => {
+    const modalInstance = Modal.getInstance(deletemodel.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  const opendeleteModal = (id) => {
+    const modalInstance = new Modal(deletemodel.current);
+    setdelid(id);
+    modalInstance.show();
+
+  };
+
   // Show loading message while data is being fetched
   if (loading) {
     return <div>Loading...</div>;
@@ -154,6 +195,7 @@ const PersonWorkMachines = () => {
   return (
     <>
     <div>
+    {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
       <h1>{title}</h1> {/* Display the title */}
       <button type="button" className="btn btn-primary" onClick={openModal}>Add Person Work Machine</button>
       <table border="1" style={{ width: "100%", textAlign: "left" }}>
@@ -177,7 +219,8 @@ const PersonWorkMachines = () => {
             <th>Work Amount</th>
             <th>Total Amount</th>
             <th>Work Description</th>
-            <th>Edit</th>
+            <th>Update</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -203,6 +246,7 @@ const PersonWorkMachines = () => {
                 <td>{item.pwm_total_amount || "N/A"}</td>
                 <td>{item.pwm_work_desc || "N/A"}</td>
                 <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(item.pwm_id)}></i></td>
+                <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(item.pwm_id)}></i></td>
               </tr>
             ))
           ) : (
@@ -454,6 +498,50 @@ const PersonWorkMachines = () => {
     </div>
   </div>
 </div>
+
+{/* delete Model confirmation */}
+<div
+        className="modal fade"
+        id="Modal"
+        tabIndex="-1"
+        aria-labelledby="ModalLabel"
+        aria-hidden="true"
+        ref={deletemodel}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="ModalLabel">
+                Delete Person-Work-Machine Data
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              are you sure You want to delete this data?<br/>
+            
+            <div className="mt-2">
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={() => deleteData(delid)}
+              >Delete</button>
+
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ms-2"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >Cancel</button>
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
     </>
   );
 };

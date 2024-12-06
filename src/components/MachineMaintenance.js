@@ -10,6 +10,9 @@ const MachineMaintenance = () => {
   const [error, setError] = useState(null);
   const [title, setTitle] = useState("");
   const modalRef = useRef();
+  const deletemodel = useRef();
+  const [delid,setdelid] = useState("");
+  const [Messages, setMessages] = useState('');
 
 
   const [formData, setFormData] = useState({
@@ -51,6 +54,17 @@ const MachineMaintenance = () => {
     }));
   };
 
+  useEffect(() => {
+    if (Messages) {
+      const timer = setTimeout(() => {
+        setMessages('');  // Clear success message after 3 seconds
+      }, 3000);  // 3000 milliseconds = 3 seconds
+
+      // Cleanup the timer if the component is unmounted or successMessage changes
+      return () => clearTimeout(timer);
+    }
+  }, [Messages]);
+
   // Handle form submission for Add/Update
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,6 +104,20 @@ const MachineMaintenance = () => {
     modalInstance.show();
   };
 
+  const closedeleteModal = () => {
+    const modalInstance = Modal.getInstance(deletemodel.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
+  const opendeleteModal = (id) => {
+    const modalInstance = new Modal(deletemodel.current);
+    setdelid(id);
+    modalInstance.show();
+
+  };
+
   // Fetch data for editing a specific machine
   const editDetailsGetData = async (id) => {
     try {
@@ -103,6 +131,19 @@ const MachineMaintenance = () => {
       setError('Failed to load machine details');
     }
   };
+
+  const deleteData = async (id) => {
+    try{
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/delete_machine_maintenance/?machine_maintenance_id=${id}`
+      );
+      setMessages(response.data.message)
+      fetchMaintenanceDetails();
+      closedeleteModal();
+    } catch (err){
+      setError("Failed to delete document type data")
+    }
+  }
 
   const resetForm = () => {
     setFormData({
@@ -135,6 +176,7 @@ const MachineMaintenance = () => {
   return (
     <>
       <div>
+      {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h1>{title}</h1> {/* Display the title */}
         <button type="button" className="btn btn-primary" onClick={openModal}>Add Maintenance</button>
 
@@ -151,7 +193,8 @@ const MachineMaintenance = () => {
               <th>Driver</th>
               <th>Details</th>
               <th>Type Name</th>
-              <th>Edit</th>
+              <th>Update</th>
+              <th>Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -169,6 +212,7 @@ const MachineMaintenance = () => {
                   <td>{maintenance.machine_maintenance_details || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
                   <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(maintenance.machine_maintenance_id)}></i></td>
+                  <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(maintenance.machine_maintenance_id)}></i></td>
                 </tr>
               ))
             ) : (
@@ -296,6 +340,49 @@ const MachineMaintenance = () => {
           </div>
         </div>
       </div>
+      {/* delete Model confirmation */}
+      <div
+        className="modal fade"
+        id="Modal"
+        tabIndex="-1"
+        aria-labelledby="ModalLabel"
+        aria-hidden="true"
+        ref={deletemodel}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="ModalLabel">
+                Delete Machine-Maintenance Data
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              are you sure You want to delete this data?<br/>
+            
+            <div className="mt-2">
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={() => deleteData(delid)}
+              >Delete</button>
+
+              <button
+                type="button"
+                className="btn btn-sm btn-primary ms-2"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >Cancel</button>
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
     </>
   );
 };
