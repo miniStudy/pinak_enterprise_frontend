@@ -133,6 +133,20 @@ function BaseLayout() {
   </aside>
     
       <div className='maincontent'>
+        
+        <div class="grid grid-cols-10 gap-4 mb-3">
+           <div className='card'>Banks</div>
+           <div className='card'>Persons</div>
+           <div className='card'>Salary</div>
+           <div className='card'>Machines</div>
+           <div className='card'>Project</div>
+           <div className='card'>Credit Debit</div>
+           <div className='card'>Billing</div>
+           
+
+        </div>
+        <hr/>
+        
       <Outlet />
       </div>
     </>

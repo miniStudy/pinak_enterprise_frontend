@@ -177,12 +177,12 @@ const Banks = () => {
     <>
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h1>{title}</h1>
+        <h3>{title}</h3>
 
         {/* Button to open modal */}
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-sm btn-primary mb-3"
           onClick={openModal}
         >
           Add Bank
@@ -192,7 +192,8 @@ const Banks = () => {
         <table>
           <thead>
             <tr>
-              <th>Bank ID</th>
+              <th>S.N</th>
+              <th>Person</th>
               <th>Bank Name</th>
               <th>Branch</th>
               <th>Account Number</th>
@@ -200,16 +201,17 @@ const Banks = () => {
               <th>Account Holder</th>
               <th>Initial Amount</th>
               <th>Status</th>
-              <th>Person</th>
+              
               <th>Person Contact</th>
               <th>Update</th>
               <th>Remove</th>
             </tr>
           </thead>
           <tbody>
-            {bankDetails.map((bank) => (
+            {bankDetails.map((bank,index) => (
               <tr key={bank.bank_id}>
-                <td>{bank.bank_id}</td>
+                <td>{index+1}</td>
+                <td>{bank.person_id__person_name || 'N/A'}</td>
                 <td>{bank.bank_name}</td>
                 <td>{bank.bank_branch}</td>
                 <td>{bank.bank_account_number}</td>
@@ -217,7 +219,7 @@ const Banks = () => {
                 <td>{bank.bank_account_holder || 'N/A'}</td>
                 <td>{bank.bank_initial_amount || 'N/A'}</td>
                 <td>{bank.bank_open_closed ? "Open" : "Closed"}</td>
-                <td>{bank.person_id__person_name || 'N/A'}</td>
+                
                 <td>{bank.person_id__person_contact_number || 'N/A'}</td>
                 <td>
                   <i
@@ -259,72 +261,79 @@ const Banks = () => {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
-                <div>
-                  <label>Bank Name:</label>
+                <div className="mb-3">
+                  <label className="form-label">બેંકનું નામ:</label>
                   <input
                     type="text"
                     name="bank_name"
                     value={formData.bank_name}
                     onChange={handleChange}
+                    className="form-control"
                   />
                 </div>
-                <div>
-                  <label>Branch:</label>
+                <div className="mb-3">
+                  <label className="form-label">Branch:</label>
                   <input
                     type="text"
                     name="bank_branch"
                     value={formData.bank_branch}
                     onChange={handleChange}
+                    className="form-control"
                   />
                 </div>
-                <div>
-                  <label>Account Number:</label>
+                <div className="mb-3">
+                  <label className="form-label">Account Number:</label>
                   <input
                     type="text"
                     name="bank_account_number"
                     value={formData.bank_account_number}
                     onChange={handleChange}
+                    className="form-control"
                   />
                 </div>
-                <div>
-                  <label>IFSC Code:</label>
+                <div className="mb-3">
+                  <label className="form-label">IFSC Code:</label>
                   <input
                     type="text"
                     name="bank_ifsc_code"
                     value={formData.bank_ifsc_code}
                     onChange={handleChange}
+                    className="form-control"
                   />
                 </div>
-                <div>
-                  <label>Initial Amount:</label>
+                <div className="mb-3">
+                  <label className="form-label">Initial Amount:</label>
                   <input
                     type="text"
                     name="bank_initial_amount"
                     value={formData.bank_initial_amount}
                     onChange={handleChange}
+                    className="form-control"
                   />
                 </div>
-                <div>
-                  <label>Account Holder:</label>
+                <div className="mb-3">
+                  <label className="form-label">Account Holder:</label>
                   <input
                     type="text"
                     name="bank_account_holder"
                     value={formData.bank_account_holder}
                     onChange={handleChange}
+                    className="form-control"
                   />
                 </div>
-                <div>
-                  <select
-                    name="bank_open_closed"
-                    value={formData.bank_open_closed}
-                    onChange={handleChange}>
-                    <option value={true}>Open</option>
-                    <option value={false}>Closed</option>
-                  </select>
+          
+                <div className="mb-3">
+                    <div class="form-check">
+                    <input class="form-check-input" onChange={handleChange} checked={formData.bank_open_closed} name="bank_open_closed" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Account is Running
+                    </label>
+                  </div>
                 </div>
-                <div>
-                  <label>Person</label>
+                <div className="mb-3">
+                  <label className="form-label">Person</label>
                   <select
+                    className="form-select"
                     name="person_id"
                     value={formData.person_id}
                     onChange={handleChange}
@@ -372,7 +381,7 @@ const Banks = () => {
               ></button>
             </div>
             <div className="modal-body">
-              are you sure You want to delete this data?<br />
+              Confirm Delete..?<br />
 
               <div className="mt-2">
                 <button
