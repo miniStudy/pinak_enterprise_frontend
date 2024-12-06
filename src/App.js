@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Banks from './components/Banks';
 import MachineTypes from './components/MachineTypes'
 import Machines from './components/Machines'
+import MoneyCreditDebit from './components/MoneyCreditDebit'
 import WorkingMachines from './components/WorkingMachines'
 import MaintenanceTypes from './components/MaintenanceTypes'
 import MachineMaintenance from './components/MachineMaintenance'
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="banks" element={<Banks />} />
           <Route path="machine-types" element={<MachineTypes />} />
           <Route path="machines" element={<Machines />} />
+          <Route path="money-credit-debit" element={<MoneyCreditDebit />} />
           <Route path="working-machines" element={<WorkingMachines />} />
           <Route path="maintenance-types" element={<MaintenanceTypes />} />
           <Route path="machine-maintenance" element={<MachineMaintenance />} />
