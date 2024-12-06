@@ -411,7 +411,7 @@ const Persons = () => {
                                     placeholder="Addtional details..."
                                 ></textarea>
                                 </div>
-                                <button type="submit" className="mt-3 btn btn-sm btn-primary">
+                                <button type="submit" className="btn btn-sm btn-primary">
                                     Submit
                                 </button>
                             </form>

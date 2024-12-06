@@ -268,7 +268,7 @@ const MoneyCreditDebit = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="machineModalLabel">
-                                {formData.machine_id ? 'Edit Machine' : 'Add Machine'}
+                                {formData.money_id ? 'Edit Money Debit/Credit' : 'Add Money Debit/Credit'}
                             </h5>
                             <button
                                 type="button"
@@ -415,7 +415,6 @@ const MoneyCreditDebit = () => {
                                 </div>
 
                                 <div className="mb-3">
-                                    <label>Machine:</label>
                                     <select name="machine_id" value={formData.machine_id} onChange={handleChange} className="form-select">
                                         <option value="">Select Machine</option>
                                         {MachineData.length > 0 ? (
@@ -429,7 +428,7 @@ const MoneyCreditDebit = () => {
                                         )}
                                     </select>
                                 </div>
-                                <button type="submit">Submit</button>
+                                <button type="submit" className="btn btn-sm btn-primary">Submit</button>
                             </form>
 
                         </div>

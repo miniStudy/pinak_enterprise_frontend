@@ -200,6 +200,7 @@ const Machines = () => {
                         <tr>
                             <th>Machine ID</th>
                             <th>Machine Name</th>
+                            <th>Machine Own</th>
                             <th>Number Plate</th>
                             <th>Register Date</th>
                             <th>Owner's Name</th>
@@ -223,6 +224,7 @@ const Machines = () => {
                                 <tr key={y.machine_id}>
                                     <td>{y.machine_id || "N/A"}</td>
                                     <td>{y.machine_name || "N/A"}</td>
+                                    <td>{y.machine_own || "N/A"}</td>
                                     <td>{y.machine_number_plate || "N/A"}</td>
                                     <td>{y.machine_register_date || "N/A"}</td>
                                     <td>{y.machine_owner_name || "N/A"}</td>
@@ -290,6 +292,15 @@ const Machines = () => {
                                         value={formData.machine_name}
                                         onChange={handleChange}
                                     />
+                                </div>
+
+                                <div>
+                                    <label>Machine Own:</label>
+                                    <select name="machine_own" value={formData.machine_own} onChange={handleChange}>
+                                        <option value="">-----</option>
+                                        <option value="Company">Company</option>
+                                        <option value="Rented">Rented</option>
+                                    </select>
                                 </div>
 
                                 <div>
