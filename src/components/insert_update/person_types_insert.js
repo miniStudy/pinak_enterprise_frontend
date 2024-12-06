@@ -64,7 +64,7 @@ function Person_types_insert({fetchPersons}) {
 
   return (
     <>
-    <button type="button" className="btn btn-primary" onClick={openModal}>
+    <button type="button" className="btn btn-sm ms-2 btn-primary" onClick={openModal}>
                                     Add Person Type
                                 </button>
     <div
@@ -100,8 +100,8 @@ function Person_types_insert({fetchPersons}) {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
-                  Submit
+                <button type="submit" className="btn btn-sm mt-3 btn-primary">
+                  Add
                 </button>
               </form>
             </div>

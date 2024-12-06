@@ -175,15 +175,16 @@ const Persons = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h1>Persons</h1>
+                
+                
+                <h3>Persons</h3>
                 <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-sm mb-3 btn-primary"
                     onClick={openModal}
                 >
                     Add Person
                 </button>
-
                 <table>
                     <thead>
                         <tr>
@@ -260,9 +261,9 @@ const Persons = () => {
                             <h5 className="modal-title" id="personModalLabel">
                                 {formData.person_id ? 'Edit Person' : 'Add Person'}
                             </h5>
-                            <div>
+                            
                             <Person_types_insert fetchPersons={fetchPersons} />
-                            </div>
+                        
                             <button
                                 type="button"
                                 className="btn-close"
@@ -364,7 +365,8 @@ const Persons = () => {
                                     <option value={true}>Active</option>
                                     <option value={false}>Inactive</option>
                                 </select>
-                                <button type="submit" className="btn btn-primary">
+                                <br/>
+                                <button type="submit" className="mt-3 btn btn-sm btn-primary">
                                     Submit
                                 </button>
                             </form>
