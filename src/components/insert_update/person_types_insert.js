@@ -90,17 +90,18 @@ function Person_types_insert({fetchPersons}) {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
-                <div>
-                  <label>Person Type Name:</label>
+                 <div className="mb-3">
+                  <label className="form-label">Person Type Name:</label>
                   <input
                     type="text"
                     name="person_type_name"
                     value={formData.person_type_name}
                     onChange={handleChange}
+                    className="form-control"
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-sm mt-3 btn-primary">
+                <button type="submit" className="btn btn-sm mt-2 btn-primary">
                   Add
                 </button>
               </form>
