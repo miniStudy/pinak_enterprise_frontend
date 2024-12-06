@@ -198,7 +198,7 @@ const MoneyCreditDebit = () => {
                     className="btn btn-primary"
                     onClick={openModal}
                 >
-                    Add Machine
+                    Add Money Credit/Debit
                 </button>
                 <table>
                     <thead>
@@ -443,7 +443,6 @@ const MoneyCreditDebit = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
-
                                 <div>
                                     <label>Machine:</label>
                                     <select name="machine_id" value={formData.machine_id} onChange={handleChange}>
@@ -455,7 +454,7 @@ const MoneyCreditDebit = () => {
                                                 </option>
                                             ))
                                         ) : (
-                                            <option>Data not available</option>
+                                            <></>
                                         )}
                                     </select>
                                 </div>
@@ -479,7 +478,7 @@ const MoneyCreditDebit = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="ModalLabel">
-                                Delete Company-Machine Data
+                                Delete Money Credit/Debit Data
                             </h5>
                             <button
                                 type="button"
