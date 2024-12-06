@@ -190,7 +190,7 @@ const Banks = () => {
 
         {/* Bank Details Table */}
         <div className="table-responsive">
-        <table className="table table-striped table-hover">
+        <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>

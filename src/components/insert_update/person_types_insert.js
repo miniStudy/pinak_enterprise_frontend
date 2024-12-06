@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
 
-function Person_types_insert({fetchPersons}) {
+function Person_types_insert({fetchdata}) {
     const modalRef = useRef();
     const [formData, setFormData] = useState({
         person_type_id: "",
@@ -28,7 +28,7 @@ function Person_types_insert({fetchPersons}) {
       );
       if (response.status === 200) {
         alert("Person type saved successfully!");
-        fetchPersons()
+        fetchdata()
         resetForm();
         closeModal();
       } else {
