@@ -1,6 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom';
 import './mystyle.css';
+import { Link } from "react-router-dom";
+
 
 function BaseLayout() {
   return (
@@ -36,7 +38,7 @@ function BaseLayout() {
     <div className="overflow-y-auto py-2 px-3 h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div className="mb-2 flex justify-start items-center">
             <img
-              src="static/pinak enterprise gujrati logo_page-0001.jpg"
+              src="/static/pinak enterprise gujrati logo_page-0001.jpg"
               alt="Logo"
               className="w-40 rounded-full"
             />
@@ -134,19 +136,27 @@ function BaseLayout() {
     
       <div className='maincontent'>
         
-        <div class="grid grid-cols-10 gap-4 mb-3">
-           <div className='card'>Banks</div>
-           <div className='card'>Persons</div>
-           <div className='card'>Salary</div>
-           <div className='card'>Machines</div>
-           <div className='card'>Project</div>
-           <div className='card'>Credit Debit</div>
-           <div className='card'>Billing</div>
+        <div class="grid grid-cols-4 md:grid-cols-12 gap-2 md:gap-4 mb-3 iconsection">
+        <Link to="banks/"><div className='card text-center'>
+            <div className='icondiv'><img src='/static/icons/bank.png' className='iconimg' /></div>
+            Accounts
+            </div></Link>
+           
+            <Link to="persons/"><div className='card text-center'>
+           <div className='icondiv'><img src='/static/icons/group.png' className='iconimg' /></div>
+           Persons
+           </div></Link>
+           <div className='card text-center'>
+           <div className='icondiv'><img src='/static/icons/salary (1).png' className='iconimg' /></div>Salary</div>
+           <Link to="machines/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/manufacturing.png' className='iconimg' /></div>Machines</div></Link>
+           <Link to="projects/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/project-management.png' className='iconimg' /></div>Projects</div></Link>
+           <Link to="persons/"><div className='card text-center'><div className='icondiv'><img src='/static/icons/credit.png' className='iconimg' /></div>Credit/Debit</div></Link>
+           <Link to=""><div className='card text-center'><div className='icondiv'><img src='/static/icons/bill.png' className='iconimg' /></div>Billing</div></Link>
            
 
         </div>
         <hr/>
-        
+
       <Outlet />
       </div>
     </>

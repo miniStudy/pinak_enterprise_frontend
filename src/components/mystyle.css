@@ -1,6 +1,7 @@
 :root{
     --card1 : rgb(219 234 254);  /*bg-amber-100 */
     --border1: rgb(96 165 250);
+    --color2 : rgb(239 246 255);
 }
 
 body{font-family: "Ubuntu", serif;}
@@ -16,7 +17,17 @@ body{font-family: "Ubuntu", serif;}
 table,th,td{border: 1px solid var(--border1) !important;}
 td,th{padding: 4px;}
 
+.icondiv{text-align: center !important;}
+.iconimg{width: 50%;margin-bottom: 5px;margin: auto;}
+
 
 @media (max-width: 768px) {
     .maincontent{margin-left: 0px;margin-right: 0px;margin-top: 0px;}
+    .iconsection{font-size: 12px;}
+    .iconsection .card{padding: 5px;}
+    table,th,td{font-size: 12px;}
+    table th,td{padding: 5px !important;min-width: 80px;}
+    table th,td:first-child{
+        min-width: 10px;
+    }
 }

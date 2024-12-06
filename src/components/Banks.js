@@ -189,20 +189,21 @@ const Banks = () => {
         </button>
 
         {/* Bank Details Table */}
-        <table>
+        <div className="table-responsive">
+        <table className="table table-striped table-hover">
           <thead>
             <tr>
               <th>S.N</th>
               <th>Person</th>
-              <th>Bank Name</th>
+              <th>Bank</th>
               <th>Branch</th>
-              <th>Account Number</th>
-              <th>IFSC Code</th>
-              <th>Account Holder</th>
-              <th>Initial Amount</th>
+              <th>Acc.No</th>
+              <th>IFSC</th>
+              <th>Acc.Holder</th>
+              <th>Initial Amt</th>
               <th>Status</th>
               
-              <th>Person Contact</th>
+              <th>Contact</th>
               <th>Update</th>
               <th>Remove</th>
             </tr>
@@ -234,7 +235,7 @@ const Banks = () => {
             ))}
           </tbody>
         </table>
-
+        </div>
       </div>
 
       {/* Modal for Add/Edit Bank */}
