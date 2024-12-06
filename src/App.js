@@ -42,7 +42,6 @@ const App = () => {
           <Route path="machine-maintenance" element={<MachineMaintenance />} />
           <Route path="project-types" element={<ProjectTypes />} />
           <Route path="projects" element={<Projects />} />
-          <Route path="projects" element={<Projects />} />
           <Route path="pay-types" element={<PayTypes />} />
           <Route path="person-types" element={<PersonTypes />} />
           <Route path="persons" element={<Persons />} />
