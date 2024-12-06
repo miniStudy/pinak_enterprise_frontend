@@ -120,10 +120,11 @@ const Machines = () => {
                 `http://127.0.0.1:8000/insert_update_salary/?getdata_id=${id}`
             );
             setFormData(response.data.data);
+            console.log(response.data.data)
             setPersonsData(response.data.persons_data || []);
             openModal()
         } catch (err) {
-            setError('Failed to load machine details');
+            setError('Failed to load salary details');
         }
     };
 
@@ -172,7 +173,7 @@ const Machines = () => {
                     className="btn btn-primary"
                     onClick={openModal}
                 >
-                    Add Machine
+                    Add Salary
                 </button>
 
                 <table>
