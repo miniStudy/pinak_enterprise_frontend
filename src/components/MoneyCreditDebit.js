@@ -188,23 +188,24 @@ const MoneyCreditDebit = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h1>{title}</h1>
+                <h3>{title}</h3>
                 <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-sm btn-primary mb-3"
                     onClick={openModal}
                 >
                     Add Money Credit/Debit
                 </button>
-                <table>
+                <div className="table-responsive">
+                <table className="table table-hover">
                     <thead>
                         <tr>
                             <th>S.N</th>
                             <th>Sender Name</th>
                             <th>Receiver Name</th>
-                            <th>Payment Type</th>
-                            <th>Payment Mode</th>
                             <th>Amount</th>
+                            <th>Payment Type</th>
+                            <th>Payment Mode</th>                          
                             <th>Date</th>
                             <th>Sender Bank Name</th>
                             <th>Sender Cheque No</th>
@@ -222,9 +223,9 @@ const MoneyCreditDebit = () => {
                                     <td>{index+1 || "N/A"}</td>
                                     <td>{y.sender_person_id__person_name || "N/A"}</td>
                                     <td>{y.receiver_person_id__person_name || "N/A"}</td>
-                                    <td>{y.pay_type_id__pay_type_name || "N/A"}</td>
-                                    <td>{y.money_payment_mode || "N/A"}</td>
                                     <td>{y.money_amount || "N/A"}</td>
+                                    <td>{y.pay_type_id__pay_type_name || "N/A"}</td>
+                                    <td>{y.money_payment_mode || "N/A"}</td> 
                                     <td>{y.money_date || "N/A"}</td>
                                     <td>{y.sender_bank_id__bank_name || "N/A"}</td>
                                     <td>{y.money_sender_cheque_no || "N/A"}</td>
@@ -249,6 +250,7 @@ const MoneyCreditDebit = () => {
                         )}
                     </tbody>
                 </table>
+                </div>
 
 
             </div>
@@ -277,10 +279,9 @@ const MoneyCreditDebit = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
-                                <div>
-                                    <label>Sender Person:</label>
-                                    <select name="sender_person_id" value={formData.sender_person_id} onChange={handleChange}>
-                                        <option value="">select sender-person</option>
+                            <div className="mb-3">
+                                    <select name="sender_person_id" value={formData.sender_person_id} onChange={handleChange} required className="form-select">
+                                        <option value="">Select Sender-Person</option>
                                         {PersonData.length > 0 ? (
                                             PersonData.map((x) => (
                                                 <option key={x.person_id} value={x.person_id}>
@@ -291,12 +292,11 @@ const MoneyCreditDebit = () => {
                                             <></>
                                         )}
                                     </select>
-                                </div>
+                            </div>
 
-                                <div>
-                                    <label>Receiver Person:</label>
-                                    <select name="receiver_person_id" value={formData.receiver_person_id} onChange={handleChange}>
-                                        <option value="">select receiver-person</option>
+                            <div className="mb-3">
+                                    <select name="receiver_person_id" value={formData.receiver_person_id} onChange={handleChange} required className="form-select">
+                                        <option value="">Select Receiver-Person</option>
                                         {PersonData.length > 0 ? (
                                             PersonData.map((x) => (
                                                 <option key={x.person_id} value={x.person_id}>
@@ -307,12 +307,24 @@ const MoneyCreditDebit = () => {
                                             <></>
                                         )}
                                     </select>
+                            </div>
+
+                            <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="money_amount"
+                                        value={formData.money_amount}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Amount*"
+                                        required
+                                    />
                                 </div>
 
-                                <div>
+                            <div className="mb-3">
                                     <label>Pay Type:</label>
-                                    <select name="pay_type_id" value={formData.pay_type_id} onChange={handleChange}>
-                                        <option value="">Select pay type</option>
+                                    <select name="pay_type_id" value={formData.pay_type_id} onChange={handleChange} required>
+                                        <option value="">Select Pay Type</option>
                                         {PayTypeData.length > 0 ? (
                                             PayTypeData.map((x) => (
                                                 <option key={x.pay_type_id} value={x.pay_type_id}>
@@ -323,7 +335,7 @@ const MoneyCreditDebit = () => {
                                             <></>
                                         )}
                                     </select>
-                                </div>
+                            </div>
 
                                 <div>
                                     <label>Payment Mode:</label>
@@ -337,15 +349,7 @@ const MoneyCreditDebit = () => {
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label>Amount:</label>
-                                    <input
-                                        type="text"
-                                        name="money_amount"
-                                        value={formData.money_amount}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+                                
 
                                 <div>
                                     <label>Date:</label>
