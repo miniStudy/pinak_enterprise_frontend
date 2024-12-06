@@ -7,6 +7,7 @@ const MoneyCreditDebit = () => {
     const [PersonData, setPersonData] = useState([]);
     const [PayTypeData, setPayTypeData] = useState([]);
     const [MachineData, setMachineData] = useState([]);
+    const [BankData, setBankData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [title, setTitle] = useState('');
@@ -18,19 +19,15 @@ const MoneyCreditDebit = () => {
     // Form state for Add/Edit
     const [formData, setFormData] = useState({
         money_id: '',
-        money_credit_debit: '',
-        person_id: '',
+        sender_person_id: '',
+        receiver_person_id: '',
         pay_type_id: '',
         money_payment_mode: '',
         money_amount: '',
         money_date: '',
-        money_sender_bank_name: '',
-        money_sender_bank_account_no: '',
-        money_sender_ifsc_code: '',
+        sender_bank_id: '',
         money_sender_cheque_no: '',
-        money_receiver_bank_name: '',
-        money_receiver_bank_account_no: '',
-        money_receiver_ifsc_code: '',
+        receiver_bank_id: '',
         money_payment_details: '',
         machine_id: '',
     });
@@ -44,6 +41,8 @@ const MoneyCreditDebit = () => {
             setPersonData(response.data.persons_data || []);
             setPayTypeData(response.data.pay_types_data || []);
             setMachineData(response.data.machines_data || []);
+            setBankData(response.data.banks_data || []);
+            console.log(response.data)
             setTitle(response.data.title);
             setLoading(false);
         } catch (err) {
@@ -137,6 +136,7 @@ const MoneyCreditDebit = () => {
             setPersonData(response.data.persons_data || []);
             setPayTypeData(response.data.pay_types_data || []);
             setMachineData(response.data.machines_data || []);
+            setBankData(response.data.banks_data || []);
             openModal()
         } catch (err) {
             setError('Failed to load machine details');
@@ -161,19 +161,15 @@ const MoneyCreditDebit = () => {
     const resetForm = () => {
         setFormData({
             money_id: '',
-            money_credit_debit: '',
-            person_id: '',
+            sender_person_id: '',
+            receiver_person_id: '',
             pay_type_id: '',
             money_payment_mode: '',
             money_amount: '',
             money_date: '',
-            money_sender_bank_name: '',
-            money_sender_bank_account_no: '',
-            money_sender_ifsc_code: '',
+            sender_bank_id: '',
             money_sender_cheque_no: '',
-            money_receiver_bank_name: '',
-            money_receiver_bank_account_no: '',
-            money_receiver_ifsc_code: '',
+            receiver_bank_id: '',
             money_payment_details: '',
             machine_id: '',
         });
@@ -204,19 +200,15 @@ const MoneyCreditDebit = () => {
                     <thead>
                         <tr>
                             <th>S.N</th>
-                            <th>Credit/Debit</th>
-                            <th>Person</th>
+                            <th>Sender Name</th>
+                            <th>Receiver Name</th>
                             <th>Payment Type</th>
                             <th>Payment Mode</th>
                             <th>Amount</th>
                             <th>Date</th>
                             <th>Sender Bank Name</th>
-                            <th>Sender Bank Account No</th>
-                            <th>Sender IFSC Code</th>
                             <th>Sender Cheque No</th>
                             <th>Receiver Bank Name</th>
-                            <th>Receiver Bank Account No</th>
-                            <th>Receiver IFSC Code</th>
                             <th>Payment Details</th>
                             <th>Machine</th>
                             <th>Update</th>
@@ -228,19 +220,15 @@ const MoneyCreditDebit = () => {
                             MoneyCreditDebit.map((y, index) => (
                                 <tr key={y.money_id}>
                                     <td>{index+1 || "N/A"}</td>
-                                    <td>{y.money_credit_debit || "N/A"}</td>
-                                    <td>{y.person_id__person_name || "N/A"}</td>
+                                    <td>{y.sender_person_id__person_name || "N/A"}</td>
+                                    <td>{y.receiver_person_id__person_name || "N/A"}</td>
                                     <td>{y.pay_type_id__pay_type_name || "N/A"}</td>
                                     <td>{y.money_payment_mode || "N/A"}</td>
                                     <td>{y.money_amount || "N/A"}</td>
                                     <td>{y.money_date || "N/A"}</td>
-                                    <td>{y.money_sender_bank_name || "N/A"}</td>
-                                    <td>{y.money_sender_bank_account_no || "N/A"}</td>
-                                    <td>{y.money_sender_ifsc_code || "N/A"}</td>
+                                    <td>{y.sender_bank_id__bank_name || "N/A"}</td>
                                     <td>{y.money_sender_cheque_no || "N/A"}</td>
-                                    <td>{y.money_receiver_bank_name || "N/A"}</td>
-                                    <td>{y.money_receiver_bank_account_no || "N/A"}</td>
-                                    <td>{y.money_receiver_ifsc_code || "N/A"}</td>
+                                    <td>{y.receiver_bank_id__bank_name || "N/A"}</td>
                                     <td>{y.money_payment_details || "N/A"}</td>
                                     <td>{y.machine_id__machine_name || "N/A"}</td>
                                     <td>
@@ -290,21 +278,9 @@ const MoneyCreditDebit = () => {
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
                                 <div>
-                                    <label>Credit/Debit:</label>
-                                    <select
-                                        name="money_credit_debit"
-                                        value={formData.money_credit_debit}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="CREDIT">CREDIT</option>
-                                        <option value="DEBIT">DEBIT</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label>Person:</label>
-                                    <select name="person_id" value={formData.person_id} onChange={handleChange}>
-                                        <option value="">Select person</option>
+                                    <label>Sender Person:</label>
+                                    <select name="sender_person_id" value={formData.sender_person_id} onChange={handleChange}>
+                                        <option value="">select sender-person</option>
                                         {PersonData.length > 0 ? (
                                             PersonData.map((x) => (
                                                 <option key={x.person_id} value={x.person_id}>
@@ -312,7 +288,23 @@ const MoneyCreditDebit = () => {
                                                 </option>
                                             ))
                                         ) : (
-                                            <option>Data not available</option>
+                                            <></>
+                                        )}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label>Receiver Person:</label>
+                                    <select name="receiver_person_id" value={formData.receiver_person_id} onChange={handleChange}>
+                                        <option value="">select receiver-person</option>
+                                        {PersonData.length > 0 ? (
+                                            PersonData.map((x) => (
+                                                <option key={x.person_id} value={x.person_id}>
+                                                    {x.person_name}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <></>
                                         )}
                                     </select>
                                 </div>
@@ -328,7 +320,7 @@ const MoneyCreditDebit = () => {
                                                 </option>
                                             ))
                                         ) : (
-                                            <option>Data not available</option>
+                                            <></>
                                         )}
                                     </select>
                                 </div>
@@ -366,33 +358,19 @@ const MoneyCreditDebit = () => {
                                 </div>
 
                                 <div>
-                                    <label>Sender's Bank Name:</label>
-                                    <input
-                                        type="text"
-                                        name="money_sender_bank_name"
-                                        value={formData.money_sender_bank_name}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Sender's Bank Account No:</label>
-                                    <input
-                                        type="text"
-                                        name="money_sender_bank_account_no"
-                                        value={formData.money_sender_bank_account_no}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Sender's IFSC Code:</label>
-                                    <input
-                                        type="text"
-                                        name="money_sender_ifsc_code"
-                                        value={formData.money_sender_ifsc_code}
-                                        onChange={handleChange}
-                                    />
+                                    <label>Sender Bank:</label>
+                                    <select name="sender_bank_id" value={formData.sender_bank_id} onChange={handleChange}>
+                                        <option value="">select sender-bank</option>
+                                        {BankData.length > 0 ? (
+                                            BankData.map((x) => (
+                                                <option key={x.bank_id} value={x.bank_id}>
+                                                    {x.bank_name}-{x.bank_account_number}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </select>
                                 </div>
 
                                 <div>
@@ -406,33 +384,19 @@ const MoneyCreditDebit = () => {
                                 </div>
 
                                 <div>
-                                    <label>Receiver's Bank Name:</label>
-                                    <input
-                                        type="text"
-                                        name="money_receiver_bank_name"
-                                        value={formData.money_receiver_bank_name}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Receiver's Bank Account No:</label>
-                                    <input
-                                        type="text"
-                                        name="money_receiver_bank_account_no"
-                                        value={formData.money_receiver_bank_account_no}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label>Receiver's IFSC Code:</label>
-                                    <input
-                                        type="text"
-                                        name="money_receiver_ifsc_code"
-                                        value={formData.money_receiver_ifsc_code}
-                                        onChange={handleChange}
-                                    />
+                                    <label>Receiver Bank:</label>
+                                    <select name="receiver_bank_id" value={formData.receiver_bank_id} onChange={handleChange}>
+                                        <option value="">select receiver-bank</option>
+                                        {BankData.length > 0 ? (
+                                            BankData.map((x) => (
+                                                <option key={x.bank_id} value={x.bank_id}>
+                                                    {x.bank_name}-{x.bank_account_number}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </select>
                                 </div>
 
                                 <div>
