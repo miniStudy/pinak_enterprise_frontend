@@ -262,7 +262,7 @@ const Persons = () => {
                                 {formData.person_id ? 'Edit Person' : 'Add Person'}
                             </h5>
                             
-                            <Person_types_insert fetchPersons={fetchPersons} />
+                            <Person_types_insert fetchdata={fetchPersons} />
                         
                             <button
                                 type="button"
