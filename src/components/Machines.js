@@ -186,16 +186,17 @@ const Machines = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h1>{title}</h1>
+                <h3>{title}</h3>
                 <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-sm mb-3 btn-primary"
                     onClick={openModal}
                 >
                     Add Machine
                 </button>
-
-                <table>
+                <div className="table-responsive">
+        <table className="table table-hover">
+                
                     <thead>
                         <tr>
                             <th>Machine ID</th>
@@ -251,13 +252,14 @@ const Machines = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="16">No machine details available.</td>
+                                <td colSpan="18">No machine details available.</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
-
+                    </div>
             </div>
+          
 
             {/* Modal for Add/Edit Machine */}
             <div
@@ -284,138 +286,136 @@ const Machines = () => {
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
 
-                                <div>
-                                    <label>Machine Name:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="text"
                                         name="machine_name"
                                         value={formData.machine_name}
                                         onChange={handleChange}
+                                        placeholder='Machine Name'
+                                        className='form-control'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Machine Own:</label>
-                                    <select name="machine_own" value={formData.machine_own} onChange={handleChange}>
-                                        <option value="">-----</option>
+                                <div className='mb-3'>
+                                    <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select'>
+                                        <option value="">Company/Rended</option>
                                         <option value="Company">Company</option>
                                         <option value="Rented">Rented</option>
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label>Owner's Name:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="text"
                                         name="machine_owner_name"
                                         value={formData.machine_owner_name}
                                         onChange={handleChange}
+                                        className='form-control'
+                                        placeholder='Machine Owner Name'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Contact Number:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="text"
                                         name="machine_owner_contact"
                                         value={formData.machine_owner_contact}
                                         onChange={handleChange}
+                                        placeholder='Contact Number'
+                                        className='form-control'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Register Date:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_register_date"
                                         value={formData.machine_register_date}
                                         onChange={handleChange}
+                                        className='form-control'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Condition:</label>
-                                    <select name="machine_condition" value={formData.machine_condition} onChange={handleChange}>
-                                        <option value="">-----</option>
+                                <div className='mb-3'>
+                                    <select name="machine_condition" value={formData.machine_condition} onChange={handleChange} className='form-select'>
+                                        <option value="">New/Second-hand</option>
                                         <option value="New">New</option>
                                         <option value="Second_hand">Second hand</option>
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label>Number Plate:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="text"
                                         name="machine_number_plate"
                                         value={formData.machine_number_plate}
                                         onChange={handleChange}
+                                        placeholder='Number Plate'
+                                        className='form-control'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Contact Number:</label>
-                                    <input
-                                        type="text"
-                                        name="machine_contact_number"
-                                        value={formData.machine_contact_number}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+                                
 
-                                <div>
-                                    <label>Machine Buy Price:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="number"
                                         name="machine_buy_price"
                                         value={formData.machine_buy_price}
                                         onChange={handleChange}
+                                        className='form-control'
+                                        placeholder='Buy Price'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Machine Buy Date:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_buy_date"
                                         value={formData.machine_buy_date}
                                         onChange={handleChange}
+                                        className='form-control'
+                                        placeholder='Buy Date'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Sold Out Date:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_sold_out_date"
                                         value={formData.machine_sold_out_date}
                                         onChange={handleChange}
+                                        className='form-control'
+                                        placeholder='Sold Date'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Sold Price:</label>
+                                <div className='mb-3'>
                                     <input
                                         type="number"
                                         name="machine_sold_price"
                                         value={formData.machine_sold_price}
                                         onChange={handleChange}
+                                        placeholder='sold Price'
+                                        className='form-control'
                                     />
                                 </div>
 
-                                <div>
-                                    <label>Machine Working:</label>
-                                    <input
-                                        type="checkbox"
-                                        name="machine_working"
-                                        checked={formData.machine_working}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+    
 
-                                <div>
-                                    <label>Machine Type:</label>
-                                    <select name="machine_types_id" value={formData.machine_types_id} onChange={handleChange} required>
-                                        <option value="">Select machine type</option>
+                                <div className="mb-3">
+                    <div class="form-check">
+                    <input class="form-check-input" onChange={handleChange} checked={formData.machine_working} name="machine_working" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Machine is Working
+                    </label>
+                  </div>
+                </div>
+
+                                <div className='mb-3'>
+                                    <select name="machine_types_id" value={formData.machine_types_id} onChange={handleChange} className='form-select' required>
+                                        <option value="">machine type</option>
                                         {machine_types.length > 0 ? (
                                             machine_types.map((x) => (
                                                 <option key={x.machine_type_id} value={x.machine_type_id}>
@@ -423,30 +423,31 @@ const Machines = () => {
                                                 </option>
                                             ))
                                         ) : (
-                                            <option>Data not available</option>
+                                            <></>
                                         )}
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label>Machine Details:</label>
+                                <div className='mb-3'>
                                     <textarea
+                                        className='form-control'
                                         name="machine_details"
                                         value={formData.machine_details}
                                         onChange={handleChange}
+                                        
                                     ></textarea>
                                 </div>
 
-                                <div>
-                                    <label>Other Details:</label>
+                                <div className='mb-3'>
                                     <textarea
                                         name="machine_other_details"
                                         value={formData.machine_other_details}
                                         onChange={handleChange}
+                                        className='form-control'
                                     ></textarea>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-sm btn-primary">
                                     Submit
                                 </button>
                             </form>
