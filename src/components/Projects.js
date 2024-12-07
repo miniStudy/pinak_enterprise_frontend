@@ -11,42 +11,46 @@ const Projects = () => {
   const [projectTypes, setprojectTypes] = useState([]);
   const modalRef = useRef();
   const deletemodel = useRef();
-  const [delid,setdelid] = useState("");
+  const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState('');
 
   const [formData, setformData] = useState({
-    project_id : '',
-    project_name : '',
-    project_start_date : '',
-    project_end_date : '',
-    project_amount : '',
-    project_location : '',
-    project_company_name : '',
-    project_person_name : '',
-    project_status : '',
-    project_types_id : '',
+    project_id: "",
+    project_name: "",
+    project_start_date: "",
+    project_end_date: "",
+    project_amount: "",
+    project_location: "",
+    project_types_id: "",
+    project_status: "",
+    project_customer_name: "",
+    project_customer_contact: "",
+    project_cgst: "",
+    project_sgst: "",
+    project_tax: "",
+    project_discount: "",
   })
 
-   // Fetch machine details
-   const fetchProjects = async () => {
+  // Fetch machine details
+  const fetchProjects = async () => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/show_projects/');
-        console.log(response.data.data)
-        setProjects(response.data.data || []);
-        setprojectTypes(response.data.project_types_data || []);
-        setTitle(response.data.title);
-        setLoading(false);
+      const response = await axios.get('http://127.0.0.1:8000/show_projects/');
+      console.log(response.data.data)
+      setProjects(response.data.data || []);
+      setprojectTypes(response.data.project_types_data || []);
+      setTitle(response.data.title);
+      setLoading(false);
     } catch (err) {
-        setError('Failed to load project details');
-        setLoading(false);
+      setError('Failed to load project details');
+      setLoading(false);
     }
-};
+  };
 
-useEffect(() => {
-  fetchProjects();
-}, []);
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     if (Messages) {
       const timer = setTimeout(() => {
         setMessages('');  // Clear success message after 3 seconds
@@ -57,53 +61,53 @@ useEffect(() => {
     }
   }, [Messages]);
 
-// Handle input changes
-const handleChange = (e) => {
+  // Handle input changes
+  const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setformData((prevData) => ({
-        ...prevData,
-        [name]: type === 'checkbox' ? checked : value,
+      ...prevData,
+      [name]: type === 'checkbox' ? checked : value,
     }));
-};
+  };
 
-// Handle form submission for Add/Update
-const handleSubmit = async (e) => {
+  // Handle form submission for Add/Update
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post(
-            'http://127.0.0.1:8000/insert_update_project/',
-            formData
-        );
-        if (response.status === 200) {
-            alert('Project details saved successfully!');
-            fetchProjects(); // Reload data
-            resetForm();
-            closeModal();
-        } else {
-            alert('Failed to save machine details.');
-        }
+      const response = await axios.post(
+        'http://127.0.0.1:8000/insert_update_project/',
+        formData
+      );
+      if (response.status === 200) {
+        alert('Project details saved successfully!');
+        fetchProjects(); // Reload data
+        resetForm();
+        closeModal();
+      } else {
+        alert('Failed to save machine details.');
+      }
     } catch (err) {
-        console.error('Error:', err);
-        alert('Error occurred while saving machine details.');
+      console.error('Error:', err);
+      alert('Error occurred while saving machine details.');
     }
-};
+  };
 
 
-// Close the modal
-const closeModal = () => {
-const modalInstance = Modal.getInstance(modalRef.current);
-if (modalInstance) {
-  modalInstance.hide();
-}
-};
+  // Close the modal
+  const closeModal = () => {
+    const modalInstance = Modal.getInstance(modalRef.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
 
-// Open the modal
-const openModal = () => {
-const modalInstance = new Modal(modalRef.current);
-modalInstance.show();
-};
+  // Open the modal
+  const openModal = () => {
+    const modalInstance = new Modal(modalRef.current);
+    modalInstance.show();
+  };
 
-const closedeleteModal = () => {
+  const closedeleteModal = () => {
     const modalInstance = Modal.getInstance(deletemodel.current);
     if (modalInstance) {
       modalInstance.hide();
@@ -117,48 +121,52 @@ const closedeleteModal = () => {
 
   };
 
-// Fetch data for editing a specific machine
-const editDetailsGetData = async (id) => {
+  // Fetch data for editing a specific machine
+  const editDetailsGetData = async (id) => {
     try {
-        const response = await axios.get(
-            `http://127.0.0.1:8000/insert_update_project/?getdata_id=${id}`
-        );
-        setformData(response.data.data);
-        setprojectTypes(response.data.project_types_data || []);
-        openModal()
+      const response = await axios.get(
+        `http://127.0.0.1:8000/insert_update_project/?getdata_id=${id}`
+      );
+      setformData(response.data.data);
+      setprojectTypes(response.data.project_types_data || []);
+      openModal()
     } catch (err) {
-        setError('Failed to load machine details');
+      setError('Failed to load machine details');
     }
-};
+  };
 
-const deleteData = async (id) => {
-    try{
+  const deleteData = async (id) => {
+    try {
       const response = await axios.delete(
         `http://127.0.0.1:8000/delete_project/?project_id=${id}`
       );
       setMessages(response.data.message)
       fetchProjects();
       closedeleteModal();
-    } catch (err){
+    } catch (err) {
       setError("Failed to delete document type data")
     }
   }
 
-// Reset the form state
-const resetForm = () => {
+  // Reset the form state
+  const resetForm = () => {
     setformData({
-      project_id : '',
-      project_name : '',
-      project_start_date : '',
-      project_end_date : '',
-      project_amount : '',
-      project_location : '',
-      project_company_name : '',
-      project_person_name : '',
-      project_status : '',
-      project_types_id : '',
+      project_id: "",
+      project_name: "",
+      project_start_date: "",
+      project_end_date: "",
+      project_amount: "",
+      project_location: "",
+      project_types_id: "",
+      project_status: "",
+      project_customer_name: "",
+      project_customer_contact: "",
+      project_cgst: "",
+      project_sgst: "",
+      project_tax: "",
+      project_discount: "",
     });
-};
+  };
 
   // Show loading message while data is being fetched
   if (loading) {
@@ -173,176 +181,271 @@ const resetForm = () => {
   // Render the projects table
   return (
     <>
-    <div>
-    {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-      <h1>{title}</h1> {/* Display the title */}
-      <button type="button" className="btn btn-primary" onClick={openModal}>Add Machine</button>
-      <table border="1" style={{ width: "100%", textAlign: "left" }}>
-        <thead>
-          <tr>
-            <th>Project ID</th>
-            <th>Project Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Amount</th>
-            <th>Location</th>
-            <th>Company Name</th>
-            <th>Person Name</th>
-            <th>Status</th>
-            <th>Project Type Name</th>
-            <th>Update</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.length > 0 ? (
-            projects.map((project) => (
-              <tr key={project.project_id}>
-                <td>{project.project_id || "N/A"}</td>
-                <td>{project.project_name || "N/A"}</td>
-                <td>{project.project_start_date || "N/A"}</td>
-                <td>{project.project_end_date || "N/A"}</td>
-                <td>{project.project_amount || "N/A"}</td>
-                <td>{project.project_location || "N/A"}</td>
-                <td>{project.project_company_name || "N/A"}</td>
-                <td>{project.project_person_name || "N/A"}</td>
-                <td>{project.project_status || "N/A"}</td>
-                <td>{project.project_types_id__project_type_name || "N/A"}</td>
-                <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(project.project_id)}></i></td>
-                <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(project.project_id)}></i></td>
+      <div>
+        {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
+        <h3>{title}</h3> {/* Display the title */}
+        <button type="button" className="btn btn-sm mb-3 btn-primary" onClick={openModal}>Add Projects</button>
+        <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Amount</th>
+                <th>Location</th>
+                <th>Project Type</th>
+                <th>Status</th>
+                <th>Customer Name</th>
+                <th>Customer Contact</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>Tax</th>
+                <th>Discount</th>
+                <th>Update</th>
+                <th>Remove</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="11" style={{ textAlign: "center" }}>
-                No projects available.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-    {/* Modal for Add/Edit Project */}
-<div
-    className="modal fade"
-    id="projectModal"
-    tabIndex="-1"
-    aria-labelledby="projectModalLabel"
-    aria-hidden="true"
-    ref={modalRef}
->
-    <div className="modal-dialog">
-        <div className="modal-content">
+            </thead>
+            <tbody>
+              {projects.length > 0 ? (
+                projects.map((project, index) => (
+                  <tr key={project.project_id}>
+                    <td>{index + 1}</td>
+                    <td>{project.project_name || "N/A"}</td>
+                    <td>{project.project_start_date || "N/A"}</td>
+                    <td>{project.project_end_date || "N/A"}</td>
+                    <td>{project.project_amount || "N/A"}</td>
+                    <td>{project.project_location || "N/A"}</td>
+                    <td>{project.project_types_id__project_type_name || "N/A"}</td>
+                    <td>{project.project_status || "N/A"}</td>
+                    <td>{project.project_customer_name || "N/A"}</td>
+                    <td>{project.project_customer_contact || "N/A"}</td>
+                    <td>{project.project_cgst || "N/A"}</td>
+                    <td>{project.project_sgst || "N/A"}</td>
+                    <td>{project.project_tax || "N/A"}</td>
+                    <td>{project.project_discount || "N/A"}</td>
+                    <td>
+                      <i
+                        className="fa-regular fa-pen-to-square"
+                        onClick={() => editDetailsGetData(project.project_id)}
+                      ></i>
+                    </td>
+                    <td>
+                      <i
+                        className="fa-regular fa-trash-can"
+                        onClick={() => opendeleteModal(project.project_id)}
+                      ></i>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="16" style={{ textAlign: "center" }}>
+                    No projects available.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {/* Modal for Add/Edit Project */}
+      <div
+        className="modal fade"
+        id="projectModal"
+        tabIndex="-1"
+        aria-labelledby="projectModalLabel"
+        aria-hidden="true"
+        ref={modalRef}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
             <div className="modal-header">
-                <h5 className="modal-title" id="projectModalLabel">
-                    {formData.project_id ? 'Edit Project' : 'Add Project'}
-                </h5>
-                <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
+              <h5 className="modal-title" id="projectModalLabel">
+                {formData.project_id ? 'Edit Projects' : 'Add Projects'}
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Project Name:</label>
-                        <input
-                            type="text"
-                            name="project_name"
-                            value={formData.project_name}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>Start Date:</label>
-                        <input
-                            type="date"
-                            name="project_start_date"
-                            value={formData.project_start_date}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>End Date:</label>
-                        <input
-                            type="date"
-                            name="project_end_date"
-                            value={formData.project_end_date}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>Project Amount:</label>
-                        <input
-                            type="text"
-                            name="project_amount"
-                            value={formData.project_amount}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>Location:</label>
-                        <input
-                            type="text"
-                            name="project_location"
-                            value={formData.project_location}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>Company Name:</label>
-                        <input
-                            type="text"
-                            name="project_company_name"
-                            value={formData.project_company_name}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>Contact Person:</label>
-                        <input
-                            type="text"
-                            name="project_person_name"
-                            value={formData.project_person_name}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label>Status:</label>
-                        <select name="project_status" onChange={handleChange} required>
-                            <option value="">-----</option>
-                            <option value="Ongoing" selected={formData.project_status === "Ongoing"}>Ongoing</option>
-                            <option value="Closed" selected={formData.project_status === "Closed"}>Closed</option>
-                            <option value="Taken" selected={formData.project_status === "Taken"}>Taken</option>
-                        </select>
-                    </div>
-                    <div>
-                    <label>Machine Type ID:</label>
-                                    <select name="project_types_id" onChange={handleChange} required>
-                                    <option value="">Select project types</option>
-                                    {projectTypes.length > 0 ? (
-                                        projectTypes.map((x) => (
-                                        <option value={x.project_type_id} selected={formData.project_type_id === x.project_type_id}>{x.project_type_name}</option>
-                                    ))
-                                    ) : (
-                                        <option>Data not available</option>
-                                    )}
-                                    </select>
-                    </div>
-                    
-                    <button type="submit" className="btn btn-primary">
-                        Submit
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+              <form onSubmit={handleSubmit}>
 
-{/* delete Model confirmation */}
-<div
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_name"
+                    value={formData.project_name}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Project Name*"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Start Date:</label>
+                  <input
+                    type="date"
+                    name="project_start_date"
+                    value={formData.project_start_date}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                <label>End Date:</label>
+                  <input
+                    type="date"
+                    name="project_end_date"
+                    value={formData.project_end_date}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="End Date"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_amount"
+                    value={formData.project_amount}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Amount*"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_location"
+                    value={formData.project_location}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Location*"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                    <select
+                        name="project_types_id"
+                        value={formData.project_types_id}
+                        onChange={handleChange}
+                        className="form-select"
+                        required
+                    >
+                        <option value="">Select Project Type*</option>
+                        {projectTypes.map((type) => (
+                            <option
+                                key={type.project_type_id}
+                                value={type.project_type_id}
+                            >
+                                {type.project_type_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="mb-3">
+                  <select
+                    name="project_status"
+                    value={formData.project_status}
+                    onChange={handleChange}
+                    className="form-select"
+                    required
+                  >
+                    <option value="">Select Status*</option>
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Taken">Taken</option>
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_customer_name"
+                    value={formData.project_customer_name}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Customer Name"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_customer_contact"
+                    value={formData.project_customer_contact}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Customer Contact"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_cgst"
+                    value={formData.project_cgst}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="CGST"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_sgst"
+                    value={formData.project_sgst}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="SGST"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_tax"
+                    value={formData.project_tax}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Tax"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    name="project_discount"
+                    value={formData.project_discount}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Discount"
+                  />
+                </div>
+                <button type="submit" className="btn btn-sm btn-primary">
+                  Submit
+                </button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* delete Model confirmation */}
+      <div
         className="modal fade"
         id="Modal"
         tabIndex="-1"
@@ -364,26 +467,26 @@ const resetForm = () => {
               ></button>
             </div>
             <div className="modal-body">
-              are you sure You want to delete this data?<br/>
-            
-            <div className="mt-2">
-              <button
-                type="button"
-                className="btn btn-sm btn-primary"
-                onClick={() => deleteData(delid)}
-              >Delete</button>
+              are you sure You want to delete this data?<br />
 
-              <button
-                type="button"
-                className="btn btn-sm btn-primary ms-2"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >Cancel</button>
-            </div>
+              <div className="mt-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={() => deleteData(delid)}
+                >Delete</button>
+
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary ms-2"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >Cancel</button>
+              </div>
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </>
   );
 };
