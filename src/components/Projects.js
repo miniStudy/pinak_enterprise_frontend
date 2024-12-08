@@ -287,28 +287,7 @@ const Projects = () => {
                   />
                 </div>
 
-                <div className="mb-3">
-                  <label>Start Date:</label>
-                  <input
-                    type="date"
-                    name="project_start_date"
-                    value={formData.project_start_date}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
-                </div>
-
-                <div className="mb-3">
-                <label>End Date:</label>
-                  <input
-                    type="date"
-                    name="project_end_date"
-                    value={formData.project_end_date}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="End Date"
-                  />
-                </div>
+                
 
                 <div className="mb-3">
                   <input
@@ -376,7 +355,8 @@ const Projects = () => {
                     value={formData.project_customer_name}
                     onChange={handleChange}
                     className="form-control"
-                    placeholder="Customer Name"
+                    placeholder="Customer Name*"
+                    required
                   />
                 </div>
 
@@ -387,7 +367,31 @@ const Projects = () => {
                     value={formData.project_customer_contact}
                     onChange={handleChange}
                     className="form-control"
-                    placeholder="Customer Contact"
+                    placeholder="Customer Contact*"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label>Start Date:</label>
+                  <input
+                    type="date"
+                    name="project_start_date"
+                    value={formData.project_start_date}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                <label>End Date:</label>
+                  <input
+                    type="date"
+                    name="project_end_date"
+                    value={formData.project_end_date}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="End Date"
                   />
                 </div>
 
