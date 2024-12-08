@@ -267,17 +267,12 @@ const Materials = () => {
                 </div>
 
                 <div className="mb-3">
-                  <select
-                    name="material_status"
-                    value={formData.material_status}
-                    onChange={handleChange}
-                    className="form-select"
-                    required
-                  >
-                    <option value="">Select Material Status*</option>
-                    <option value={1}>Active</option>
-                    <option value={0}>Inactive</option>
-                  </select>
+                    <div class="form-check">
+                    <input class="form-check-input" onChange={handleChange} checked={formData.material_status} name="material_status" type="checkbox" id="flexCheckChecked" />
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Active
+                    </label>
+                  </div>
                 </div>
 
                 <div className="mb-3">

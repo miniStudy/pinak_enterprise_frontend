@@ -389,17 +389,15 @@ const Persons = () => {
                                 </select>
                             </div>
 
-                                <div className="mb-3">       
-                                <select
-                                    name="person_status"
-                                    value={formData.person_status}
-                                    onChange={handleChange}
-                                    className="form-select"
-                                >
-                                    <option value={1}>Active</option>
-                                    <option value={0}>Inactive</option>
-                                </select>
-                                </div> 
+
+                                <div className="mb-3">
+                                    <div class="form-check">
+                                    <input class="form-check-input" onChange={handleChange} checked={formData.person_status} name="person_status" type="checkbox" id="flexCheckChecked" />
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                    Active
+                                    </label>
+                                </div>
+                                </div>
 
                             
                                 <div className="mb-3">
