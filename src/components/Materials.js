@@ -159,7 +159,7 @@ const Materials = () => {
     <>
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h3>Materials</h3>
+        <h3>{title}</h3>
         <button
           type="button"
           className="btn btn-sm mb-3 btn-primary"
@@ -267,13 +267,24 @@ const Materials = () => {
                 </div>
 
                 <div className="mb-3">
-                    <div class="form-check">
-                    <input class="form-check-input" onChange={handleChange} checked={formData.material_status} name="material_status" type="checkbox" id="flexCheckChecked" />
-                    <label class="form-check-label" for="flexCheckChecked">
-                      Active
-                    </label>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        onChange={(e) =>
+                          handleChange({
+                            target: { name: "material_status", value: e.target.checked },
+                          })
+                        }
+                        checked={formData.material_status}
+                        name="material_status"
+                        type="checkbox"
+                        id="flexCheckChecked"
+                      />
+                      <label className="form-check-label" htmlFor="flexCheckChecked">
+                        Active
+                      </label>
+                    </div>
                   </div>
-                </div>
 
                 <div className="mb-3">
                   <textarea

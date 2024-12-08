@@ -321,15 +321,27 @@ const Banks = () => {
                     className="form-control"
                   />
                 </div>
-          
+
                 <div className="mb-3">
-                    <div class="form-check">
-                    <input class="form-check-input" onChange={handleChange} checked={formData.bank_open_closed} name="bank_open_closed" type="checkbox" id="flexCheckChecked" />
-                    <label class="form-check-label" for="flexCheckChecked">
-                      Account is Running
+                    <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        onChange={(e) =>
+                        handleChange({
+                            target: { name: "bank_open_closed", value: e.target.checked },
+                        })
+                        }
+                        checked={formData.material_status}
+                        name="bank_open_closed"
+                        type="checkbox"
+                        id="flexCheckChecked"
+                    />
+                    <label className="form-check-label" htmlFor="flexCheckChecked">
+                    Account is Running
                     </label>
-                  </div>
+                    </div>
                 </div>
+
                 <div className="mb-3">
                   <label className="form-label">Person</label>
                   <select
