@@ -153,17 +153,15 @@ const PersonTypes = () => {
     <>
       <div>
       {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-      <h1>{title}</h1>
-        <button type="button" className="btn btn-primary" onClick={openModal}>
+      <h3>{title}</h3>
+        <button type="button" className="btn btn-primary btn-sm mb-3" onClick={openModal}>
           Add Person Type
         </button>
-        <table
-          border="1"
-          style={{ width: "100%", textAlign: "left", marginTop: "20px" }}
-        >
+        <div className="table-responsive">
+            <table className="table table-hover">
           <thead>
             <tr>
-              <th>Person Type ID</th>
+              <th>S.N</th>
               <th>Person Type Name</th>
               <th>Update</th>
               <th>Remove</th>
@@ -171,9 +169,9 @@ const PersonTypes = () => {
           </thead>
           <tbody>
             {personTypes.length > 0 ? (
-              personTypes.map((personType) => (
+              personTypes.map((personType,index) => (
                 <tr key={personType.person_type_id}>
-                  <td>{personType.person_type_id || "N/A"}</td>
+                  <td>{index+1}</td>
                   <td>{personType.person_type_name || "N/A"}</td>
                   <td>
                     <i
@@ -188,13 +186,14 @@ const PersonTypes = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="3" style={{ textAlign: "center" }}>
+                <td colSpan="4" style={{ textAlign: "center" }}>
                   No person types available.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modal for Add/Edit Person Type */}

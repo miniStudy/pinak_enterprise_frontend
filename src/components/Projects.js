@@ -13,7 +13,6 @@ const Projects = () => {
   const deletemodel = useRef();
   const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState('');
-
   const [formData, setformData] = useState({
     project_id: "",
     project_name: "",
@@ -91,7 +90,6 @@ const Projects = () => {
       alert('Error occurred while saving machine details.');
     }
   };
-
 
   // Close the modal
   const closeModal = () => {
@@ -287,8 +285,6 @@ const Projects = () => {
                   />
                 </div>
 
-                
-
                 <div className="mb-3">
                   <input
                     type="text"
@@ -336,7 +332,7 @@ const Projects = () => {
                 <div className="mb-3">
                   <select
                     name="project_status"
-                    value={formData.project_status}
+                    value={formData.proect_status}
                     onChange={handleChange}
                     className="form-select"
                     required
@@ -442,7 +438,6 @@ const Projects = () => {
                   Submit
                 </button>
               </form>
-
             </div>
           </div>
         </div>

@@ -21,11 +21,14 @@ const MachineMaintenance = () => {
     machine_maintenance_date: '',
     machine_maintenance_amount_paid: false,
     machine_maintenance_amount_paid_by: '',
-    machine_maintenance_person: '',
-    machine_maintenance_contact: '',
-    machine_maintenance_driver: '',
-    machine_maintenance_details: '',
     machine_maintenance_types_id: '',
+    machine_maintenance_details: '',
+    machine_maintenance_driver_name: '',
+    machine_maintenance_driver_contact: '',
+    machine_maintenance_repair_person:'',
+    machine_maintenance_repair_person_contact:'',
+    project_id:'',
+    
   });
 
   const fetchMaintenanceDetails = async () => {
@@ -148,15 +151,17 @@ const MachineMaintenance = () => {
   const resetForm = () => {
     setFormData({
       machine_maintenance_id: '',
-      machine_maintenance_amount: '',
-      machine_maintenance_date: '',
-      machine_maintenance_amount_paid: false,
-      machine_maintenance_amount_paid_by: '',
-      machine_maintenance_person: '',
-      machine_maintenance_contact: '',
-      machine_maintenance_driver: '',
-      machine_maintenance_details: '',
-      machine_maintenance_types_id: '',
+    machine_maintenance_amount: '',
+    machine_maintenance_date: '',
+    machine_maintenance_amount_paid: false,
+    machine_maintenance_amount_paid_by: '',
+    machine_maintenance_types_id: '',
+    machine_maintenance_details: '',
+    machine_maintenance_driver_name: '',
+    machine_maintenance_driver_contact: '',
+    machine_maintenance_repair_person:'',
+    machine_maintenance_repair_person_contact:'',
+    project_id:'',
     });
   };
 
@@ -177,13 +182,14 @@ const MachineMaintenance = () => {
     <>
       <div>
       {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h1>{title}</h1> {/* Display the title */}
-        <button type="button" className="btn btn-primary" onClick={openModal}>Add Maintenance</button>
+        <h3>{title}</h3> {/* Display the title */}
+        <button type="button" className="btn btn-sm btn-primary mb-3" onClick={openModal}>Add Maintenance</button>
 
-        <table border="1" style={{ width: "100%", textAlign: "left", margin: "20px auto" }}>
+        <div className="table-responsive">
+                <table className="table table-hover">
           <thead>
             <tr>
-              <th>Maintenance ID</th>
+              <th>S.N	</th>
               <th>Maintenance Amount</th>
               <th>Maintenance Date</th>
               <th>Amount Paid</th>
@@ -199,9 +205,9 @@ const MachineMaintenance = () => {
           </thead>
           <tbody>
             {machineMaintenance.length > 0 ? (
-              machineMaintenance.map((maintenance) => (
+              machineMaintenance.map((maintenance,index) => (
                 <tr key={maintenance.machine_maintenance_id}>
-                  <td>{maintenance.machine_maintenance_id || "N/A"}</td>
+                  <td>{index+1}</td>
                   <td>{maintenance.machine_maintenance_amount || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_date || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_amount_paid ? "Yes" : "No"}</td>
@@ -224,6 +230,7 @@ const MachineMaintenance = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
       {/* Modal for Add/Edit Maintenance */}
       <div
@@ -248,94 +255,132 @@ const MachineMaintenance = () => {
               ></button>
             </div>
             <div className="modal-body">
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <label>Maintenance Amount:</label>
-                  <input
-                    type="text"
-                    name="machine_maintenance_amount"
-                    value={formData.machine_maintenance_amount}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Maintenance Date:</label>
-                  <input
-                    type="date"
-                    name="machine_maintenance_date"
-                    value={formData.machine_maintenance_date}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Amount Paid:</label>
-                  <input
-                    type="checkbox"
-                    name="machine_maintenance_amount_paid"
-                    checked={formData.machine_maintenance_amount_paid}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Paid By:</label>
-                  <select
-                    name="machine_maintenance_amount_paid_by" onChange={handleChange} required>
-                    <option value="">Select</option>
-                    <option value="Machine_Owner">Machine Owner</option>
-                    <option value="Pinak_Enterprise">Pinak Enterprise</option>
-                    <option value="Pinak">Pinak</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Maintenance Person:</label>
-                  <input
-                    type="text"
-                    name="machine_maintenance_person"
-                    value={formData.machine_maintenance_person}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Contact:</label>
-                  <input
-                    type="text"
-                    name="machine_maintenance_contact"
-                    value={formData.machine_maintenance_contact}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Driver:</label>
-                  <input
-                    type="text"
-                    name="machine_maintenance_driver"
-                    value={formData.machine_maintenance_driver}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <label>Details:</label>
-                  <textarea
-                    name="machine_maintenance_details"
-                    value={formData.machine_maintenance_details}
-                    onChange={handleChange}
-                  ></textarea>
-                </div>
-                <div>
-                  <label>Maintenance Type:</label>
-                  <select name="machine_maintenance_types_id" value={formData.machine_maintenance_types_id} onChange={handleChange} required>
-                  <option value="">Select maintenance types</option>
-                    {maintenanceTypes.map((type) => (
-                      <option key={type.maintenance_type_id} value={type.maintenance_type_id}>
-                        {type.maintenance_type_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </form>
+            <form onSubmit={handleSubmit}>
+  <div className="mb-3">
+    <label className="form-label">Maintenance Amount:</label>
+    <input
+      type="text"
+      name="machine_maintenance_amount"
+      value={formData.machine_maintenance_amount}
+      onChange={handleChange}
+      className="form-control"
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Maintenance Date:</label>
+    <input
+      type="date"
+      name="machine_maintenance_date"
+      value={formData.machine_maintenance_date}
+      onChange={handleChange}
+      className="form-control"
+    />
+  </div>
+
+  <div className="">
+    <input
+      type="checkbox"
+      name="machine_maintenance_amount_paid"
+      checked={formData.machine_maintenance_amount_paid}
+      onChange={handleChange}
+      className="form-check-input"
+      id="machine_maintenance_amount_paid"
+    />
+    <label className="form-label ms-2" for="machine_maintenance_amount_paid">Amount Paid:</label>
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Paid By:</label>
+    <select
+      name="machine_maintenance_amount_paid_by"
+      onChange={handleChange}
+      className="form-select"
+      required
+    >
+      <option value="">Select</option>
+      <option value="Machine_Owner">Machine Owner</option>
+      <option value="Pinak_Enterprise">Pinak Enterprise</option>
+      <option value="Pinak">Pinak</option>
+    </select>
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Maintenance Type:</label>
+    <select
+      name="machine_maintenance_types_id"
+      value={formData.machine_maintenance_types_id}
+      onChange={handleChange}
+      className="form-select"
+      required
+    >
+      <option value="">Select maintenance types</option>
+      {maintenanceTypes.map((type) => (
+        <option key={type.maintenance_type_id} value={type.maintenance_type_id}>
+          {type.maintenance_type_name}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Maintenance Driver Name:</label>
+    <input
+      type="text"
+      name="machine_maintenance_driver_name"
+      value={formData.machine_maintenance_driver_name}
+      onChange={handleChange}
+      className="form-control"
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Driver Contact:</label>
+    <input
+      type="text"
+      name="machine_maintenance_driver_contact"
+      value={formData.machine_maintenance_driver_contact}
+      onChange={handleChange}
+      className="form-control"
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Repair Person:</label>
+    <input
+      type="text"
+      name="machine_maintenance_repair_person"
+      value={formData.machine_maintenance_repair_person}
+      onChange={handleChange}
+      className="form-control"
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Repair Person Contact:</label>
+    <input
+      type="text"
+      name="machine_maintenance_repair_person_contact"
+      value={formData.machine_maintenance_repair_person_contact}
+      onChange={handleChange}
+      className="form-control"
+    />
+  </div>
+
+  <div className="mb-3">
+    <label className="form-label">Details:</label>
+    <textarea
+      name="machine_maintenance_details"
+      value={formData.machine_maintenance_details}
+      onChange={handleChange}
+      className="form-control"
+    ></textarea>
+  </div>
+
+  <button type="submit" className="btn btn-primary">
+    Submit
+  </button>
+</form>
             </div>
           </div>
         </div>

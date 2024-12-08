@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
 import Person_types_insert from './insert_update/person_types_insert';
+import { Link } from 'react-router-dom';
 
 const Persons = () => {
     const [personsDetails, setPersonsDetails] = useState([]);
@@ -178,13 +179,27 @@ const Persons = () => {
                 
                 
                 <h3>Persons</h3>
-                <button
-                    type="button"
-                    className="btn btn-sm mb-3 btn-primary"
-                    onClick={openModal}
-                >
-                    Add Person
-                </button>
+                <div className="d-flex align-items-center mb-3">
+    <Link to="/person-types"><img 
+        src="/static/icons/user.png" 
+        alt="User Icon" 
+        style={{ height: "30px", width: "auto" }} // Ensure consistent height
+    /></Link>
+    <button
+        type="button"
+        className="btn btn-sm btn-primary ms-2"
+        onClick={openModal}
+        style={{ height: "30px" }} // Adjust the height as needed
+    >
+        Add Person
+    </button>
+    
+    <div className="input-group" style={{ height: "30px", width: "auto" }}>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+</div>
                 <div className="table-responsive">
                 <table className="table table-hover">
                     <thead>
