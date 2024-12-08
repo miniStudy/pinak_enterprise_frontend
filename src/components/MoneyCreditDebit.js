@@ -329,7 +329,7 @@ const MoneyCreditDebit = () => {
                                     onChange={handleChange}
                                     className="form-select"
                                     required
-                                >
+                                >   <option value="">Select Payment Mode</option>
                                     <option value="CASH">CASH</option>
                                     <option value="BANK">BANK</option>
                                 </select>
@@ -363,8 +363,10 @@ const MoneyCreditDebit = () => {
                                     />
                                 </div>
 
+                                {formData.money_payment_mode === "BANK" && (       
+                                 <>    
                                 <div className="mb-3">
-                                    <select name="sender_bank_id" value={formData.sender_bank_id} onChange={handleChange} className="form-select" required>
+                                    <select name="sender_bank_id" value={formData.sender_bank_id} onChange={handleChange} className="form-select">
                                         <option value="">Select Sender-Bank</option>
                                         {BankData.length > 0 ? (
                                             BankData.map((x) => (
@@ -390,7 +392,7 @@ const MoneyCreditDebit = () => {
                                 </div>
 
                                 <div className="mb-3">
-                                    <select name="receiver_bank_id" value={formData.receiver_bank_id} onChange={handleChange} className="form-select" required>
+                                    <select name="receiver_bank_id" value={formData.receiver_bank_id} onChange={handleChange} className="form-select">
                                         <option value="">Select Receiver-Bank</option>
                                         {BankData.length > 0 ? (
                                             BankData.map((x) => (
@@ -403,6 +405,8 @@ const MoneyCreditDebit = () => {
                                         )}
                                     </select>
                                 </div>
+                                </>
+                                )}
 
                                 <div className="mb-3">
                                     <textarea
