@@ -405,15 +405,26 @@ const Persons = () => {
                             </div>
 
 
-                                <div className="mb-3">
-                                    <div class="form-check">
-                                    <input class="form-check-input" onChange={handleChange} checked={formData.person_status} name="person_status" type="checkbox" id="flexCheckChecked" />
-                                    <label class="form-check-label" for="flexCheckChecked">
+                            <div className="mb-3">
+                                <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    onChange={(e) =>
+                                    handleChange({
+                                        target: { name: "person_status", value: e.target.checked },
+                                    })
+                                    }
+                                    checked={formData.material_status}
+                                    name="person_status"
+                                    type="checkbox"
+                                    id="flexCheckChecked"
+                                />
+                                <label className="form-check-label" htmlFor="flexCheckChecked">
                                     Active
-                                    </label>
+                                </label>
                                 </div>
-                                </div>
-
+                            </div>
+                            
                             
                                 <div className="mb-3">
                                 <textarea

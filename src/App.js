@@ -21,6 +21,9 @@ import Persons from './components/Persons'
 import WorkTypes from './components/WorkTypes'
 import MaterialTypes from './components/MaterialTypes'
 import Materials from './components/Materials'
+import ProjectMaterial from './components/ProjectMaterial'
+import ProjectDayDetails from './components/ProjectDayDetails'
+
 import PersonWorkMachines from './components/PersonWorkMachines'
 import DocumentTypes from './components/DocumentTypes'
 import Documents from './components/Documents'
@@ -48,6 +51,8 @@ const App = () => {
           <Route path="work-types" element={<WorkTypes  />} />
           <Route path="material-types" element={<MaterialTypes  />} />
           <Route path="materials" element={<Materials  />} />
+          <Route path="project-materials" element={<ProjectMaterial  />} />
+          <Route path="project-day-details" element={<ProjectDayDetails  />} />
           <Route path="person-work-machine" element={<PersonWorkMachines  />} />
           <Route path="document-types" element={<DocumentTypes  />} />
           <Route path="documents" element={<Documents  />} />
