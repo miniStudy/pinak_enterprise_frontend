@@ -157,18 +157,20 @@ const MaintenanceTypes = () => {
     <>
     <div>
     {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-      <h1>{title}</h1> {/* Display the title */}
+      <h3>{title}</h3> {/* Display the title */}
+      
       <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-sm mb-3 btn-primary"
           onClick={openModal}
         >
           Add Maintenance Type
         </button>
-      <table border="1" style={{ width: "50%", textAlign: "left", margin: "20px auto" }}>
+        <div className="table-responsive">
+        <table className="table table-hover">
         <thead>
           <tr>
-            <th>Maintenance Type ID</th>
+            <th>S.N</th>
             <th>Maintenance Type Name</th>
             <th>Update</th>
             <th>Remove</th>
@@ -176,9 +178,9 @@ const MaintenanceTypes = () => {
         </thead>
         <tbody>
           {maintenanceTypes.length > 0 ? (
-            maintenanceTypes.map((type) => (
+            maintenanceTypes.map((type,index) => (
               <tr key={type.maintenance_type_id}>
-                <td>{type.maintenance_type_id || "N/A"}</td>
+                <td>{index+1}</td>
                 <td>{type.maintenance_type_name || "N/A"}</td>
                 <td>
                   <i
@@ -199,6 +201,7 @@ const MaintenanceTypes = () => {
           )}
         </tbody>
       </table>
+      </div>
     </div>
 
     {/* Modal for Add/Edit Machine Type */}
@@ -225,16 +228,17 @@ const MaintenanceTypes = () => {
         </div>
         <div className="modal-body">
           <form onSubmit={handleSubmit}>
-            <div>
-              <label>Machine Type:</label>
+            <div className="mb-3">
+              <label className="form-label">Machine Type:</label>
               <input
                 type="text"
                 name="maintenance_type_name"
                 value={formData.maintenance_type_name}
                 onChange={handleChange}
+                className="form-control"
               />
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-sm btn-primary">
               Submit
             </button>
           </form>

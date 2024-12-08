@@ -152,30 +152,31 @@ const MachineTypes = () => {
     <>
       <div>
       {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h1>{title}</h1>
+        <h3>{title}</h3>
         {/* Button to open modal */}
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-sm mb-3 btn-primary"
           onClick={openModal}
         >
           Add Machine Type
         </button>
 
         {/* Machine Types Table */}
-        <table>
+        <div className="table-responsive">
+          <table className="table table-hover">
           <thead>
             <tr>
-              <th>Machine Type ID</th>
+              <th>S.N</th>
               <th>Machine Type</th>
               <th>Update</th>
               <th>Remove</th>
             </tr>
           </thead>
           <tbody>
-            {machinetypesDetails.map((type) => (
+            {machinetypesDetails.map((type,index) => (
               <tr key={type.machine_type_id}>
-                <td>{type.machine_type_id}</td>
+                <td>{index+1}</td>
                 <td>{type.machine_type_name}</td>
                 <td>
                   <i
@@ -189,6 +190,7 @@ const MachineTypes = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modal for Add/Edit Machine Type */}
@@ -216,15 +218,16 @@ const MachineTypes = () => {
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div>
-                  <label>Machine Type:</label>
+                  <label className='form-label'>Machine Type:</label>
                   <input
                     type="text"
                     name="machine_type_name"
                     value={formData.machine_type_name}
                     onChange={handleChange}
+                    className='form-control'
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn mt-3 btn-sm btn-primary">
                   Submit
                 </button>
               </form>

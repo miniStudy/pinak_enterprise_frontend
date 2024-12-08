@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
-
+import { Link } from 'react-router-dom';
 
 const MachineMaintenance = () => {
   const [machineMaintenance, setMachineMaintenance] = useState([]);
@@ -183,7 +183,23 @@ const MachineMaintenance = () => {
       <div>
       {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h3>{title}</h3> {/* Display the title */}
-        <button type="button" className="btn btn-sm btn-primary mb-3" onClick={openModal}>Add Maintenance</button>
+        <div className="d-flex align-items-center mb-3">
+    <Link to="/maintenance-types"><img 
+        src="/static/icons/maintenance_type.png" 
+        alt="User Icon" 
+        style={{ height: "30px", width: "auto" }} // Ensure consistent height
+    /></Link>
+        <button
+        type="button"
+        className="btn btn-sm btn-primary ms-2"
+        onClick={openModal}
+        style={{ height: "30px" }} // Adjust the height as needed
+    >Add Maintenance</button>
+    <div className="input-group" style={{ height: "30px", width: "auto" }}>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+        </div>
 
         <div className="table-responsive">
                 <table className="table table-hover">
