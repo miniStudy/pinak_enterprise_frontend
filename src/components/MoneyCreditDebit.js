@@ -56,7 +56,7 @@ const MoneyCreditDebit = () => {
         setSenderPersonId({ person_id: newSenderId }); // Update the state
         
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?sender_id=${newSenderId}`);
+                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?sender_id=${newSenderId}&receiver_id=${ReceiverPersonId.person_id}`);
                 setMoneyCreditDebit(response.data.data || []);
             } catch (error) {
                 console.error("Error fetching money debit/credit data:", error);
@@ -64,10 +64,11 @@ const MoneyCreditDebit = () => {
         };
 
     const handleReceiverChange = async (selectedOption) => {
-        const newSenderId = selectedOption ? selectedOption.value : "";
-        setReceiverPersonId({ person_id: newSenderId }); // Update the state
+        const newReceiverId = selectedOption ? selectedOption.value : "";
+        setReceiverPersonId({ person_id: newReceiverId }); // Update the state
+
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?receiver_id=${newSenderId}`);
+                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?receiver_id=${newReceiverId}&sender_id=${SenderPersonId.person_id}`);
                 setMoneyCreditDebit(response.data.data || []);
             } catch (error) {
                 console.error("Error fetching money debit/credit data:", error);
