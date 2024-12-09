@@ -15,6 +15,8 @@ import MaintenanceTypes from './components/MaintenanceTypes'
 import MachineMaintenance from './components/MachineMaintenance'
 import ProjectTypes from './components/ProjectTypes'
 import Projects from './components/Projects'
+import ProjectMachines from './components/ProjectMachines'
+import ProjectPersons from './components/ProjectPersons'
 import PayTypes from './components/PayTypes'
 import PersonTypes from './components/PersonTypes'
 import Persons from './components/Persons'
@@ -45,6 +47,8 @@ const App = () => {
           <Route path="machine-maintenance" element={<MachineMaintenance />} />
           <Route path="project-types" element={<ProjectTypes />} />
           <Route path="projects" element={<Projects />} />
+          <Route path="project-machines" element={<ProjectMachines />} />
+          <Route path="project-persons" element={<ProjectPersons />} />
           <Route path="pay-types" element={<PayTypes />} />
           <Route path="person-types" element={<PersonTypes />} />
           <Route path="persons" element={<Persons />} />
