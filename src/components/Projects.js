@@ -39,7 +39,7 @@ const Projects = () => {
 
 const personsoptions = persons.map((pers) => ({
   value: pers.person_id,
-  label: pers.person_name,
+  label: pers.person_name + pers.person_contact_number,
 }));
   // Fetch machine details
   const fetchProjects = async () => {
