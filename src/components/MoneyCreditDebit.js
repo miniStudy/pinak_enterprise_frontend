@@ -43,10 +43,13 @@ const MoneyCreditDebit = () => {
         })),
     ];
 
-    const receiver_options = PersonData.map((type) => ({
-        value: type.person_id,
-        label: type.person_name,
-    }));
+    const receiver_options = [
+        { value: "", label: "All" },
+        ...PersonData.map((type) => ({
+            value: type.person_id,
+            label: type.person_name,
+        })),
+    ];
 
     const handleSenderChange = async (selectedOption) => {
         const newSenderId = selectedOption ? selectedOption.value : "";
@@ -60,11 +63,16 @@ const MoneyCreditDebit = () => {
             }
         };
 
-      const handleReceiverChange = (selectedOption) => {
-        setReceiverPersonId({
-          project_types_id: selectedOption ? selectedOption.value : "",
-        });
-      };
+    const handleReceiverChange = async (selectedOption) => {
+        const newSenderId = selectedOption ? selectedOption.value : "";
+        setReceiverPersonId({ person_id: newSenderId }); // Update the state
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?receiver_id=${newSenderId}`);
+                setMoneyCreditDebit(response.data.data || []);
+            } catch (error) {
+                console.error("Error fetching money debit/credit data:", error);
+            }
+        };
 
 
     // Fetch machine details
@@ -239,6 +247,18 @@ const MoneyCreditDebit = () => {
                 className="react-select-container mb-3"
                 classNamePrefix="react-select"
             />
+
+            <Select
+                options={receiver_options}
+                value={receiver_options.find((option) => option.value === ReceiverPersonId.person_id)}
+                onChange={handleReceiverChange}
+                placeholder="Select Receiver"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
+
                 <div className="table-responsive">
                 <table className="table table-hover">
                     <thead>
