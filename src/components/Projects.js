@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
 
 
 const Projects = () => {
@@ -9,6 +11,7 @@ const Projects = () => {
   const [error, setError] = useState(null);
   const [title, setTitle] = useState(""); // To store the title from API response
   const [projectTypes, setprojectTypes] = useState([]);
+  const [persons, setpersons] = useState([]);
   const modalRef = useRef();
   const deletemodel = useRef();
   const [delid, setdelid] = useState("");
@@ -22,14 +25,22 @@ const Projects = () => {
     project_location: "",
     project_types_id: "",
     project_status: "",
-    project_customer_name: "",
-    project_customer_contact: "",
+    project_owner_name: "",
     project_cgst: "",
     project_sgst: "",
     project_tax: "",
     project_discount: "",
   })
 
+  const projecttypesoptions = projectTypes.map((type) => ({
+    value: type.project_type_id,
+    label: type.project_type_name,
+}));
+
+const personsoptions = persons.map((pers) => ({
+  value: pers.person_id,
+  label: pers.person_name,
+}));
   // Fetch machine details
   const fetchProjects = async () => {
     try {
@@ -37,6 +48,7 @@ const Projects = () => {
       console.log(response.data.data)
       setProjects(response.data.data || []);
       setprojectTypes(response.data.project_types_data || []);
+      setpersons(response.data.persons_data || []);
       setTitle(response.data.title);
       setLoading(false);
     } catch (err) {
@@ -67,6 +79,20 @@ const Projects = () => {
       ...prevData,
       [name]: type === 'checkbox' ? checked : value,
     }));
+  };
+
+  const handleProjectTypeChange = (selectedOption) => {
+    setformData({
+      ...formData,
+      project_types_id: selectedOption ? selectedOption.value : "",
+    });
+  };
+
+  const handleOwnerChange = (selectedOption) => {
+    setformData({
+      ...formData,
+      project_owner_name: selectedOption ? selectedOption.value : "",
+    });
   };
 
   // Handle form submission for Add/Update
@@ -146,6 +172,7 @@ const Projects = () => {
     }
   }
 
+
   // Reset the form state
   const resetForm = () => {
     setformData({
@@ -157,8 +184,7 @@ const Projects = () => {
       project_location: "",
       project_types_id: "",
       project_status: "",
-      project_customer_name: "",
-      project_customer_contact: "",
+      project_owner_name: "",
       project_cgst: "",
       project_sgst: "",
       project_tax: "",
@@ -182,7 +208,27 @@ const Projects = () => {
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h3>{title}</h3> {/* Display the title */}
-        <button type="button" className="btn btn-sm mb-3 btn-primary" onClick={openModal}>Add Projects</button>
+        <div className="d-flex align-items-center mb-3">
+    <Link to="/project-types"><img 
+        src="/static/icons/cog.png" 
+        alt="User Icon" 
+        style={{ height: "30px", width: "auto" }} // Ensure consistent height
+    /></Link>
+    <button
+        type="button"
+        className="btn btn-sm btn-primary ms-2"
+        onClick={openModal}
+        style={{ height: "30px" }} // Adjust the height as needed
+    >
+        Add Project
+    </button>
+    
+    <div className="input-group" style={{ height: "30px", width: "auto" }}>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+</div>
         <div className="table-responsive">
           <table className="table table-hover">
             <thead>
@@ -217,8 +263,8 @@ const Projects = () => {
                     <td>{project.project_location || "N/A"}</td>
                     <td>{project.project_types_id__project_type_name || "N/A"}</td>
                     <td>{project.project_status || "N/A"}</td>
-                    <td>{project.project_customer_name || "N/A"}</td>
-                    <td>{project.project_customer_contact || "N/A"}</td>
+                    <td>{project.project_owner_name__person_name || "N/A"}</td>
+                    <td>{project.project_owner_name__person_contact_number || "N/A"}</td>
                     <td>{project.project_cgst || "N/A"}</td>
                     <td>{project.project_sgst || "N/A"}</td>
                     <td>{project.project_tax || "N/A"}</td>
@@ -310,29 +356,22 @@ const Projects = () => {
                 </div>
 
                 <div className="mb-3">
-                    <select
-                        name="project_types_id"
-                        value={formData.project_types_id}
-                        onChange={handleChange}
-                        className="form-select"
-                        required
-                    >
-                        <option value="">Select Project Type*</option>
-                        {projectTypes.map((type) => (
-                            <option
-                                key={type.project_type_id}
-                                value={type.project_type_id}
-                            >
-                                {type.project_type_name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            <Select
+                options={projecttypesoptions}
+                value={projecttypesoptions.find((option) => option.value === formData.project_types_id)}
+                onChange={handleProjectTypeChange}
+                placeholder="Select Project Type*"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
+        </div>
 
                 <div className="mb-3">
                   <select
                     name="project_status"
-                    value={formData.proect_status}
+                    value={formData.project_status}
                     onChange={handleChange}
                     className="form-select"
                     required
@@ -344,29 +383,16 @@ const Projects = () => {
                   </select>
                 </div>
 
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="project_customer_name"
-                    value={formData.project_customer_name}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="Customer Name*"
-                    required
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="project_customer_contact"
-                    value={formData.project_customer_contact}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="Customer Contact*"
-                    required
-                  />
-                </div>
+                <Select
+                options={personsoptions}
+                value={personsoptions.find((option) => option.value === formData.project_owner_name)}
+                onChange={handleOwnerChange}
+                placeholder="Select Project Owner*"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
 
                 <div className="mb-3">
                   <label>Start Date:</label>
