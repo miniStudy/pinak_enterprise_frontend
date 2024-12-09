@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
+import Select from 'react-select';
 
 const MoneyCreditDebit = () => {
     const [MoneyCreditDebit, setMoneyCreditDebit] = useState([]);
@@ -15,6 +16,8 @@ const MoneyCreditDebit = () => {
     const deletemodel = useRef();
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
+    const [SenderPersonId, setSenderPersonId] = useState({ person_id: '' });
+    const [ReceiverPersonId, setReceiverPersonId] = useState({ person_id: '' });
 
     // Form state for Add/Edit
     const [formData, setFormData] = useState({
@@ -32,6 +35,37 @@ const MoneyCreditDebit = () => {
         machine_id: '',
     });
 
+    const sender_options = [
+        { value: "", label: "All" },
+        ...PersonData.map((type) => ({
+            value: type.person_id,
+            label: type.person_name,
+        })),
+    ];
+
+    const receiver_options = PersonData.map((type) => ({
+        value: type.person_id,
+        label: type.person_name,
+    }));
+
+    const handleSenderChange = async (selectedOption) => {
+        const newSenderId = selectedOption ? selectedOption.value : "";
+        setSenderPersonId({ person_id: newSenderId }); // Update the state
+        
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?sender_id=${newSenderId}`);
+                setMoneyCreditDebit(response.data.data || []);
+            } catch (error) {
+                console.error("Error fetching money debit/credit data:", error);
+            }
+        };
+
+      const handleReceiverChange = (selectedOption) => {
+        setReceiverPersonId({
+          project_types_id: selectedOption ? selectedOption.value : "",
+        });
+      };
+
 
     // Fetch machine details
     const fetchMoneyCreditDebit = async () => {
@@ -42,7 +76,6 @@ const MoneyCreditDebit = () => {
             setPayTypeData(response.data.pay_types_data || []);
             setMachineData(response.data.machines_data || []);
             setBankData(response.data.banks_data || []);
-            console.log(response.data)
             setTitle(response.data.title);
             setLoading(false);
         } catch (err) {
@@ -196,6 +229,16 @@ const MoneyCreditDebit = () => {
                 >
                     Add Money Credit/Debit
                 </button>
+                <Select
+                options={sender_options}
+                value={sender_options.find((option) => option.value === SenderPersonId.person_id)}
+                onChange={handleSenderChange}
+                placeholder="Select Sender"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
                 <div className="table-responsive">
                 <table className="table table-hover">
                     <thead>
