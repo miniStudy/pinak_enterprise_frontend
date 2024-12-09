@@ -154,21 +154,15 @@ const ProjectTypes = () => {
     <>
       <div>
       {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h1>Project Types</h1>
-        <button type="button" className="btn btn-primary" onClick={openModal}>
+        <h3>Project Types</h3>
+        <button type="button" className="btn btn-sm btn-primary mb-3" onClick={openModal}>
           Add Project Type
         </button>
-        <table
-          border="1"
-          style={{
-            width: "80%",
-            textAlign: "left",
-            margin: "20px auto",
-          }}
-        >
+        <div className="table-responsive">
+          <table className="table table-hover">
           <thead>
             <tr>
-              <th>Project Type ID</th>
+              <th>S.N</th>
               <th>Project Type Name</th>
               <th>Project Type Details</th>
               <th>Update</th>
@@ -177,9 +171,9 @@ const ProjectTypes = () => {
           </thead>
           <tbody>
             {projectTypes.length > 0 ? (
-              projectTypes.map((type) => (
+              projectTypes.map((type,index) => (
                 <tr key={type.project_type_id}>
-                  <td>{type.project_type_id || "N/A"}</td>
+                  <td>{index+1}</td>
                   <td>{type.project_type_name || "N/A"}</td>
                   <td>{type.project_type_details || "N/A"}</td>
                   <td>
@@ -200,6 +194,7 @@ const ProjectTypes = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Modal for Add/Edit Project Type */}
