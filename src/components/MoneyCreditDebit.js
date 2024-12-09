@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
 import Select from 'react-select';
-
+import { Link } from 'react-router-dom';
 const MoneyCreditDebit = () => {
     const [MoneyCreditDebit, setMoneyCreditDebit] = useState([]);
     const [PersonData, setPersonData] = useState([]);
@@ -36,7 +36,7 @@ const MoneyCreditDebit = () => {
     });
 
     const sender_options = [
-        { value: "", label: "All" },
+        { value: "", label: "Sender Name" },
         ...PersonData.map((type) => ({
             value: type.person_id,
             label: type.person_name,
@@ -222,14 +222,32 @@ const MoneyCreditDebit = () => {
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
                 <h3>{title}</h3>
-                <button
-                    type="button"
-                    className="btn btn-sm btn-primary mb-3"
-                    onClick={openModal}
-                >
-                    Add Money Credit/Debit
-                </button>
-                <Select
+
+                <div className="d-flex align-items-center mb-3">
+    <Link to="/person-types"><img 
+        src="/static/icons/user.png" 
+        alt="User Icon" 
+        style={{ height: "30px", width: "auto" }} // Ensure consistent height
+    /></Link>
+    <button
+        type="button"
+        className="btn btn-sm btn-primary ms-2"
+        onClick={openModal}
+        style={{ height: "30px" }} // Adjust the height as needed
+    >
+        Add Money Credit/Debit
+    </button>
+    
+    <div className="input-group" style={{ height: "30px", width: "auto" }}>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    
+
+</div>
+
+<Select
                 options={sender_options}
                 value={sender_options.find((option) => option.value === SenderPersonId.person_id)}
                 onChange={handleSenderChange}
@@ -238,7 +256,9 @@ const MoneyCreditDebit = () => {
                 isClearable
                 className="react-select-container mb-3"
                 classNamePrefix="react-select"
+                styles={{width:"200px"}}
             />
+                
                 <div className="table-responsive">
                 <table className="table table-hover">
                     <thead>
