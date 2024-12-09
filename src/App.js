@@ -29,6 +29,7 @@ import ProjectDayDetails from './components/ProjectDayDetails'
 import PersonWorkMachines from './components/PersonWorkMachines'
 import DocumentTypes from './components/DocumentTypes'
 import Documents from './components/Documents'
+import Single_project from './components/Single_project';
 
 const App = () => { 
   return (
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="person-work-machine" element={<PersonWorkMachines  />} />
           <Route path="document-types" element={<DocumentTypes  />} />
           <Route path="documents" element={<Documents  />} />
+          <Route path="project" element={<Single_project  />} />
         </Route>
       </Routes>
     </Router>
