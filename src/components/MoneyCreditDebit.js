@@ -44,7 +44,7 @@ const MoneyCreditDebit = () => {
     ];
 
     const receiver_options = [
-        { value: "", label: "All" },
+        { value: "", label: "Receiver Name" },
         ...PersonData.map((type) => ({
             value: type.person_id,
             label: type.person_name,
