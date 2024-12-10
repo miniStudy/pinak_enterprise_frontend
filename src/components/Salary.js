@@ -221,8 +221,9 @@ const Machines = () => {
                 <th>Person Name</th>
                 <th>Contact Number</th>
                 <th>Salary Date</th>
-                <th>Salary Amount</th>
                 <th>Working Days</th>
+                <th>Salary Earned</th>
+                <th>Total Salary</th>
                 <th>Salary Details</th>
                 <th>Update</th>
                 <th>Remove</th>
@@ -236,8 +237,9 @@ const Machines = () => {
                     <td>{salary.person_id__person_name || "N/A"}</td>
                     <td>{salary.person_id__person_contact_number || "N/A"}</td>
                     <td>{salary.salary_date || "N/A"}</td>
-                    <td>{salary.salary_amount || "N/A"}</td>
                     <td>{salary.salary_working_days || "N/A"}</td>
+                    <td>{salary.salary_amount || "N/A"}</td>
+                    <td>{salary.person_id__person_salary || "N/A"}</td>
                     <td>{salary.salary_details || "N/A"}</td>
                     <td>
                       <i
