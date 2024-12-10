@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
+import Select from 'react-select';
 import Person_types_insert from './insert_update/person_types_insert';
 import { Link } from 'react-router-dom';
 
 const Persons = () => {
     const [personsDetails, setPersonsDetails] = useState([]);
     const [personTypes, setPersonTypes] = useState([]);
+    const [PersonID, setPersonID] = useState({ person_id: '' });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const modalRef = useRef();
@@ -18,6 +20,7 @@ const Persons = () => {
         person_id: '',
         person_name: '',
         person_contact_number: '',
+        person_salary: '',
         person_register_date: '',
         person_status: true,
         person_address: '',
@@ -29,6 +32,26 @@ const Persons = () => {
         person_types_for_project: '',
         person_type_id: '',
     });
+
+    const person_options = [
+        { value: "", label: "Search person here...." },
+        ...personsDetails.map((type) => ({
+            value: type.person_id,
+            label: type.person_name,
+        })),
+    ];
+
+    const handlePersonChange = async (selectedOption) => {
+        const newPersonId = selectedOption ? selectedOption.value : "";
+        setPersonID({ person_id: newPersonId }); // Update the state
+
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/show_persons/?person_id=${newPersonId}`);
+            setPersonsDetails(response.data.data || []);
+        } catch (error) {
+            console.error("Error fetching person data:", error);
+        }
+    };
 
 
     // Fetch person details
@@ -151,6 +174,7 @@ const Persons = () => {
             person_id: '',
             person_name: '',
             person_contact_number: '',
+            person_salary: '',
             person_register_date: '',
             person_status: true,
             person_address: '',
@@ -176,89 +200,101 @@ const Persons = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                
-                
+
+
                 <h3>Persons</h3>
                 <div className="d-flex align-items-center mb-3">
-    <Link to="/person-types"><img 
-        src="/static/icons/user.png" 
-        alt="User Icon" 
-        style={{ height: "30px", width: "auto" }} // Ensure consistent height
-    /></Link>
-    <button
-        type="button"
-        className="btn btn-sm btn-primary ms-2"
-        onClick={openModal}
-        style={{ height: "30px" }} // Adjust the height as needed
-    >
-        Add Person
-    </button>
-    
-    <div className="input-group" style={{ height: "30px", width: "auto" }}>
-        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
-         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
-    </div>
+                    <Link to="/person-types"><img
+                        src="/static/icons/user.png"
+                        alt="User Icon"
+                        style={{ height: "30px", width: "auto" }} // Ensure consistent height
+                    /></Link>
+                    <button
+                        type="button"
+                        className="btn btn-sm btn-primary ms-2"
+                        onClick={openModal}
+                        style={{ height: "30px" }} // Adjust the height as needed
+                    >
+                        Add Person
+                    </button>
 
-</div>
+                    <div className="input-group" style={{ height: "30px", width: "auto" }}>
+                        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                        <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
+                <Select
+                    options={person_options}
+                    value={person_options.find((option) => option.value === PersonID.person_id)}
+                    onChange={handlePersonChange}
+                    placeholder="Select Person"
+                    isSearchable
+                    isClearable
+                    className="react-select-container mb-3"
+                    classNamePrefix="react-select"
+                    styles={{ width: "200px" }}
+                />
                 <div className="table-responsive">
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>S.N</th>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Register Date</th>
-                            <th>Status</th>
-                            <th>Address</th>
-                            <th>Other Details</th>
-                            <th>Job/Business Name</th>
-                            <th>Company Number</th>
-                            <th>Job Address</th>
-                            <th>GST</th>
-                            <th>Person Type For Project</th>
-                            <th>Person Type</th>
-                            <th>Update</th>
-                            <th>Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {personsDetails.length > 0 ? (
-                            personsDetails.map((person, index) => (
-                                <tr key={index+1}>
-                                    <td>{person.person_id || 'N/A'}</td>
-                                    <td>{person.person_name || 'N/A'}</td>
-                                    <td>{person.person_contact_number || 'N/A'}</td>
-                                    <td>{person.person_register_date || 'N/A'}</td>
-                                    <td>{person.person_status ? 'Active' : 'Inactive'}</td>
-                                    <td>{person.person_address || 'N/A'}</td>
-                                    <td>{person.person_other_details || 'N/A'}</td>
-                                    <td>{person.person_business_job_name || 'N/A'}</td>
-                                    <td>{person.person_business_job_company_num || 'N/A'}</td>
-                                    <td>{person.person_business_job_address || 'N/A'}</td>
-                                    <td>{person.person_gst || 'N/A'}</td>
-                                    <td>{person.person_types_for_project || 'N/A'}</td>
-                                    <td>{person.person_type_id__person_type_name || 'N/A'}</td>
-                                    <td>
-                                        <i
-                                            className="fa-regular fa-pen-to-square"
-                                            onClick={() => editDetailsGetData(person.person_id)}
-                                        ></i>
-                                    </td>
-                                    <td>
-                                        <i
-                                            className="fa-regular fa-trash-can"
-                                            onClick={() => opendeleteModal(person.person_id)}
-                                        ></i>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
+                    <table className="table table-hover">
+                        <thead>
                             <tr>
-                                <td colSpan="15">No person details available.</td>
+                                <th>S.N</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Contact</th>
+                                <th>Salary</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Address</th>
+                                <th>Job/Business</th>
+                                <th>Com.Number</th>
+                                <th>Job Address</th>
+                                <th>GST</th>
+                                <th>Type Project</th>
+                                <th>Details</th>
+                                <th>Update</th>
+                                <th>Remove</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {personsDetails.length > 0 ? (
+                                personsDetails.map((person, index) => (
+                                    <tr key={index + 1}>
+                                        <td>{person.person_id || 'N/A'}</td>
+                                        <td>{person.person_name || 'N/A'}</td>
+                                        <td>{person.person_type_id__person_type_name || 'N/A'}</td>
+                                        <td>{person.person_contact_number || 'N/A'}</td>
+                                        <td>{person.person_salary || 'N/A'}</td>
+                                        <td>{person.person_register_date || 'N/A'}</td>
+                                        <td>{person.person_status ? 'Active' : 'Inactive'}</td>
+                                        <td>{person.person_address || 'N/A'}</td>
+                                        <td>{person.person_business_job_name || 'N/A'}</td>
+                                        <td>{person.person_business_job_company_num || 'N/A'}</td>
+                                        <td>{person.person_business_job_address || 'N/A'}</td>
+                                        <td>{person.person_gst || 'N/A'}</td>
+                                        <td>{person.person_types_for_project || 'N/A'}</td>                                        
+                                        <td>{person.person_other_details || 'N/A'}</td>
+                                        <td>
+                                            <i
+                                                className="fa-regular fa-pen-to-square"
+                                                onClick={() => editDetailsGetData(person.person_id)}
+                                            ></i>
+                                        </td>
+                                        <td>
+                                            <i
+                                                className="fa-regular fa-trash-can"
+                                                onClick={() => opendeleteModal(person.person_id)}
+                                            ></i>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="15">No person details available.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
@@ -278,9 +314,9 @@ const Persons = () => {
                             <h5 className="modal-title" id="personModalLabel">
                                 {formData.person_id ? 'Edit Person' : 'Add Person'}
                             </h5>
-                            
+
                             <Person_types_insert fetchdata={fetchPersons} />
-                        
+
                             <button
                                 type="button"
                                 className="btn-close"
@@ -290,84 +326,96 @@ const Persons = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
-                            <div className="mb-3">
-                                <input
-                                    type="text"
-                                    name="person_name"
-                                    value={formData.person_name}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="Person Name*"
-                                    required
-                                />
-                            </div>
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="person_name"
+                                        value={formData.person_name}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Person Name*"
+                                        required
+                                    />
+                                </div>
 
-                            <div className="mb-3">
-                                <input
-                                    type="text"
-                                    name="person_contact_number"
-                                    value={formData.person_contact_number}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="Person Contact*"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <textarea
-                                    name="person_address"
-                                    value={formData.person_address}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="Person Address"
-                                ></textarea>
-                            </div>
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="person_contact_number"
+                                        value={formData.person_contact_number}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Person Contact*"
+                                        required
+                                    />
+                                </div>
 
-                            <div className="mb-3">
-                                <input
-                                    type="text"
-                                    name="person_business_job_name"
-                                    value={formData.person_business_job_name}
-                                    onChange={handleChange}
-                                    placeholder="Job/Business Name"
-                                    className="form-control"
-                                />
-                            </div>
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="person_salary"
+                                        value={formData.person_salary}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Person Salary"
+                                    />
+                                </div>
 
-                            <div className="mb-3">
-                                <input
-                                    type="text"
-                                    name="person_business_job_company_num"
-                                    value={formData.person_business_job_company_num}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="Business/Job Number"
-                                />
-                            </div>
+                                <div className="mb-3">
+                                    <textarea
+                                        name="person_address"
+                                        value={formData.person_address}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Person Address"
+                                    ></textarea>
+                                </div>
 
-                            <div className="mb-3">
-                                <textarea
-                                    name="person_business_job_address"
-                                    value={formData.person_business_job_address}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="Business/Job Address"
-                                    
-                                ></textarea>
-                            </div>
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="person_business_job_name"
+                                        value={formData.person_business_job_name}
+                                        onChange={handleChange}
+                                        placeholder="Job/Business Name"
+                                        className="form-control"
+                                    />
+                                </div>
 
-                            <div className="mb-3">
-                                <input
-                                    type="text"
-                                    name="person_gst"
-                                    value={formData.person_gst}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="GST Number"
-                                />
-                            </div>
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="person_business_job_company_num"
+                                        value={formData.person_business_job_company_num}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Business/Job Number"
+                                    />
+                                </div>
 
-                            <div className="mb-3">
+                                <div className="mb-3">
+                                    <textarea
+                                        name="person_business_job_address"
+                                        value={formData.person_business_job_address}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Business/Job Address"
+
+                                    ></textarea>
+                                </div>
+
+                                <div className="mb-3">
+                                    <input
+                                        type="text"
+                                        name="person_gst"
+                                        value={formData.person_gst}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="GST Number"
+                                    />
+                                </div>
+
+                                <div className="mb-3">
                                     <select
                                         name="person_type_id"
                                         value={formData.person_type_id}
@@ -387,53 +435,53 @@ const Persons = () => {
                                     </select>
                                 </div>
 
-                            <div className="mb-3">
-                                <select
-                                    name="person_types_for_project"
-                                    value={formData.person_types_for_project}
-                                    onChange={handleChange}
-                                    className="form-select"
-                                    required
-                                >
-                                    <option value="">Select Person Type For Project*</option>
-                                    <option value="Worker">Worker</option>
-                                    <option value="Project">Project</option>
-                                    <option value="Material">Material</option>
-                                    <option value="Machine">Machine</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-
-                            <div className="mb-3">
-                                <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={(e) =>
-                                    handleChange({
-                                        target: { name: "person_status", value: e.target.checked },
-                                    })
-                                    }
-                                    checked={formData.material_status}
-                                    name="person_status"
-                                    type="checkbox"
-                                    id="flexCheckChecked"
-                                />
-                                <label className="form-check-label" htmlFor="flexCheckChecked">
-                                    Active
-                                </label>
-                                </div>
-                            </div>
-                            
-                            
                                 <div className="mb-3">
-                                <textarea
-                                    name="person_other_details"
-                                    value={formData.person_other_details}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    placeholder="Addtional details..."
-                                ></textarea>
+                                    <select
+                                        name="person_types_for_project"
+                                        value={formData.person_types_for_project}
+                                        onChange={handleChange}
+                                        className="form-select"
+                                        required
+                                    >
+                                        <option value="">Select Person Type For Project*</option>
+                                        <option value="Worker">Worker</option>
+                                        <option value="Project">Project</option>
+                                        <option value="Material">Material</option>
+                                        <option value="Machine">Machine</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+
+                                <div className="mb-3">
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            onChange={(e) =>
+                                                handleChange({
+                                                    target: { name: "person_status", value: e.target.checked },
+                                                })
+                                            }
+                                            checked={formData.material_status}
+                                            name="person_status"
+                                            type="checkbox"
+                                            id="flexCheckChecked"
+                                        />
+                                        <label className="form-check-label" htmlFor="flexCheckChecked">
+                                            Active
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div className="mb-3">
+                                    <textarea
+                                        name="person_other_details"
+                                        value={formData.person_other_details}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Addtional details..."
+                                    ></textarea>
                                 </div>
                                 <button type="submit" className="btn btn-sm btn-primary">
                                     Submit

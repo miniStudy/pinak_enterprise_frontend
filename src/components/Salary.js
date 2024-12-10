@@ -219,19 +219,21 @@ const Machines = () => {
 
         
         
-        <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
+        <div className="card">
+        <h5>Payable Salary</h5>
         <div className="table-responsive">
           <table className="table table-striped table-hover">
             <thead>
               <tr>
                 <th>S.N</th>
-                <th>Person Name</th>
-                <th>Contact Number</th>
-                <th>Salary Date</th>
-                <th>Working Days</th>
-                <th>Salary Earned</th>
-                <th>Total Salary</th>
-                <th>Salary Details</th>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Date</th>
+                <th>Days</th>
+                <th>Earned</th>
+                <th>Salary</th>
+                <th>Details</th>
                 <th>Update</th>
                 <th>Remove</th>
               </tr>
@@ -270,16 +272,19 @@ const Machines = () => {
             </tbody>
           </table>
         </div>
-
+        </div>
+      
         
-        
+        <div className="card">
+        <h5>Paid Salary</h5>
         <div className="table-responsive">
+        
           <table className="table table-striped table-hover">
             <thead>
               <tr>
                 <th>S.N</th>
-                <th>Person Name</th>
-                <th>Transaction Date</th>
+                <th>Name</th>
+                <th>Date</th>
                 <th>Amount</th>
                 <th>Mode</th>
                 <th>Details</th>
@@ -305,6 +310,8 @@ const Machines = () => {
             </tbody>
           </table>
         </div>
+        </div>
+        
 
 
         </div>
