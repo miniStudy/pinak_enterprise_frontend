@@ -277,7 +277,9 @@ const MoneyCreditDebit = () => {
 
 </div>
 
-            <Select
+
+
+<Select
                 options={sender_options}
                 value={sender_options.find((option) => option.value === SenderPersonId.person_id)}
                 onChange={handleSenderChange}

@@ -3,12 +3,13 @@ import axios from 'axios';
 import { Modal } from 'bootstrap';
 
 
-function Person_insert({fetchdata}) {
+function Person_insert({fetchdata,persontype}) {
     const modalRef = useRef();
     const [personTypes, setPersonTypes] = useState([]);
     const [formData, setFormData] = useState({
         person_id: '',
         person_name: '',
+        person_salary:'',
         person_contact_number: '',
         person_register_date: '',
         person_status: true,
@@ -55,7 +56,7 @@ function Person_insert({fetchdata}) {
                 formData
             );
             if (response.status === 200) {
-                alert('Person details saved successfully!');
+                alert(response.data.message);
                 fetchdata(); // Reload data
                 resetForm();
                 closeModal();
@@ -90,6 +91,7 @@ function Person_insert({fetchdata}) {
             person_register_date: '',
             person_status: true,
             person_address: '',
+            person_salary:'',
             person_other_details: '',
             person_business_job_name: '',
             person_business_job_company_num: '',
@@ -158,6 +160,23 @@ function Person_insert({fetchdata}) {
                                     required
                                 />
                             </div>
+                            
+                            {persontype === 'employee' && (
+
+<div className="mb-3">
+<input
+    type="text"
+    name="person_salary"
+    value={formData.person_salary}
+    onChange={handleChange}
+    className="form-control"
+    placeholder="Person Salary"
+/>
+</div>
+)}
+
+
+
                             <div className="mb-3 d-none">
                                 <textarea
                                     name="person_address"
@@ -232,13 +251,12 @@ function Person_insert({fetchdata}) {
                                     </select>
                                 </div>
 
-                            <div className="mb-3">
+                            <div className="mb-3 d-none">
                                 <select
                                     name="person_types_for_project"
                                     value={formData.person_types_for_project}
                                     onChange={handleChange}
                                     className="form-select"
-                                    required
                                 >
                                     <option value="">Select Person Type For Project*</option>
                                     <option value="Worker">Worker</option>
@@ -249,7 +267,7 @@ function Person_insert({fetchdata}) {
                                 </select>
                             </div>
 
-                                <div className="mb-3">       
+                                <div className="mb-3 d-none">       
                                 <select
                                     name="person_status"
                                     value={formData.person_status}
