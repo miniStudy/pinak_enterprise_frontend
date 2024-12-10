@@ -210,7 +210,7 @@ const personsoptions = persons.map((pers) => ({
         <h3>{title}</h3> {/* Display the title */}
         <div className="d-flex align-items-center mb-3">
     <Link to="/project-types"><img 
-        src="/static/icons/cog.png" 
+        src="/static/icons/projecttype2.png" 
         alt="User Icon" 
         style={{ height: "30px", width: "auto" }} // Ensure consistent height
     /></Link>

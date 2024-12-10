@@ -14,6 +14,17 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
+
+
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <!-- jQuery (required for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+
+
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +64,11 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-
+    <script>
+      $(document).ready(function () {
+        $('#example').DataTable();
+      });
+    </script>
 
   </body>
 </html>

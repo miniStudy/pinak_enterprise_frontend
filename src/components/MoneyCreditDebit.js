@@ -19,8 +19,31 @@ const MoneyCreditDebit = () => {
     const [SenderPersonId, setSenderPersonId] = useState({ person_id: '' });
     const [ReceiverPersonId, setReceiverPersonId] = useState({ person_id: '' });
     const [PayTypeId, setPayTypeId] = useState({ pay_type_id: '' });
-
+    const [searchTerm, setSearchTerm] = useState('');
     // Form state for Add/Edit
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    // Filter data based on search term
+    const Filter_MoneyCreditDebit = MoneyCreditDebit.filter((item) => {
+        return (
+            (item?.sender_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.receiver_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.money_amount?.toString().includes(searchTerm)) ||
+            (item?.pay_type_id__pay_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.money_payment_mode?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.money_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.sender_bank_id__bank_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.money_sender_cheque_no?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.receiver_bank_id__bank_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.money_payment_details?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_id__machine_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+    });
+    
+
+
     const [formData, setFormData] = useState({
         money_id: '',
         sender_person_id: '',
@@ -37,7 +60,7 @@ const MoneyCreditDebit = () => {
     });
 
     const sender_options = [
-        { value: "", label: "Sender Name" },
+        { value: "", label: "પૈસા આપનાર" },
         ...PersonData.map((type) => ({
             value: type.person_id,
             label: type.person_name,
@@ -45,7 +68,7 @@ const MoneyCreditDebit = () => {
     ];
 
     const receiver_options = [
-        { value: "", label: "Receiver Name" },
+        { value: "", label: "પૈસા લેનાર" },
         ...PersonData.map((type) => ({
             value: type.person_id,
             label: type.person_name,
@@ -53,7 +76,7 @@ const MoneyCreditDebit = () => {
     ];
 
     const pay_options = [
-        { value: "", label: "Payment Types" },
+        { value: "", label: "ખર્ચ પ્રકાર" },
         ...PayTypeData.map((type) => ({
             value: type.pay_type_id,
             label: type.pay_type_name,
@@ -254,8 +277,8 @@ const MoneyCreditDebit = () => {
                 <h3>{title}</h3>
 
                 <div className="d-flex align-items-center mb-3">
-    <Link to="/person-types"><img 
-        src="/static/icons/user.png" 
+    <Link to="/pay-types"><img 
+        src="/static/icons/payment_type.png" 
         alt="User Icon" 
         style={{ height: "30px", width: "auto" }} // Ensure consistent height
     /></Link>
@@ -269,7 +292,7 @@ const MoneyCreditDebit = () => {
     </button>
     
     <div className="input-group" style={{ height: "30px", width: "auto" }}>
-        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange}/>
          <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
 
@@ -278,7 +301,7 @@ const MoneyCreditDebit = () => {
 </div>
 
 
-
+<div className='grid grid-cols-5 gap-3'>
 <Select
                 options={sender_options}
                 value={sender_options.find((option) => option.value === SenderPersonId.person_id)}
@@ -291,8 +314,7 @@ const MoneyCreditDebit = () => {
                 styles={{width:"200px"}}
             />
 
-
-            <Select
+<Select
                 options={receiver_options}
                 value={receiver_options.find((option) => option.value === ReceiverPersonId.person_id)}
                 onChange={handleReceiverChange}
@@ -313,6 +335,12 @@ const MoneyCreditDebit = () => {
                 className="react-select-container mb-3"
                 classNamePrefix="react-select"
             />
+</div>
+
+
+
+
+           
 
 
                 <div className="table-responsive">
@@ -336,8 +364,8 @@ const MoneyCreditDebit = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {MoneyCreditDebit.length > 0 ? (
-                            MoneyCreditDebit.map((y, index) => (
+                    {Filter_MoneyCreditDebit.length > 0 ? (
+                            Filter_MoneyCreditDebit.map((y, index) => (
                                 <tr key={y.money_id}>
                                     <td>{index+1 || "N/A"}</td>
                                     <td>{y.sender_person_id__person_name || "N/A"}</td>
