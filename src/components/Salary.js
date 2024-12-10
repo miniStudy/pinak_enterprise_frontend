@@ -5,6 +5,9 @@ import Person_insert from "./insert_update/person_insert";
 
 const Machines = () => {
   const [Salary, setSalary] = useState([]);
+  const [TotalSalaryAmount, setTotalSalaryAmount] = useState([]);
+  const [MoneyTransaction, setMoneyTransaction] = useState([]);
+  const [TotalAmount, setTotalAmount] = useState(0);
   const [PersonsData, setPersonsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,6 +16,24 @@ const Machines = () => {
   const deletemodel = useRef();
   const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState("");
+
+  useEffect(() => {
+    const total = MoneyTransaction.reduce(
+      (sum, transaction) => sum + parseFloat(transaction.money_amount || 0),
+      0
+    );
+    setTotalAmount(total);
+  }, [MoneyTransaction]);
+
+  useEffect(() => {
+    const total = Salary.reduce(
+      (sum, sal) => sum + parseFloat(sal.salary_amount || 0),
+      0
+      
+    );
+    setTotalSalaryAmount(total);
+  }, [Salary]);
+
 
   // Form state for Add/Edit
   const [formData, setFormData] = useState({
@@ -29,6 +50,7 @@ const Machines = () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/show_salary/");
       setSalary(response.data.data || []);
+      setMoneyTransaction(response.data.money_data || []);
       setPersonsData(response.data.persons_data || []);
       setTitle(response.data.title);
       setLoading(false);
@@ -179,6 +201,18 @@ const Machines = () => {
           Add Salary
         </button>
 
+
+        <div className="w-32 h-30 flex flex-col justify-center items-center rounded-lg shadow-md mb-4 bg-fuchsia-300">
+          <h2 className="text-sm font-semibold text-gray-900 text-center">Total Money Credit/Debit Amount</h2>
+          <p className="mt-1 text-gray-700 text-center">Rs. {TotalAmount}</p>
+        </div>
+
+        <div className="w-32 h-30 flex flex-col justify-center items-center rounded-lg shadow-md mb-4 bg-fuchsia-300">
+          <h2 className="text-sm font-semibold text-gray-900 text-center">Total Salary Amount</h2>
+          <p className="mt-1 text-gray-700 text-center">Rs. {TotalSalaryAmount}</p>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
         <div className="table-responsive">
           <table className="table table-striped table-hover">
             <thead>
@@ -227,6 +261,46 @@ const Machines = () => {
             </tbody>
           </table>
         </div>
+
+        
+        
+        <div className="table-responsive">
+          <table className="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>S.N</th>
+                <th>Person Name</th>
+                <th>Transaction Date</th>
+                <th>Amount</th>
+                <th>Mode</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {MoneyTransaction.length > 0 ? (
+                MoneyTransaction.map((x, index) => (
+                  <tr key={x.money_id}>
+                    <td>{index + 1}</td>
+                    <td>{x.receiver_person_id__person_name || "N/A"}</td>
+                    <td>{x.money_date || "N/A"}</td>
+                    <td>{x.money_amount || "N/A"}</td>
+                    <td>{x.money_payment_mode || "N/A"}</td>
+                    <td>{x.money_payment_details || "N/A"}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9">No money transaction available.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+
+        </div>
+
+        
       </div>
 
       {/* Modal for Add/Edit Machine */}

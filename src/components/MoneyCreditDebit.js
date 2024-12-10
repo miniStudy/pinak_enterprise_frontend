@@ -18,6 +18,7 @@ const MoneyCreditDebit = () => {
     const [Messages, setMessages] = useState('');
     const [SenderPersonId, setSenderPersonId] = useState({ person_id: '' });
     const [ReceiverPersonId, setReceiverPersonId] = useState({ person_id: '' });
+    const [PayTypeId, setPayTypeId] = useState({ pay_type_id: '' });
 
     // Form state for Add/Edit
     const [formData, setFormData] = useState({
@@ -51,6 +52,14 @@ const MoneyCreditDebit = () => {
         })),
     ];
 
+    const pay_options = [
+        { value: "", label: "Payment Types" },
+        ...PayTypeData.map((type) => ({
+            value: type.pay_type_id,
+            label: type.pay_type_name,
+        })),
+    ];
+
     const handleSenderChange = async (selectedOption) => {
         const newSenderId = selectedOption ? selectedOption.value : "";
         setSenderPersonId({ person_id: newSenderId }); // Update the state
@@ -75,6 +84,18 @@ const MoneyCreditDebit = () => {
             }
         };
 
+    const handlePaymentChange = async (selectedOption) => {
+        const newPaymentId = selectedOption ? selectedOption.value : "";
+        setPayTypeId({ pay_type_id: newPaymentId }); // Update the state
+
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/show_money_debit_credit/?pay_type_id=${newPaymentId}`);
+                setMoneyCreditDebit(response.data.data || []);
+            } catch (error) {
+                console.error("Error fetching money debit/credit data:", error);
+            }
+        };
+    
 
     // Fetch machine details
     const fetchMoneyCreditDebit = async () => {
@@ -256,7 +277,7 @@ const MoneyCreditDebit = () => {
 
 </div>
 
-<Select
+            <Select
                 options={sender_options}
                 value={sender_options.find((option) => option.value === SenderPersonId.person_id)}
                 onChange={handleSenderChange}
@@ -274,6 +295,17 @@ const MoneyCreditDebit = () => {
                 value={receiver_options.find((option) => option.value === ReceiverPersonId.person_id)}
                 onChange={handleReceiverChange}
                 placeholder="Select Receiver"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
+
+            <Select
+                options={pay_options}
+                value={pay_options.find((option) => option.value === PayTypeId.pay_type_id)}
+                onChange={handlePaymentChange}
+                placeholder="Select Payment Types"
                 isSearchable
                 isClearable
                 className="react-select-container mb-3"
