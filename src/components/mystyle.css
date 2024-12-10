@@ -4,6 +4,8 @@
     --color2 : rgb(239 246 255);
     --color3 : rgb(219 234 254);
     --color4 : rgb(191 219 254);
+    --color5 : rgb(29 78 216);
+    
 }
 
 body{font-family: "Ubuntu", serif;}
@@ -32,6 +34,7 @@ table th,td:first-child{
 .modal-dialog{background-color: transparent !important;max-height: 100%;}
 .modal-content{background-color: var(--color3) !important;border: none;outline: none;max-height: 100% !important;overflow-y: auto;}
 .typesmodel{background-color: var(--color4) !important;}
+.cardbg2{background-color: var(--border1) !important;color: white !important;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;}
 .form-control,.form-select,.css-13cymwt-control{background-color: transparent !important; border: 1px solid var(--border1) !important;}
 .css-13cymwt-control:focus{background-color: transparent !important;}
 .form-control,.form-select:hover{border: 2px solid var(--border1);outline: none;box-shadow: none;}

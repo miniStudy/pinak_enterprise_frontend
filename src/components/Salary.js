@@ -201,18 +201,25 @@ const Machines = () => {
           Add Salary
         </button>
 
+        <div className="grid grid-cols-2 md:grid-cols-6  gap-3 mb-3">
 
-        <div className="w-32 h-30 flex flex-col justify-center items-center rounded-lg shadow-md mb-4 bg-fuchsia-300">
-          <h2 className="text-sm font-semibold text-gray-900 text-center">Total Money Credit/Debit Amount</h2>
-          <p className="mt-1 text-gray-700 text-center">Rs. {TotalAmount}</p>
+        <div className="card cardbg2">
+          <div>Total Payable Salary</div>
+          <div><i class="fa-solid fa-indian-rupee-sign"></i> {TotalSalaryAmount}</div>
         </div>
 
-        <div className="w-32 h-30 flex flex-col justify-center items-center rounded-lg shadow-md mb-4 bg-fuchsia-300">
-          <h2 className="text-sm font-semibold text-gray-900 text-center">Total Salary Amount</h2>
-          <p className="mt-1 text-gray-700 text-center">Rs. {TotalSalaryAmount}</p>
+        <div className="card cardbg2">
+          <div className="">Total Paid Salary</div>
+          <div className=""><i class="fa-solid fa-indian-rupee-sign"></i> {TotalAmount}</div>
+        </div>
+
+        
         </div>
         
-        <div class="grid grid-cols-2 gap-4">
+
+        
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 md:gap-4">
         <div className="table-responsive">
           <table className="table table-striped table-hover">
             <thead>
