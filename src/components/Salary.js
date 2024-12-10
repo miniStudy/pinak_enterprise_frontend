@@ -244,7 +244,7 @@ const Machines = () => {
               <h5 className="modal-title" id="machineModalLabel">
                 {formData.machine_id ? "Edit Salary" : "Add Salary"}
               </h5>
-              <Person_insert fetchdata={fetchSalary} />
+              <Person_insert fetchdata={fetchSalary} persontype='employee' />
               <button
                 type="button"
                 className="btn-close"
