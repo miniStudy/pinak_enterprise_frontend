@@ -24,7 +24,7 @@ td,th{padding: 4px;}
 .icondiv{text-align: center !important;}
 .iconimg{width: 50%;margin-bottom: 5px;margin: auto;}
 .iconsection{font-size: 0.8vw;}
-table th,td{padding: 5px !important;min-width: 80px;}
+table th,td{padding: 5px !important;min-width: 80px;font-size: 14px !important;}
 table th,td:first-child{
         min-width: 10px !important;
     
@@ -36,13 +36,13 @@ table th,td:first-child{
 .typesmodel{background-color: var(--color4) !important;}
 .card{box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;}
 .cardbg2{background-color: var(--border1) !important;color: white !important;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;}
-.form-control,.form-select,.css-13cymwt-control{background-color: transparent !important; border: 1px solid var(--border1) !important;}
+.form-control,.form-select,.react-select__control{background-color: transparent !important; border: 1px solid var(--border1) !important;}
 .css-13cymwt-control:focus{background-color: transparent !important;}
 .form-control,.form-select:hover{border: 2px solid var(--border1);outline: none;box-shadow: none;}
 @media (max-width: 768px) {
     .maincontent{margin-left: 0px;margin-right: 0px;margin-top: 0px;}
     .iconsection{font-size: 12px;}
     .iconsection .card{padding: 5px;}
-    table,th,td{font-size: 12px;}
+    table,th,td,.react-select__control,.react-select__input,.react-select__input-container,.react-select__value-container{font-size: 12px !important;}
     
 }

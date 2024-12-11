@@ -24,6 +24,8 @@ const MoneyCreditDebit = () => {
     const [ReceiverPersonId, setReceiverPersonId] = useState({ person_id: '' });
     const [PayTypeId, setPayTypeId] = useState({ pay_type_id: '' });
     const [searchTerm, setSearchTerm] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     // Form state for Add/Edit
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -48,7 +50,11 @@ const MoneyCreditDebit = () => {
 
     // Filter data based on search term
     const Filter_MoneyCreditDebit = MoneyCreditDebit.filter((item) => {
-        return (
+
+    const itemDate = new Date(item?.money_date);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+    const matchesSearchTerm =
             (item?.sender_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (item?.receiver_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (item?.money_amount?.toString().includes(searchTerm)) ||
@@ -59,8 +65,11 @@ const MoneyCreditDebit = () => {
             (item?.money_sender_cheque_no?.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (item?.receiver_bank_id__bank_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
             (item?.money_payment_details?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (item?.machine_id__machine_name?.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
+            (item?.machine_id__machine_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+            const matchesDateRange =
+            (!start || itemDate >= start) && (!end || itemDate <= end); // Check date range
+    
+        return matchesSearchTerm && matchesDateRange;
     });
 
 
@@ -324,7 +333,7 @@ const MoneyCreditDebit = () => {
                 </div>
 
 
-                <div className='grid grid-cols-5 gap-3'>
+                <div className='grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3 mb-3'>
                     <Select
                         options={sender_options}
                         value={sender_options.find((option) => option.value === SenderPersonId.person_id)}
@@ -332,7 +341,7 @@ const MoneyCreditDebit = () => {
                         placeholder="Select Sender"
                         isSearchable
                         isClearable
-                        className="react-select-container mb-3"
+                        className="react-select-container"
                         classNamePrefix="react-select"
                         styles={{ width: "200px" }}
                     />
@@ -344,7 +353,7 @@ const MoneyCreditDebit = () => {
                         placeholder="Select Receiver"
                         isSearchable
                         isClearable
-                        className="react-select-container mb-3"
+                        className="react-select-container"
                         classNamePrefix="react-select"
                     />
 
@@ -355,9 +364,12 @@ const MoneyCreditDebit = () => {
                         placeholder="Select Payment Types"
                         isSearchable
                         isClearable
-                        className="react-select-container mb-3"
+                        className="react-select-container"
                         classNamePrefix="react-select"
                     />
+
+                    <input type='date' name='startdate' onChange={(e) => setStartDate(e.target.value)} className='form-control' />
+                    <input type='date' name='enddate' onChange={(e) => setEndDate(e.target.value)} className='form-control' />
                 </div>
 
                 <div className="table-responsive">
@@ -387,7 +399,7 @@ const MoneyCreditDebit = () => {
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{y.sender_person_id__person_name || "N/A"}</td>
                                         <td>{y.receiver_person_id__person_name || "N/A"}</td>
-                                        <td>{y.money_amount || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i>{y.money_amount || "N/A"}</td>
                                         <td>{y.pay_type_id__pay_type_name || "N/A"}</td>
                                         <td>{y.money_payment_mode || "N/A"}</td>
                                         <td>{y.money_date || "N/A"}</td>
@@ -420,18 +432,8 @@ const MoneyCreditDebit = () => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
-
-                <div className="card cardbg2">
-                <div>Credit Amount</div>
-                <div><i class="fa-solid fa-indian-rupee-sign"></i>  {TotalDebit}</div>
-                </div>
-
-                <div className="card cardbg2">
-                <div className="">Debit Amount</div>
-                <div className=""><i class="fa-solid fa-indian-rupee-sign"></i> {TotalCredit}</div>
-                </div>
                 <div className="card">
-                    <h5>Credit</h5>
+                    <h5 className='mb-2 text-center'>આવક</h5>
                     <div className="table-responsive">
                         <table className="table table-striped table-hover">
                             <thead>
@@ -455,7 +457,7 @@ const MoneyCreditDebit = () => {
                                             <td>{x.sender_person_id__person_name || "N/A"}</td>
                                             <td>{x.receiver_person_id__person_name || "N/A"}</td>
                                             <td>{x.pay_type_id__pay_type_name || "N/A"}</td>
-                                            <td>{x.money_amount || "N/A"}</td>
+                                            <td><i class="fa-solid fa-indian-rupee-sign"></i>{x.money_amount || "N/A"}</td>
                                             <td>{x.money_payment_mode || "N/A"}</td>
                                             <td>{x.money_date || "N/A"}</td>
                                             <td>{x.sender_bank_id__bank_name || "N/A"}</td>
@@ -469,13 +471,14 @@ const MoneyCreditDebit = () => {
                                 )}
                             </tbody>
                         </table>
+                        <div className='font-semibold text-base'>Total Credit: <i class="fa-solid fa-indian-rupee-sign"></i>{TotalDebit}</div>
 
                     </div>
                 </div>
 
 
                 <div className="card">
-                    <h5>Debit</h5>
+                    <h5 className='mb-2 text-center'>જાવક</h5>
                     <div className="table-responsive">
                         <table className="table table-striped table-hover">
                             <thead>
@@ -499,7 +502,7 @@ const MoneyCreditDebit = () => {
                                             <td>{credit.sender_person_id__person_name || "N/A"}</td>
                                             <td>{credit.receiver_person_id__person_name || "N/A"}</td>
                                             <td>{credit.pay_type_id__pay_type_name || "N/A"}</td>
-                                            <td>{credit.money_amount || "N/A"}</td>
+                                            <td><i class="fa-solid fa-indian-rupee-sign"></i>{credit.money_amount || "N/A"}</td>
                                             <td>{credit.money_payment_mode || "N/A"}</td>
                                             <td>{credit.money_date || "N/A"}</td>
                                             <td>{credit.sender_bank_id__bank_name || "N/A"}</td>
@@ -513,6 +516,7 @@ const MoneyCreditDebit = () => {
                                 )}
                             </tbody>
                         </table>
+                        <div className='font-semibold text-base'>Total Debit: <i class="fa-solid fa-indian-rupee-sign"></i>{TotalCredit}</div>
 
                     </div>
                 </div>
