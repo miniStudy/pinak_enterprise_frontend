@@ -203,7 +203,7 @@ const ProjectMachines = () => {
                                             {detail.machine_project_id__machine_name || "N/A"}
                                         </td>
                                         <td>
-                                            {detail.MachineDatawork_type_id__work_type_name || "N/A"}
+                                            {detail.work_type_id__work_type_name || "N/A"}
                                         </td>
                                         <td>{detail.project_machine_data_work_number || "N/A"}</td>
                                         <td>{detail.project_machine_data_work_price || "N/A"}</td>
@@ -309,19 +309,6 @@ const ProjectMachines = () => {
                                             </option>
                                         ))}
                                     </select>
-                                </div>
-
-                                <div className="mb-3">
-                                    <input
-                                        id="workNoInput"
-                                        type="text"
-                                        name="project_material_work_no"
-                                        value={formData.project_material_work_no}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter Work Number*"
-                                        required
-                                    />
                                 </div>
 
                                 <div className="mb-3">

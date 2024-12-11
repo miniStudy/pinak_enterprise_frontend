@@ -4,6 +4,10 @@ import { Modal } from 'bootstrap';
 import { Link } from 'react-router-dom';
 const Machines = () => {
     const [machinesDetails, setMachinesDetails] = useState([]);
+    const [projectmachineData, setprojectmachineData] = useState([]);
+    const [totalProjectMachineAmount, settotalProjectMachineAmount] = useState([]);
+    const [machinemaintenanceData, setmachinemaintenanceData] = useState([]);
+    const [totalMachineMaintenance, settotalMachineMaintenance] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [title, setTitle] = useState('');
@@ -32,6 +36,22 @@ const Machines = () => {
         machine_sold_out_date: '',
         machine_other_details: '',
     });
+
+    useEffect(() => {
+        const total = projectmachineData.reduce(
+          (sum, x) => sum + parseFloat(x.project_machine_data_total_amount || 0),
+          0
+        );
+        settotalProjectMachineAmount(total);
+    }, [projectmachineData]);
+
+    useEffect(() => {
+    const total = machinemaintenanceData.reduce(
+        (sum, x) => sum + parseFloat(x.machine_maintenance_amount || 0),
+        0
+    );
+    settotalMachineMaintenance(total);
+    }, [machinemaintenanceData]);
 
 
     // Fetch machine details
@@ -138,6 +158,41 @@ const Machines = () => {
     };
 
 
+    const displayData = async (id) => {
+        try {
+        
+          const response = await axios.get(
+            `http://127.0.0.1:8000/show_project_machine/?machine_id=${id}`
+          );
+          
+        if (response.data.data && response.data.data.length > 0) {
+        setprojectmachineData(response.data.data);
+        } else {
+        setprojectmachineData([]); // Clear data if no results are returned
+        }
+        } catch (err) {
+          setError('Failed to load maintenance details.');
+          setLoading(false);
+        }
+
+        try {
+        
+            const response = await axios.get(
+              `http://127.0.0.1:8000/show_machine_maintenance/?machine_id=${id}`
+            );
+          if (response.data.data && response.data.data.length > 0) {
+            setmachinemaintenanceData(response.data.data);
+          } else {
+            setmachinemaintenanceData([]); // Clear data if no results are returned
+          }
+          } catch (err) {
+            setError('Failed to load maintenance details.');
+            setLoading(false);
+        }
+
+      };
+
+
     const deleteData = async (id) => {
         try {
             const response = await axios.delete(
@@ -234,7 +289,8 @@ const Machines = () => {
                             machinesDetails.map((y) => (
                                 <tr key={y.machine_id}>
                                     <td>{y.machine_id || "N/A"}</td>
-                                    <td>{y.machine_name || "N/A"}</td>
+
+                                    <td onClick={() => displayData(y.machine_id)}>{y.machine_name || "N/A"}</td>
                                     <td>{y.machine_own || "N/A"}</td>
                                     <td>{y.machine_number_plate || "N/A"}</td>
                                     <td>{y.machine_register_date || "N/A"}</td>
@@ -268,6 +324,85 @@ const Machines = () => {
                     </tbody>
                 </table>
                     </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
+                <div className="card">
+                    <h5>Machine Earning</h5>
+                    <div className="table-responsive">
+                        <table className="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>S.N</th>
+                                    <th>Date</th>
+                                    <th>Work Type</th>
+                                    <th>Work No.</th>
+                                    <th>Price</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {projectmachineData.length > 0 ? (
+                                    projectmachineData.map((x, index) => (
+                                        <tr key={x.project_machine_data_id}>
+                                            <td>{index + 1}</td>
+                                            <td>{x.project_machine_date || "N/A"}</td>
+                                            <td>{x.work_type_id__work_type_name || "N/A"}</td>
+                                            <td>{x.project_machine_data_work_number || "N/A"}</td>
+                                            <td>{x.project_machine_data_work_price || "N/A"}</td>
+                                            <td>{x.project_machine_data_total_amount || "N/A"}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9">No data available.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div className="card">
+                    <h5>Machine Maintenance Cost</h5>
+                    <div className="table-responsive">
+                        <table className="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>S.N</th>
+                                    <th>Date</th>
+                                    <th>Type Name</th>
+                                    <th>Amount</th>
+                                    <th>Paid By</th>
+                                    <th>Maintenance Person</th>
+                                    <th>Driver</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {machinemaintenanceData.length > 0 ? (
+                                    machinemaintenanceData.map((x, index) => (
+                                        <tr key={x.machine_maintenance_id}>
+                                            <td>{index + 1}</td>
+                                            <td>{x.machine_maintenance_date || "N/A"}</td>
+                                            <td>{x.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
+                                            <td>{x.machine_maintenance_amount || "N/A"}</td>
+                                            <td>{x.machine_maintenance_amount_paid_by || "N/A"}</td>
+                                            <td>{x.machine_maintenance_person_id__person_name || "N/A"}</td>
+                                            <td>{x.machine_maintenance_driver_name || "N/A"}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9">No data available.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
             </div>
           
 
