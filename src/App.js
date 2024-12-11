@@ -61,7 +61,7 @@ const App = () => {
           <Route path="person-work-machine" element={<PersonWorkMachines  />} />
           <Route path="document-types" element={<DocumentTypes  />} />
           <Route path="documents" element={<Documents  />} />
-          <Route path="project" element={<Single_project  />} />
+          <Route path="project/:project_id" element={<Single_project  />} />
         </Route>
       </Routes>
     </Router>

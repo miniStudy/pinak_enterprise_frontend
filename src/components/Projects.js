@@ -256,7 +256,7 @@ const personsoptions = persons.map((pers) => ({
                 projects.map((project, index) => (
                   <tr key={project.project_id}>
                     <td>{index + 1} {project.project_id}</td>
-                    <td><Link to="/project/">{project.project_name || "N/A"}</Link></td>
+                    <td><Link to={`/project/${project.project_id}`}>{project.project_name || "N/A"}</Link></td>
                     <td>{project.project_start_date || "N/A"}</td>
                     <td>{project.project_end_date || "N/A"}</td>
                     <td>{project.project_amount || "N/A"}</td>
