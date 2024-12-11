@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const MachineMaintenance = () => {
   const [machineMaintenance, setMachineMaintenance] = useState([]);
   const [maintenanceTypes, setMaintenanceTypes] = useState([]);
+  const [personData, setpersonData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState("");
@@ -25,8 +26,7 @@ const MachineMaintenance = () => {
     machine_maintenance_details: '',
     machine_maintenance_driver_name: '',
     machine_maintenance_driver_contact: '',
-    machine_maintenance_repair_person:'',
-    machine_maintenance_repair_person_contact:'',
+    machine_maintenance_person_id:'',
     project_id:'',
     
   });
@@ -36,6 +36,7 @@ const MachineMaintenance = () => {
       const response = await axios.get('http://127.0.0.1:8000/show_machine_maintenance/');
       setMachineMaintenance(response.data.data || []);
       setMaintenanceTypes(response.data.maintenance_types_data || []);
+      setpersonData(response.data.persons_data || []);
       setTitle(response.data.title);
       setLoading(false);
     } catch (err) {
@@ -129,6 +130,7 @@ const MachineMaintenance = () => {
       );
       setFormData(response.data.data);
       setMaintenanceTypes(response.data.maintenance_types_data || []);
+      setpersonData(response.data.persons_data || []);
       openModal()
     } catch (err) {
       setError('Failed to load machine details');
@@ -159,8 +161,7 @@ const MachineMaintenance = () => {
     machine_maintenance_details: '',
     machine_maintenance_driver_name: '',
     machine_maintenance_driver_contact: '',
-    machine_maintenance_repair_person:'',
-    machine_maintenance_repair_person_contact:'',
+    machine_maintenance_person_id:'',
     project_id:'',
     });
   };
@@ -228,8 +229,8 @@ const MachineMaintenance = () => {
                   <td>{maintenance.machine_maintenance_date || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_amount_paid ? "Yes" : "No"}</td>
                   <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
-                  <td>{maintenance.machine_maintenance_person || "N/A"}</td>
-                  <td>{maintenance.machine_maintenance_contact || "N/A"}</td>
+                  <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
+                  <td>{maintenance.machine_maintenance_person_id__person_contact_number || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_driver || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_details || "N/A"}</td>
                   <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
@@ -362,26 +363,23 @@ const MachineMaintenance = () => {
   </div>
 
   <div className="mb-3">
-    <label className="form-label">Repair Person:</label>
-    <input
-      type="text"
-      name="machine_maintenance_repair_person"
-      value={formData.machine_maintenance_repair_person}
+    <label className="form-label">Person:</label>
+    <select
+      name="machine_maintenance_person_id"
+      value={formData.machine_maintenance_person_id}
       onChange={handleChange}
-      className="form-control"
-    />
+      className="form-select"
+      required
+    >
+      <option value="">Select person</option>
+      {personData.map((type) => (
+        <option key={type.person_id} value={type.person_id}>
+          {type.person_name}
+        </option>
+      ))}
+    </select>
   </div>
 
-  <div className="mb-3">
-    <label className="form-label">Repair Person Contact:</label>
-    <input
-      type="text"
-      name="machine_maintenance_repair_person_contact"
-      value={formData.machine_maintenance_repair_person_contact}
-      onChange={handleChange}
-      className="form-control"
-    />
-  </div>
 
   <div className="mb-3">
     <label className="form-label">Details:</label>
