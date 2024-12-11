@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 const MoneyCreditDebit = () => {
     const [MoneyCreditDebit, setMoneyCreditDebit] = useState([]);
     const [MoneyCredit, setMoneyCredit] = useState([]);
+    const [TotalCredit, setTotalCredit] = useState([]);
+    const [TotalDebit, setTotalDebit] = useState([]);
     const [MoneyDebit, setMoneyDebit] = useState([]);
     const [PersonData, setPersonData] = useState([]);
     const [PayTypeData, setPayTypeData] = useState([]);
@@ -26,6 +28,23 @@ const MoneyCreditDebit = () => {
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
+
+    useEffect(() => {
+        const total = MoneyCredit.reduce(
+          (sum, x) => sum + parseFloat(x.money_amount || 0),
+          0
+        );
+        setTotalCredit(total);
+      }, [MoneyCredit]);
+
+      useEffect(() => {
+        const total = MoneyDebit.reduce(
+          (sum, x) => sum + parseFloat(x.money_amount || 0),
+          0
+        );
+        setTotalDebit(total);
+      }, [MoneyDebit]);
+
 
     // Filter data based on search term
     const Filter_MoneyCreditDebit = MoneyCreditDebit.filter((item) => {
@@ -401,6 +420,16 @@ const MoneyCreditDebit = () => {
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
+
+                <div className="card cardbg2">
+                <div>Credit Amount</div>
+                <div><i class="fa-solid fa-indian-rupee-sign"></i>  {TotalDebit}</div>
+                </div>
+
+                <div className="card cardbg2">
+                <div className="">Debit Amount</div>
+                <div className=""><i class="fa-solid fa-indian-rupee-sign"></i> {TotalCredit}</div>
+                </div>
                 <div className="card">
                     <h5>Credit</h5>
                     <div className="table-responsive">
