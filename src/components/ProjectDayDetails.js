@@ -19,9 +19,9 @@ const ProjectDayDetails = () => {
         proejct_day_detail_date: "",
         project_day_detail_machine_id: "",
         project_day_detail_work_type: "",
-        project_day_detail_work_no: "",
-        project_day_detail_price: "",
-        project_day_detail_total_price: "",
+        project_day_detail_work_no: 0,
+        project_day_detail_price: 0,
+        project_day_detail_total_price: 0,
         project_day_detail_details: "",
     });
 
@@ -44,6 +44,7 @@ const ProjectDayDetails = () => {
         fetchProjectDayDetails();
     }, []);
 
+   
     useEffect(() => {
         if (Messages) {
             const timer = setTimeout(() => {
@@ -57,10 +58,12 @@ const ProjectDayDetails = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
+    
     };
 
     const handleSubmit = async (e) => {
@@ -164,7 +167,7 @@ const ProjectDayDetails = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h3>{ }</h3>
+                <h3>{title}</h3>
                 <button
                     type="button"
                     className="btn btn-sm mb-3 btn-primary"
@@ -321,20 +324,6 @@ const ProjectDayDetails = () => {
                                         onChange={handleChange}
                                         className="form-control"
                                         placeholder="Enter Price*"
-                                        required
-                                    />
-                                </div>
-
-                                {/* Total Price Field */}
-                                <div className="mb-3">
-                                    <input
-                                        id="totalPriceInput"
-                                        type="text"
-                                        name="project_day_detail_total_price"
-                                        value={formData.project_day_detail_total_price}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter Total Price*"
                                         required
                                     />
                                 </div>

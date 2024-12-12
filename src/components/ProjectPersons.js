@@ -368,20 +368,6 @@ const ProjectPersons = () => {
                                     />
                                 </div>
 
-                                {/* Total Price Field */}
-                                <div className="mb-3">
-                                    <input
-                                        id="totalPriceInput"
-                                        type="text"
-                                        name="project_person_total_price"
-                                        value={formData.project_person_total_price}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter Total Price*"
-                                        required
-                                    />
-                                </div>
-
 
                                 {/* Details Textarea */}
                                 <div className="mb-3">

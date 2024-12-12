@@ -179,7 +179,7 @@ const ProjectMaterial = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h3>{ }</h3>
+                <h3>{title}</h3>
                 <button
                     type="button"
                     className="btn btn-sm mb-3 btn-primary"
@@ -370,20 +370,7 @@ const ProjectMaterial = () => {
                                     />
                                 </div>
 
-                                {/* Total Price Field */}
-                                <div className="mb-3">
-                                    <input
-                                        id="totalPriceInput"
-                                        type="text"
-                                        name="project_material_total_amount"
-                                        value={formData.project_material_total_amount}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter Total Price*"
-                                        required
-                                    />
-                                </div>
-
+                               
                                 <div className="mb-3">
                                 <div className="form-check">
                                 <input

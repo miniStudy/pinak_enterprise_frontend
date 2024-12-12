@@ -338,20 +338,7 @@ const ProjectMachines = () => {
                                     />
                                 </div>
 
-                                {/* Total Price Field */}
-                                <div className="mb-3">
-                                    <input
-                                        id="totalPriceInput"
-                                        type="text"
-                                        name="project_machine_data_total_amount"
-                                        value={formData.project_machine_data_total_amount}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter Total Price*"
-                                        required
-                                    />
-                                </div>
-
+                              
 
                                 {/* Details Textarea */}
                                 <div className="mb-3">
