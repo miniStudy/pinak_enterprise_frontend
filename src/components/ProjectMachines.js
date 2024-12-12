@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 
-const ProjectMachines = () => {
+const ProjectMachines = ({project_id}) => {
     const [ProjectMachineData, setProjectMachineData] = useState([]);
     const [MachineData, setMachineData] = useState([]);
     const [WorkTypeData, setWorkTypeData] = useState([]);

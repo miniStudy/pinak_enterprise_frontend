@@ -137,7 +137,7 @@ function SingleProject() {
       </div>
 
 <div className="mt-3">
-{sectionname === "projectmachine" && <ProjectMachines />}
+{sectionname === "projectmachine" && <ProjectMachines project_id={project_id} />}
 
 {sectionname === "projectdaydetail" && <ProjectDayDetails />}
 
