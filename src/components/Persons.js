@@ -16,6 +16,11 @@ const Persons = () => {
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
 
+    const [PersonName, setPersonName] = useState('');
+    const [totalSalaryAmount, settotalSalaryAmount] = useState([]);
+    const [PersonTotalPrice, setPersonTotalPrice] = useState([]);
+    const [ProfitLossPerson, setProfitLossPerson] = useState([]);
+
     const [formData, setFormData] = useState({
         person_id: '',
         person_name: '',
@@ -155,6 +160,46 @@ const Persons = () => {
         }
     };
 
+
+
+
+    const displayData = async (id, person_name) => {
+        try {
+            const personSalaryResponse = await axios.get(
+                `http://127.0.0.1:8000/show_persons/?person_id=${id}`
+            );
+
+            const personProjectPriceResponse = await axios.get(
+                `http://127.0.0.1:8000/show_project_person/?machine_id=${id}`
+            );
+
+            const salaryData = personSalaryResponse.data.data || [];
+            const totalPersonSalary = salaryData.reduce(
+                (sum, x) => sum + parseFloat(x.person_salary || 0),
+                0
+            );
+
+            const personProjectPriceData = personProjectPriceResponse.data.data || [];
+            const personTotalPrice = personProjectPriceData.reduce(
+                (sum, x) => sum + parseFloat(x.project_person_total_price || 0),
+                0
+            );
+
+            setPersonName(person_name);
+            settotalSalaryAmount(totalPersonSalary);
+            setPersonTotalPrice(personTotalPrice);
+
+            const profitLoss = personTotalPrice - totalPersonSalary;
+            setProfitLossPerson(profitLoss);
+
+        } catch (err) {
+            setError('Failed to load maintenance details.');
+            setLoading(false);
+        }
+    };
+
+
+
     const deleteData = async (id) => {
         try {
             const response = await axios.delete(
@@ -261,7 +306,7 @@ const Persons = () => {
                                 personsDetails.map((person, index) => (
                                     <tr key={index + 1}>
                                         <td>{person.person_id || 'N/A'}</td>
-                                        <td>{person.person_name || 'N/A'}</td>
+                                        <td onClick={() => displayData(person.person_id, person.person_name)}>{person.person_name || 'N/A'}</td>
                                         <td>{person.person_type_id__person_type_name || 'N/A'}</td>
                                         <td>{person.person_contact_number || 'N/A'}</td>
                                         <td>{person.person_salary || 'N/A'}</td>
@@ -272,7 +317,7 @@ const Persons = () => {
                                         <td>{person.person_business_job_company_num || 'N/A'}</td>
                                         <td>{person.person_business_job_address || 'N/A'}</td>
                                         <td>{person.person_gst || 'N/A'}</td>
-                                        <td>{person.person_types_for_project || 'N/A'}</td>                                        
+                                        <td>{person.person_types_for_project || 'N/A'}</td>
                                         <td>{person.person_other_details || 'N/A'}</td>
                                         <td>
                                             <i
@@ -298,6 +343,38 @@ const Persons = () => {
                 </div>
 
             </div>
+
+
+            {PersonName && (
+                <div className="bg-white shadow-md rounded-lg p-4">
+                    <h2 className="text-lg font-semibold mb-2">Person Name: {PersonName}</h2>
+                    <div className="flex">
+                        <p>Total Salary Amount:</p>
+                        <p className="font-semibold">
+                            <i className="fa-solid fa-indian-rupee-sign"></i> {totalSalaryAmount}
+                        </p>
+                    </div>
+                    {PersonTotalPrice && (
+                        <div className="flex">
+                            <p>Total Earned:</p>
+                            <p className="font-semibold">
+                                <i className="fa-solid fa-indian-rupee-sign"></i> {PersonTotalPrice}
+                            </p>
+                        </div>
+                    )}
+                    <h5 className="mt-4">
+                        {ProfitLossPerson > 0 ? (
+                            <span className="text-green-500">
+                                Profit: <i className="fa-solid fa-indian-rupee-sign"></i> {ProfitLossPerson}
+                            </span>
+                        ) : (
+                            <span className="text-red-500">
+                                Loss: <i className="fa-solid fa-indian-rupee-sign"></i> {Math.abs(ProfitLossPerson)}
+                            </span>
+                        )}
+                    </h5>
+                </div>
+            )}
 
             {/* Modal for Add/Edit Person */}
             <div
