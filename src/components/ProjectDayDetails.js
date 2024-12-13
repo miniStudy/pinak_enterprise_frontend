@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 
-const ProjectDayDetails = () => {
+const ProjectDayDetails = ({project_id}) => {
     const [ProjectDayDetailsData, setProjectDayDetailsData] = useState([]);
     const [MachineData, setMachineData] = useState([]);
     const [WorkTypeData, setWorkTypeData] = useState([]);
@@ -23,12 +23,13 @@ const ProjectDayDetails = () => {
         project_day_detail_price: 0,
         project_day_detail_total_price: 0,
         project_day_detail_details: "",
+        project_id: project_id
     });
 
 
     const fetchProjectDayDetails = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/show_project_day_details/');
+            const response = await axios.get(`http://127.0.0.1:8000/show_project_day_details/?project_id=${project_id}`);
             setProjectDayDetailsData(response.data.data || []);
             setMachineData(response.data.machines_data || []);
             setWorkTypeData(response.data.work_types_data || []);

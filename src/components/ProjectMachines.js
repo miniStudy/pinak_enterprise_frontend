@@ -24,6 +24,7 @@ const ProjectMachines = ({project_id}) => {
         project_machine_data_total_amount: "",
         project_machine_data_work_details: "",
         project_machine_data_more_details: "",
+        project_id: project_id
 
 
     });
@@ -31,7 +32,7 @@ const ProjectMachines = ({project_id}) => {
 
     const fetchProjectMachines = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/show_project_machine/');
+            const response = await axios.get(`http://127.0.0.1:8000/show_project_machine/?project_id=${project_id}`);
             setProjectMachineData(response.data.data || []);
             setMachineData(response.data.machines_data || []);
             setWorkTypeData(response.data.work_types_data || []);
@@ -111,6 +112,7 @@ const ProjectMachines = ({project_id}) => {
             project_machine_data_total_amount: "",
             project_machine_data_work_details: "",
             project_machine_data_more_details: "",
+            
         });
     };
 

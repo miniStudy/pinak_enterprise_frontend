@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ProjectMachines from "./ProjectMachines";
 import ProjectDayDetails from "./ProjectDayDetails";
@@ -139,11 +138,11 @@ function SingleProject() {
 <div className="mt-3">
 {sectionname === "projectmachine" && <ProjectMachines project_id={project_id} />}
 
-{sectionname === "projectdaydetail" && <ProjectDayDetails />}
+{sectionname === "projectdaydetail" && <ProjectDayDetails project_id={project_id} />}
 
-{sectionname === "projectperson" && <ProjectPersons />}
+{sectionname === "projectperson" && <ProjectPersons project_id={project_id} />}
 
-{sectionname === "projectmaterial" && <ProjectMaterial />}
+{sectionname === "projectmaterial" && <ProjectMaterial project_id={project_id} />}
 </div>
     </div>
   );

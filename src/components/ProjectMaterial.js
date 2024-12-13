@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 
-const ProjectMaterial = () => {
+const ProjectMaterial = ({project_id}) => {
     const [ProjectMaterialData, setProjectMaterialData] = useState([]);
     const [MaterialData, setMaterialData] = useState([]);
     const [MaterialTypeData, setMaterialTypeData] = useState([]);
@@ -29,13 +29,13 @@ const ProjectMaterial = () => {
         project_material_agent_id: "",
         person_material_agent_amount: "",
         person_material_information: "",
+        project_id: project_id
 
     });
 
-
     const fetchProjectMaterials = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/show_project_material/');
+            const response = await axios.get(`http://127.0.0.1:8000/show_project_material/?project_id=${project_id}`);
             setProjectMaterialData(response.data.data || []);
             setMaterialData(response.data.materials_data || []);
             setMaterialTypeData(response.data.material_types_data || []);
