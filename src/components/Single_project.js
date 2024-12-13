@@ -102,34 +102,34 @@ function SingleProject() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3 mt-3">
         <div
-          className="card text-center"
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectmachine")}
         >
-          project-machines
+          Project Machines
         </div>
         <div
-          className="card text-center"
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectdaydetail")}
         >
-          project-day-details
+          Project Day Details
         </div>
         <div
-          className="card text-center"
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectperson")}
         >
-          project-persons
+          Project Persons
         </div>
         <div
-          className="card text-center"
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectmaterial")}
         >
-          project-materials
+          Project Materials
         </div>
         <div
-          className="card text-center"
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectreport")}
         >
-          Report
+          Reports
         </div>
 
 

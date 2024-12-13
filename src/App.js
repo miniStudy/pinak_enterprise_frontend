@@ -25,6 +25,7 @@ import MaterialTypes from './components/MaterialTypes'
 import Materials from './components/Materials'
 import ProjectMaterial from './components/ProjectMaterial'
 import ProjectDayDetails from './components/ProjectDayDetails'
+import Reports from './components/Reports'
 
 import PersonWorkMachines from './components/PersonWorkMachines'
 import DocumentTypes from './components/DocumentTypes'
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="materials" element={<Materials  />} />
           <Route path="project-materials" element={<ProjectMaterial  />} />
           <Route path="project-day-details" element={<ProjectDayDetails  />} />
+          <Route path="reports" element={<Reports  />} />
           <Route path="person-work-machine" element={<PersonWorkMachines  />} />
           <Route path="document-types" element={<DocumentTypes  />} />
           <Route path="documents" element={<Documents  />} />
