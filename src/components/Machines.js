@@ -18,6 +18,33 @@ const Machines = () => {
     const deletemodel = useRef();
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+
+    // Filter data based on search term
+    const filter_machinesDetails = machinesDetails.filter((item) => {
+
+        const matchesSearchTerm =
+                (item?.machine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_number_plate?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_register_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_own?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_condition?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_types_id__machine_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_owner_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_owner_contact?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.machine_buy_price?.toLowerCase().includes(searchTerm.toLowerCase()));
+                (item?.machine_buy_date?.toLowerCase().includes(searchTerm.toLowerCase()));
+                (item?.machine_sold_price?.toLowerCase().includes(searchTerm.toLowerCase()));
+                (item?.machine_sold_out_date?.toLowerCase().includes(searchTerm.toLowerCase()));
+        
+            return matchesSearchTerm;
+        });
+
 
     // Form state for Add/Edit
     const [formData, setFormData] = useState({
@@ -250,7 +277,7 @@ const displayData = async (id, machine_name) => {
         style={{ height: "30px" }} // Adjust the height as needed
     >Add Machine</button>
     <div className="input-group" style={{ height: "30px", width: "auto" }}>
-        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
          <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
         </div>
@@ -280,8 +307,8 @@ const displayData = async (id, machine_name) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {machinesDetails.length > 0 ? (
-                            machinesDetails.map((y) => (
+                        {filter_machinesDetails.length > 0 ? (
+                            filter_machinesDetails.map((y) => (
                                 <tr key={y.machine_id}>
                                     <td>{y.machine_id || "N/A"}</td>
 

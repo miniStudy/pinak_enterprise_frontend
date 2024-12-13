@@ -13,7 +13,7 @@ function SingleProject() {
   const [error, setError] = useState(null);
   const [title, setTitle] = useState(""); // To store the title from API response
   const [sectionname, setSectionName] = useState("");
-
+  
   const fetchProject = async (projectId) => {
     try {
       const response = await axios.get(

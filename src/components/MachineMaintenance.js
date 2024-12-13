@@ -15,6 +15,32 @@ const MachineMaintenance = () => {
   const deletemodel = useRef();
   const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+
+  // Filter data based on search term
+  const filter_machineMaintenance = machineMaintenance.filter((item) => {
+
+      const matchesSearchTerm =
+        (item?.machine_machine_id__machine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_machine_id__machine_number_plate?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_machine_id__machine_types_id__machine_type_name?.toString().includes(searchTerm)) ||
+        (item?.machine_maintenance_amount?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_maintenance_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_maintenance_amount_paid_by?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_maintenance_driver_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_maintenance_driver_contact?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_maintenance_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.machine_maintenance_person_id__person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.machine_maintenance_types_id__maintenance_type_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.project_id__project_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+      return matchesSearchTerm;
+      });
 
 
   const [formData, setFormData] = useState({
@@ -202,7 +228,7 @@ const MachineMaintenance = () => {
             style={{ height: "30px" }} // Adjust the height as needed
           >Add Maintenance</button>
           <div className="input-group" style={{ height: "30px", width: "auto" }}>
-            <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" />
+            <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
             <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
           </div>
         </div>
@@ -227,8 +253,8 @@ const MachineMaintenance = () => {
               </tr>
             </thead>
             <tbody>
-              {machineMaintenance.length > 0 ? (
-                machineMaintenance.map((maintenance, index) => (
+              {filter_machineMaintenance.length > 0 ? (
+                filter_machineMaintenance.map((maintenance, index) => (
                   <tr key={maintenance.machine_maintenance_id}>
                     <td>{index + 1}</td>
                     <td>{maintenance.machine_machine_id__machine_name} - {maintenance.machine_machine_id__machine_number_plate} - {maintenance.machine_machine_id__machine_types_id__machine_type_name}</td>
@@ -238,7 +264,7 @@ const MachineMaintenance = () => {
                     <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_person_id__person_contact_number || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_driver || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_driver_name || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_details || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
                     <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(maintenance.machine_maintenance_id)}></i></td>

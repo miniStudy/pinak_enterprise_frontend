@@ -20,6 +20,32 @@ const Persons = () => {
     const [totalSalaryAmount, settotalSalaryAmount] = useState([]);
     const [PersonTotalPrice, setPersonTotalPrice] = useState([]);
     const [ProfitLossPerson, setProfitLossPerson] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+
+    // Filter data based on search term
+    const filter_personDetails = personsDetails.filter((item) => {
+
+        const matchesSearchTerm =
+                (item?.person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_salary?.toString().includes(searchTerm)) ||
+                (item?.person_register_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_address?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_business_job_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_business_job_company_num?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_business_job_address?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_gst?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (item?.person_type_id__person_type_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+                (item?.person_types_for_project?.toLowerCase().includes(searchTerm.toLowerCase()));
+        
+            return matchesSearchTerm;
+        });
+
 
     const [formData, setFormData] = useState({
         person_id: '',
@@ -264,9 +290,10 @@ const Persons = () => {
                     </button>
 
                     <div className="input-group" style={{ height: "30px", width: "auto" }}>
-                        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
                         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
+
                 </div>
                 <Select
                     options={person_options}
@@ -302,8 +329,8 @@ const Persons = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {personsDetails.length > 0 ? (
-                                personsDetails.map((person, index) => (
+                            {filter_personDetails.length > 0 ? (
+                                filter_personDetails.map((person, index) => (
                                     <tr key={index + 1}>
                                         <td>{person.person_id || 'N/A'}</td>
                                         <td onClick={() => displayData(person.person_id, person.person_name)}>{person.person_name || 'N/A'}</td>

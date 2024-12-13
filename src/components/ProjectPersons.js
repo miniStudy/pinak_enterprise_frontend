@@ -5,6 +5,7 @@ import { Modal } from 'bootstrap';
 const ProjectPersons = ({project_id}) => {
     const [ProjectPersonData, setProjectPersonData] = useState([]);
     const [PersonData, setPersonData] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
     const [WorkTypeData, setWorkTypeData] = useState([]);
     const [ProjectMachineData, setProjectMachineData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ const ProjectPersons = ({project_id}) => {
             const response = await axios.get(`http://127.0.0.1:8000/show_project_person/?project_id=${project_id}`);
             setProjectPersonData(response.data.data || []);
             setPersonData(response.data.persons_data || []);
+            setTotalAmount(response.data.total_amount || 0);
             setWorkTypeData(response.data.work_types_data || []);
             setProjectMachineData(response.data.project_machine_data || []);
             setTitle(response.data.title)
@@ -176,14 +178,16 @@ const ProjectPersons = ({project_id}) => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h3>{title}</h3>
                 <button
                     type="button"
-                    className="btn btn-sm mb-3 btn-primary"
+                    className="btn btn-sm mb-1 mt-3 btn-primary"
                     onClick={openModal}
                 >
                     Add Project Person Data
                 </button>
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-1">
+                <div className="card">
+                    <h6 className='mb-2'>PROJECT Persons</h6>
                 <div className="table-responsive">
                     <table className="table table-hover">
                         <thead>
@@ -247,6 +251,9 @@ const ProjectPersons = ({project_id}) => {
                             )}
                         </tbody>
                     </table>
+                    <div className='font-semibold text-base text-green-800' >Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{totalAmount}</div>
+                    </div>
+                </div>
                 </div>
             </div>
             <div

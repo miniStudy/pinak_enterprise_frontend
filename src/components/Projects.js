@@ -16,6 +16,37 @@ const Projects = () => {
   const deletemodel = useRef();
   const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+};
+
+
+// Filter data based on search term
+const filter_projects = projects.filter((item) => {
+
+    const matchesSearchTerm =
+        (item?.project_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_start_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_end_date?.toString().includes(searchTerm)) ||
+        (item?.project_amount?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.person_address?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_owner_name__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_owner_name__person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_status?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_types_id__project_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.project_cgst?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.project_sgst?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.project_tax?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.project_discount?.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+      return matchesSearchTerm;
+    });
+
+
+
   const [formData, setformData] = useState({
     project_id: "",
     project_name: "",
@@ -224,7 +255,7 @@ const personsoptions = persons.map((pers) => ({
     </button>
     
     <div className="input-group" style={{ height: "30px", width: "auto" }}>
-        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
          <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
 
@@ -252,8 +283,8 @@ const personsoptions = persons.map((pers) => ({
               </tr>
             </thead>
             <tbody>
-              {projects.length > 0 ? (
-                projects.map((project, index) => (
+              {filter_projects.length > 0 ? (
+                filter_projects.map((project, index) => (
                   <tr key={project.project_id}>
                     <td>{index + 1} {project.project_id}</td>
                     <td><Link to={`/project/${project.project_id}`}>{project.project_name || "N/A"}</Link></td>

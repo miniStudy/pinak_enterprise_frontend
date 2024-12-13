@@ -5,6 +5,7 @@ import { Modal } from 'bootstrap';
 const ProjectDayDetails = ({project_id}) => {
     const [ProjectDayDetailsData, setProjectDayDetailsData] = useState([]);
     const [MachineData, setMachineData] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
     const [WorkTypeData, setWorkTypeData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -19,8 +20,8 @@ const ProjectDayDetails = ({project_id}) => {
         proejct_day_detail_date: "",
         project_day_detail_machine_id: "",
         project_day_detail_work_type: "",
-        project_day_detail_work_no: 0,
-        project_day_detail_price: 0,
+        project_day_detail_work_no: "",
+        project_day_detail_price: "",
         project_day_detail_total_price: 0,
         project_day_detail_details: "",
         project_id: project_id
@@ -32,6 +33,7 @@ const ProjectDayDetails = ({project_id}) => {
             const response = await axios.get(`http://127.0.0.1:8000/show_project_day_details/?project_id=${project_id}`);
             setProjectDayDetailsData(response.data.data || []);
             setMachineData(response.data.machines_data || []);
+            setTotalAmount(response.data.total_amount || 0);
             setWorkTypeData(response.data.work_types_data || []);
             setTitle(response.data.title)
             setLoading(false);
@@ -168,14 +170,16 @@ const ProjectDayDetails = ({project_id}) => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h3>{title}</h3>
                 <button
                     type="button"
-                    className="btn btn-sm mb-3 btn-primary"
+                    className="btn btn-sm mb-1 mt-3 btn-primary"
                     onClick={openModal}
                 >
                     Add Project Day Details
                 </button>
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-1">
+                <div className="card">
+                    <h6 className='mb-2'>PROJECT Day Details</h6>
                 <div className="table-responsive">
                     <table className="table table-hover">
                         <thead>
@@ -227,6 +231,9 @@ const ProjectDayDetails = ({project_id}) => {
                             )}
                         </tbody>
                     </table>
+                    <div className='font-semibold text-base text-green-800'>Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{totalAmount}</div>
+                    </div>
+                </div>
 
                 </div>
             </div>
