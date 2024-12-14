@@ -5,6 +5,7 @@ import ProjectMachines from "./ProjectMachines";
 import ProjectDayDetails from "./ProjectDayDetails";
 import ProjectMaterial from "./ProjectMaterial";
 import ProjectPersons from "./ProjectPersons";
+import ProjectExpenses from "./ProjectExpenses";
 
 function SingleProject() {
   const { project_id } = useParams();
@@ -100,7 +101,7 @@ function SingleProject() {
       </div>
       <hr />
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3 mt-3">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-3 mt-3">
         <div
           className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectmachine")}
@@ -119,6 +120,14 @@ function SingleProject() {
         >
           Project Persons
         </div>
+
+        <div
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
+          onClick={() => sectionss("projectexpense")}
+        >
+          Project Expense
+        </div>
+
         <div
           className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectmaterial")}
@@ -141,6 +150,8 @@ function SingleProject() {
 {sectionname === "projectdaydetail" && <ProjectDayDetails project_id={project_id} />}
 
 {sectionname === "projectperson" && <ProjectPersons project_id={project_id} />}
+
+{sectionname === "projectexpense" && <ProjectExpenses project_id={project_id} />}
 
 {sectionname === "projectmaterial" && <ProjectMaterial project_id={project_id} />}
 </div>

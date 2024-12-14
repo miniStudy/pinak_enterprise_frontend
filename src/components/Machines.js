@@ -116,7 +116,6 @@ const Machines = () => {
                 formData
             );
             if (response.status === 200) {
-                alert('Machine details saved successfully!');
                 fetchMachines(); // Reload data
                 resetForm();
                 closeModal();
@@ -165,7 +164,7 @@ const Machines = () => {
                 `http://127.0.0.1:8000/insert_update_machine/?getdata_id=${id}`
             );
             setFormData(response.data.data);
-            setmachine_types(response.data.machine_types || []);
+            // setmachine_types(response.data.machine_types || []);
             openModal()
         } catch (err) {
             setError('Failed to load machine details');
