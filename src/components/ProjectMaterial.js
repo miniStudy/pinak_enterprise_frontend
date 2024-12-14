@@ -7,7 +7,6 @@ const ProjectMaterial = ({project_id}) => {
     const [MaterialData, setMaterialData] = useState([]);
     const [MaterialTypeData, setMaterialTypeData] = useState([]);
     const [WorkTypeData, setWorkTypeData] = useState([]);
-    const [PersonData, setPersonData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [title, setTitle] = useState("");
@@ -25,9 +24,6 @@ const ProjectMaterial = ({project_id}) => {
         project_material_work_no: "",
         project_material_price: "",
         project_material_total_amount: "",
-        project_material_agent: true,
-        project_material_agent_id: "",
-        person_material_agent_amount: "",
         person_material_information: "",
         project_id: project_id
 
@@ -36,11 +32,11 @@ const ProjectMaterial = ({project_id}) => {
     const fetchProjectMaterials = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/show_project_material/?project_id=${project_id}`);
+            console.log(response.data.data)
             setProjectMaterialData(response.data.data || []);
             setMaterialData(response.data.materials_data || []);
             setMaterialTypeData(response.data.material_types_data || []);
             setWorkTypeData(response.data.work_types_data || []);
-            setPersonData(response.data.persons_data || []);
             setTitle(response.data.title)
             setLoading(false);
         } catch (err) {
@@ -74,13 +70,14 @@ const ProjectMaterial = ({project_id}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        alert(formData.project_id);
+
         try {
             const response = await axios.post(
                 'http://127.0.0.1:8000/insert_update_project_material/',
                 formData
             );
             if (response.status === 200) {
-                alert(response.data.message);
                 fetchProjectMaterials();
                 resetForm();
                 closeModal();
@@ -97,11 +94,12 @@ const ProjectMaterial = ({project_id}) => {
             const response = await axios.get(
                 `http://127.0.0.1:8000/insert_update_project_material/?getdata_id=${id}`
             );
-            setFormData(response.data.data);
-            setMaterialData(response.data.materials_data || []);
-            setMaterialTypeData(response.data.material_types_data || []);
-            setWorkTypeData(response.data.work_types_data || []);
-            setPersonData(response.data.persons_data || []);
+            
+            const projectMaterialData = response.data.data;
+            setFormData({
+                ...projectMaterialData,
+                project_id: project_id // Ensure project_id is set here
+            });
             openModal();
         } catch (err) {
             alert('Failed to load project material data');
@@ -118,9 +116,6 @@ const ProjectMaterial = ({project_id}) => {
             project_material_work_no: "",
             project_material_price: "",
             project_material_total_amount: "",
-            project_material_agent: true,
-            project_material_agent_id: "",
-            person_material_agent_amount: "",
             person_material_information: "",
         });
     };
@@ -199,9 +194,6 @@ const ProjectMaterial = ({project_id}) => {
                                 <th>Work No</th>
                                 <th>Price</th>
                                 <th>Total Amount</th>
-                                <th>Agent Status</th>
-                                <th>Agent Name</th>
-                                <th>Agent Amount</th>
                                 <th>Details</th>
                                 <th>Update</th>
                                 <th>Remove</th>
@@ -213,15 +205,12 @@ const ProjectMaterial = ({project_id}) => {
                                     <tr key={detail.project_material_id}>
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{detail.project_material_date || "N/A"}</td>
-                                        <td>{detail.project_material_material_id__material_person_id__person_name || "N/A"}</td>
+                                        <td>{detail.project_material_material_id__material_owner__person_name || "N/A"}</td>
                                         <td>{detail.project_material_material_type_id__material_type_name || "N/A"}</td>
                                         <td>{detail.project_material_work_type_id__work_type_name || "N/A"}</td>
                                         <td>{detail.project_material_work_no || "N/A"}</td>
                                         <td>{detail.project_material_price || "N/A"}</td>
                                         <td>{detail.project_material_total_amount || "N/A"}</td>
-                                        <td>{detail.project_material_agent ? 'Active' : 'Inactive'}</td>
-                                        <td>{detail.project_material_agent_id__person_name || "N/A"}</td>
-                                        <td>{detail.person_material_agent_amount || "N/A"}</td>
                                         <td>{detail.person_material_information || "N/A"}</td>
                                         <td>
                                             <i
@@ -297,7 +286,7 @@ const ProjectMaterial = ({project_id}) => {
                                                 key={type.material_id}
                                                 value={type.material_id}
                                             >
-                                                {type.material_person_id__person_name}
+                                                {type.material_owner__person_name}
                                             </option>
                                         ))}
                                     </select>
@@ -371,57 +360,11 @@ const ProjectMaterial = ({project_id}) => {
                                 </div>
 
                                
-                                <div className="mb-3">
-                                <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    onChange={(e) =>
-                                    handleChange({
-                                        target: { name: "project_material_agent", value: e.target.checked },
-                                    })
-                                    }
-                                    checked={formData.project_material_agent}
-                                    name="project_material_agent"
-                                    type="checkbox"
-                                    id="flexCheckChecked"
-                                />
-                                <label className="form-check-label" htmlFor="flexCheckChecked">
-                                    Active
-                                </label>
-                                </div>
-                            </div>
+                               
 
-                            <div className="mb-3">
-                                    <select
-                                        name="project_material_agent_id"
-                                        value={formData.project_material_agent_id}
-                                        onChange={handleChange}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Agent*</option>
-                                        {PersonData.map((type) => (
-                                            <option
-                                                key={type.person_id}
-                                                value={type.person_id}
-                                            >
-                                                {type.person_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                           
 
-                                <div className="mb-3">
-                                    <input
-                                        id="totalPriceInput"
-                                        type="text"
-                                        name="person_material_agent_amount"
-                                        value={formData.person_material_agent_amount}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter Agent Amount"
-                                    />
-                                </div>
+                               
 
 
                                 {/* Details Textarea */}
