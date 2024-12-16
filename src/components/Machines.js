@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+
+
 const Machines = () => {
     const [machinesDetails, setMachinesDetails] = useState([]);
     const [projectmachineData, setprojectmachineData] = useState([]);
@@ -19,11 +22,44 @@ const Machines = () => {
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    
+    // Form state for Add/Edit
+    const [formData, setFormData] = useState({
+        machine_id: '',
+        machine_name: '',
+        machine_number_plate: '',
+        machine_register_date: '',
+        machine_own: '',
+        machine_condition: '',
+        machine_working: true,
+        machine_types_id: '',
+        machine_details: '',
+        machine_owner_id: '',
+        machine_buy_price: '',
+        machine_buy_date: '',
+        machine_sold_price: '',
+        machine_sold_out_date: '',
+        machine_other_details: '',
+    });
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
+    
 
+    // for select option
+    const [persons, setpersons] = useState([]);
+    const personsoptions = persons.map((pers) => ({
+        value: pers.person_id,
+        label: pers.person_name + pers.person_contact_number,
+      }));
+      
+    const handleMachineOwnerChange = (selectedOption) => {
+        setFormData({
+          ...formData,
+          machine_owner_id: selectedOption ? selectedOption.value : "",
+        });
+      };
 
     // Filter data based on search term
     const filter_machinesDetails = machinesDetails.filter((item) => {
@@ -46,25 +82,7 @@ const Machines = () => {
         });
 
 
-    // Form state for Add/Edit
-    const [formData, setFormData] = useState({
-        machine_id: '',
-        machine_name: '',
-        machine_number_plate: '',
-        machine_register_date: '',
-        machine_own: '',
-        machine_condition: '',
-        machine_working: true,
-        machine_types_id: '',
-        machine_details: '',
-        machine_owner_name: '',
-        machine_owner_contact: '',
-        machine_buy_price: '',
-        machine_buy_date: '',
-        machine_sold_price: '',
-        machine_sold_out_date: '',
-        machine_other_details: '',
-    });
+    
 
  
 
@@ -75,6 +93,7 @@ const Machines = () => {
             const response = await axios.get('http://127.0.0.1:8000/show_machines/');
             setMachinesDetails(response.data.data || []);
             setmachine_types(response.data.machine_types || []);
+            setpersons(response.data.persons_data || []);
             setTitle(response.data.title);
             setLoading(false);
         } catch (err) {
@@ -239,8 +258,7 @@ const displayData = async (id, machine_name) => {
             machine_working: true,
             machine_types_id: '',
             machine_details: '',
-            machine_owner_name: '',
-            machine_owner_contact: '',
+            machine_owner_id: '',
             machine_buy_price: '',
             machine_buy_date: '',
             machine_sold_price: '',
@@ -480,27 +498,16 @@ const displayData = async (id, machine_name) => {
                                     </select>
                                 </div>
 
-                                <div className='mb-3'>
-                                    <input
-                                        type="text"
-                                        name="machine_owner_name"
-                                        value={formData.machine_owner_name}
-                                        onChange={handleChange}
-                                        className='form-control'
-                                        placeholder='Machine Owner Name'
-                                    />
-                                </div>
-
-                                <div className='mb-3'>
-                                    <input
-                                        type="text"
-                                        name="machine_owner_contact"
-                                        value={formData.machine_owner_contact}
-                                        onChange={handleChange}
-                                        placeholder='Contact Number'
-                                        className='form-control'
-                                    />
-                                </div>
+                                <Select
+                options={personsoptions}
+                value={personsoptions.find((option) => option.value === formData.machine_owner_id)}
+                onChange={handleMachineOwnerChange}
+                placeholder="Select Machine Owner*"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
 
                                 <div className='mb-3'>
                                     <input
@@ -610,15 +617,6 @@ const displayData = async (id, machine_name) => {
                                         value={formData.machine_details}
                                         onChange={handleChange}
                                         
-                                    ></textarea>
-                                </div>
-
-                                <div className='mb-3'>
-                                    <textarea
-                                        name="machine_other_details"
-                                        value={formData.machine_other_details}
-                                        onChange={handleChange}
-                                        className='form-control'
                                     ></textarea>
                                 </div>
 

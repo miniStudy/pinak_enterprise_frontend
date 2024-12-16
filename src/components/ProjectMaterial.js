@@ -331,8 +331,9 @@ const ProjectMaterial = ({project_id}) => {
                                         ))}
                                     </select>
                                 </div>
-
-                                <div className="mb-3">
+                                
+                                <div className="grid grid-cols-3 gap-2 mb-3">
+                                <div className="">
                                     <input
                                         id="workNoInput"
                                         type="text"
@@ -340,13 +341,13 @@ const ProjectMaterial = ({project_id}) => {
                                         value={formData.project_material_work_no}
                                         onChange={handleChange}
                                         className="form-control"
-                                        placeholder="Enter Work Number*"
+                                        placeholder="Work Number*"
                                         required
                                     />
                                 </div>
 
                                 {/* Price Field */}
-                                <div className="mb-3">
+                                <div className="">
                                     <input
                                         id="priceInput"
                                         type="text"
@@ -354,10 +355,13 @@ const ProjectMaterial = ({project_id}) => {
                                         value={formData.project_material_price}
                                         onChange={handleChange}
                                         className="form-control"
-                                        placeholder="Enter Price*"
+                                        placeholder="Price*"
                                         required
                                     />
                                 </div>
+                                <div className="d-flex align-items-center">Total Price : {formData.project_material_work_no * formData.project_material_price}</div>
+                                </div>
+                                
 
                                
                                
