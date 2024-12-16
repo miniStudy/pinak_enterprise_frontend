@@ -10,6 +10,7 @@ import Select from 'react-select';
 const Machines = () => {
     const [machinesDetails, setMachinesDetails] = useState([]);
     const [projectmachineData, setprojectmachineData] = useState([]);
+    const [machine_rented_work_type, setmachine_rented_work_type] = useState([]);
     const [FilterMachineName, setFilterMachineName] = useState('');
     const [totalProjectMachineAmount, settotalProjectMachineAmount] = useState([]);
     const [machinemaintenanceData, setmachinemaintenanceData] = useState([]);
@@ -42,6 +43,9 @@ const Machines = () => {
         machine_sold_price: '',
         machine_sold_out_date: '',
         machine_other_details: '',
+        machine_rented_work_type:'',
+        machine_rented_work_price:'',
+        price_filter:'',
     });
 
     const handleSearchChange = (e) => {
@@ -96,6 +100,7 @@ const Machines = () => {
             setMachinesDetails(response.data.data || []);
             setmachine_types(response.data.machine_types || []);
             setpersons(response.data.persons_data || []);
+            setmachine_rented_work_type(response.data.machine_rented_work_type)
             setTitle(response.data.title);
             setLoading(false);
         } catch (err) {
@@ -266,6 +271,9 @@ const displayData = async (id, machine_name) => {
             machine_sold_price: '',
             machine_sold_out_date: '',
             machine_other_details: '',
+            machine_rented_work_type:'',
+            machine_rented_work_price:'',
+            price_filter:'',
         });
     };
 
@@ -498,23 +506,57 @@ const displayData = async (id, machine_name) => {
                                 </div>
 
                                 <div className='mb-3'>
-                                    <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select'>
-                                        <option value="">Company/Rended</option>
+                                    <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select' required>
+                                        <option value="">Ownership</option>
                                         <option value="Company">Company</option>
                                         <option value="Rented">Rented</option>
                                     </select>
                                 </div>
 
-                                <Select
-                options={personsoptions}
-                value={personsoptions.find((option) => option.value === formData.machine_owner_id)}
-                onChange={handleMachineOwnerChange}
-                placeholder="Select Machine Owner*"
-                isSearchable
-                isClearable
-                className="react-select-container mb-3"
-                classNamePrefix="react-select"
-            />
+                                <div className='mb-3'>
+                                    <select name="machine_types_id" value={formData.machine_types_id} onChange={handleChange} className='form-select' required>
+                                        <option value="">machine type*</option>
+                                        {machine_types.length > 0 ? (
+                                            machine_types.map((x) => (
+                                                <option key={x.machine_type_id} value={x.machine_type_id}>
+                                                    {x.machine_type_name}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </select>
+                                </div>
+
+                {formData.machine_own === 'Rented' && (
+
+                    <Select
+                    options={personsoptions}
+                    value={personsoptions.find((option) => option.value === formData.machine_owner_id)}
+                    onChange={handleMachineOwnerChange}
+                    placeholder="Select Machine Owner*"
+                    isSearchable
+                    isClearable
+                    className="react-select-container mb-3"
+                    classNamePrefix="react-select"
+                
+                />
+                
+
+                )}            
+
+                                    <div className='mb-3'>
+                                    <input
+                                        type="text"
+                                        name="machine_number_plate"
+                                        value={formData.machine_number_plate}
+                                        onChange={handleChange}
+                                        placeholder='Number Plate*'
+                                        className='form-control'
+                                        required
+                                    />
+                                </div>
+                                
 
                                 <div className='mb-3'>
                                     <input
@@ -523,9 +565,11 @@ const displayData = async (id, machine_name) => {
                                         value={formData.machine_register_date}
                                         onChange={handleChange}
                                         className='form-control'
+                                        required
                                     />
                                 </div>
 
+                                {formData.machine_own === 'Company' && (
                                 <div className='mb-3'>
                                     <select name="machine_condition" value={formData.machine_condition} onChange={handleChange} className='form-select'>
                                         <option value="">New/Second-hand</option>
@@ -533,19 +577,41 @@ const displayData = async (id, machine_name) => {
                                         <option value="Second_hand">Second hand</option>
                                     </select>
                                 </div>
+                                )}
 
+                                
+
+
+                                {/* <div className='mb-3'>
+                                    <select className='form-select' name='price_filter' value={formData.machine_rented_work_type}>
+
+                                    </select>
+                                </div> */}
+                                <div className='mb-3'>
+                                    <select name="machine_rented_work_type" value={formData.machine_rented_work_type} onChange={handleChange} className='form-select'>
+                                        <option value="">Work Type</option>
+                                        {machine_rented_work_type.length > 0 ? (
+                                            machine_rented_work_type.map((x) => (
+                                                <option key={x.work_type_id} value={x.work_type_id}>
+                                                    {x.work_type_name}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </select>
+                                </div>
                                 <div className='mb-3'>
                                     <input
-                                        type="text"
-                                        name="machine_number_plate"
-                                        value={formData.machine_number_plate}
+                                        type="number"
+                                        name="machine_rented_work_price"
+                                        value={formData.machine_rented_work_price}
                                         onChange={handleChange}
-                                        placeholder='Number Plate'
                                         className='form-control'
+                                        placeholder='Price'
                                     />
                                 </div>
 
-                                
 
                                 <div className='mb-3'>
                                     <input
@@ -554,11 +620,11 @@ const displayData = async (id, machine_name) => {
                                         value={formData.machine_buy_price}
                                         onChange={handleChange}
                                         className='form-control'
-                                        placeholder='Buy Price'
+                                        placeholder='Price'
                                     />
                                 </div>
 
-                                <div className='mb-3'>
+                                {/* <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_buy_date"
@@ -567,9 +633,9 @@ const displayData = async (id, machine_name) => {
                                         className='form-control'
                                         placeholder='Buy Date'
                                     />
-                                </div>
+                                </div> */}
 
-                                <div className='mb-3'>
+                                {/* <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_sold_out_date"
@@ -589,7 +655,7 @@ const displayData = async (id, machine_name) => {
                                         placeholder='sold Price'
                                         className='form-control'
                                     />
-                                </div>
+                                </div> */}
 
     
 
@@ -602,20 +668,7 @@ const displayData = async (id, machine_name) => {
                   </div>
                 </div>
 
-                                <div className='mb-3'>
-                                    <select name="machine_types_id" value={formData.machine_types_id} onChange={handleChange} className='form-select' required>
-                                        <option value="">machine type</option>
-                                        {machine_types.length > 0 ? (
-                                            machine_types.map((x) => (
-                                                <option key={x.machine_type_id} value={x.machine_type_id}>
-                                                    {x.machine_type_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </select>
-                                </div>
+                                
 
                                 <div className='mb-3'>
                                     <textarea
