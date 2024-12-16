@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Material_types_insert from './insert_update/material_types_insert';
+import Person_insert from './insert_update/person_insert';
+import Work_types_insert from './insert_update/work_types_insert';
+
 import { Link } from 'react-router-dom';
 
 const Materials = () => {
@@ -295,6 +299,11 @@ const Materials = () => {
               <h5 className="modal-title">
                 {formData.material_id ? 'Edit Material' : 'Add Material'}
               </h5>
+
+              <Material_types_insert fetchdata={fetchMaterials} />
+              <Person_insert fetchdata={fetchMaterials} />
+              <Work_types_insert fetchdata={fetchMaterials} />
+
               <button
                 type="button"
                 className="btn-close"

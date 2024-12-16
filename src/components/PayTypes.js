@@ -15,7 +15,6 @@ const PayTypes = () => {
   const [formData, setFormData] = useState({
     pay_type_id: "",
     pay_type_name: "",
-    pay_type_date: "",
   });
 
   // Fetch pay types from API
@@ -137,7 +136,6 @@ const PayTypes = () => {
     setFormData({
       pay_type_id: "",
       pay_type_name: "",
-      pay_type_date: "",
     });
   };
 
@@ -168,7 +166,6 @@ const PayTypes = () => {
             <tr>
               <th>Pay Type ID</th>
               <th>Pay Type Name</th>
-              <th>Pay Type Date</th>
               <th>Update</th>
               <th>Remove</th>
             </tr>
@@ -179,7 +176,6 @@ const PayTypes = () => {
                 <tr key={payType.pay_type_id}>
                   <td>{payType.pay_type_id || "N/A"}</td>
                   <td>{payType.pay_type_name || "N/A"}</td>
-                  <td>{payType.pay_type_date || "N/A"}</td>
                   <td>
                     <i
                       className="fa-regular fa-pen-to-square"
@@ -224,26 +220,18 @@ const PayTypes = () => {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
-                <div>
-                  <label>Pay Type Name:</label>
+                <div className="mb-3">
                   <input
                     type="text"
                     name="pay_type_name"
                     value={formData.pay_type_name}
                     onChange={handleChange}
+                    className="form-control"
+                    placeholder="Pay Type Name*"
                     required
                   />
                 </div>
-                <div>
-                  <label>Pay Type Date:</label>
-                  <input
-                    type="date"
-                    name="pay_type_date"
-                    value={formData.pay_type_date}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+
                 <button type="submit" className="btn btn-primary">
                   Submit
                 </button>

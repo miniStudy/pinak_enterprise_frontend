@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 import { Link } from 'react-router-dom';
+import Project_types_insert from './insert_update/project_types_insert';
+import Person_insert from './insert_update/person_insert';
 import Select from 'react-select';
 
 
@@ -340,6 +342,10 @@ const personsoptions = persons.map((pers) => ({
               <h5 className="modal-title" id="projectModalLabel">
                 {formData.project_id ? 'Edit Projects' : 'Add Projects'}
               </h5>
+
+              <Project_types_insert fetchdata={fetchProjects} />
+              <Person_insert fetchdata={fetchProjects} />
+
               <button
                 type="button"
                 className="btn-close"
