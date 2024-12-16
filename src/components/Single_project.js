@@ -6,6 +6,7 @@ import ProjectDayDetails from "./ProjectDayDetails";
 import ProjectMaterial from "./ProjectMaterial";
 import ProjectPersons from "./ProjectPersons";
 import ProjectExpenses from "./ProjectExpenses";
+import Reports from "./Reports";
 
 function SingleProject() {
   const { project_id } = useParams();
@@ -125,7 +126,7 @@ function SingleProject() {
           className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectexpense")}
         >
-          Project Expense
+          <i class="fa-solid fa-sack-dollar text-xl"></i> Project Expense
         </div>
 
         <div
@@ -145,15 +146,19 @@ function SingleProject() {
       </div>
 
 <div className="mt-3">
+{sectionname === "projectdaydetail" && <ProjectDayDetails project_id={project_id} />}
+
 {sectionname === "projectmachine" && <ProjectMachines project_id={project_id} />}
 
-{sectionname === "projectdaydetail" && <ProjectDayDetails project_id={project_id} />}
+
 
 {sectionname === "projectperson" && <ProjectPersons project_id={project_id} />}
 
 {sectionname === "projectexpense" && <ProjectExpenses project_id={project_id} />}
 
 {sectionname === "projectmaterial" && <ProjectMaterial project_id={project_id} />}
+
+{/* {sectionname === "projectreport" && <Reports project_id={project_id} />} */}
 </div>
     </div>
   );
