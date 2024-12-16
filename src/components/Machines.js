@@ -24,7 +24,7 @@ const Machines = () => {
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-    
+
     // Form state for Add/Edit
     const [formData, setFormData] = useState({
         machine_id: '',
@@ -47,46 +47,46 @@ const Machines = () => {
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
-    
+
 
     // for select option
     const [persons, setpersons] = useState([]);
     const personsoptions = persons.map((pers) => ({
         value: pers.person_id,
         label: pers.person_name + pers.person_contact_number,
-      }));
-      
+    }));
+
     const handleMachineOwnerChange = (selectedOption) => {
         setFormData({
-          ...formData,
-          machine_owner_id: selectedOption ? selectedOption.value : "",
+            ...formData,
+            machine_owner_id: selectedOption ? selectedOption.value : "",
         });
-      };
+    };
 
     // Filter data based on search term
     const filter_machinesDetails = machinesDetails.filter((item) => {
 
         const matchesSearchTerm =
-                (item?.machine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_number_plate?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_register_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_own?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_condition?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_types_id__machine_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_owner_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_owner_contact?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item?.machine_buy_price?.toLowerCase().includes(searchTerm.toLowerCase()));
-                (item?.machine_buy_date?.toLowerCase().includes(searchTerm.toLowerCase()));
-                (item?.machine_sold_price?.toLowerCase().includes(searchTerm.toLowerCase()));
-                (item?.machine_sold_out_date?.toLowerCase().includes(searchTerm.toLowerCase()));
-        
-            return matchesSearchTerm;
-        });
+            (item?.machine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_number_plate?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_register_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_own?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_condition?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_types_id__machine_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_owner_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_owner_contact?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (item?.machine_buy_price?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.machine_buy_date?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.machine_sold_price?.toLowerCase().includes(searchTerm.toLowerCase()));
+        (item?.machine_sold_out_date?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+        return matchesSearchTerm;
+    });
 
 
-    
 
- 
+
+
 
 
     // Fetch machine details
@@ -193,47 +193,47 @@ const Machines = () => {
     };
 
 
-const displayData = async (id, machine_name) => {
-    try {
-        const projectResponse = await axios.get(
-            `http://127.0.0.1:8000/show_project_machine/?machine_id=${id}`
-        );
+    const displayData = async (id, machine_name) => {
+        try {
+            const projectResponse = await axios.get(
+                `http://127.0.0.1:8000/show_project_machine/?machine_id=${id}`
+            );
 
-        const maintenanceResponse = await axios.get(
-            `http://127.0.0.1:8000/show_machine_maintenance/?machine_id=${id}`
-        );
+            const maintenanceResponse = await axios.get(
+                `http://127.0.0.1:8000/show_machine_maintenance/?machine_id=${id}`
+            );
 
-        // Calculate totals for project machine data
-        const projectData = projectResponse.data.data || [];
-        const totalProjectAmount = projectData.reduce(
-            (sum, x) => sum + parseFloat(x.project_machine_data_total_amount || 0),
-            0
-        );
+            // Calculate totals for project machine data
+            const projectData = projectResponse.data.data || [];
+            const totalProjectAmount = projectData.reduce(
+                (sum, x) => sum + parseFloat(x.project_machine_data_total_amount || 0),
+                0
+            );
 
-        // Calculate totals for maintenance data
-        const maintenanceData = maintenanceResponse.data.data || [];
-        const totalMaintenanceAmount = maintenanceData.reduce(
-            (sum, x) => sum + parseFloat(x.machine_maintenance_amount || 0),
-            0
-        );
+            // Calculate totals for maintenance data
+            const maintenanceData = maintenanceResponse.data.data || [];
+            const totalMaintenanceAmount = maintenanceData.reduce(
+                (sum, x) => sum + parseFloat(x.machine_maintenance_amount || 0),
+                0
+            );
 
-        // Set the project and maintenance data to state
-        setprojectmachineData(projectData);
-        setmachinemaintenanceData(maintenanceData);
-        setFilterMachineName(machine_name);
-        settotalProjectMachineAmount(totalProjectAmount);
-        settotalMachineMaintenance(totalMaintenanceAmount);
+            // Set the project and maintenance data to state
+            setprojectmachineData(projectData);
+            setmachinemaintenanceData(maintenanceData);
+            setFilterMachineName(machine_name);
+            settotalProjectMachineAmount(totalProjectAmount);
+            settotalMachineMaintenance(totalMaintenanceAmount);
 
 
-        // Calculate profit/loss and display it
-        const profitLoss = totalProjectAmount - totalMaintenanceAmount;
-        setprofitlossonmachine(profitLoss);
+            // Calculate profit/loss and display it
+            const profitLoss = totalProjectAmount - totalMaintenanceAmount;
+            setprofitlossonmachine(profitLoss);
 
-    } catch (err) {
-        setError('Failed to load maintenance details.');
-        setLoading(false);
-    }
-};
+        } catch (err) {
+            setError('Failed to load maintenance details.');
+            setLoading(false);
+        }
+    };
 
     const deleteData = async (id) => {
         try {
@@ -284,177 +284,177 @@ const displayData = async (id, machine_name) => {
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
                 <h3>{title}</h3>
                 <div className="d-flex align-items-center mb-3">
-    <Link to="/machine-types"><img 
-        src="/static/icons/machine_type.png" 
-        alt="User Icon" 
-        style={{ height: "30px", width: "auto" }} // Ensure consistent height
-    /></Link>
-        <button
-        type="button"
-        className="btn btn-sm btn-primary ms-2"
-        onClick={openModal}
-        style={{ height: "30px" }} // Adjust the height as needed
-    >Add Machine</button>
-    <div className="input-group" style={{ height: "30px", width: "auto" }}>
-        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
-         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
-    </div>
-        </div>
+                    <Link to="/machine-types"><img
+                        src="/static/icons/machine_type.png"
+                        alt="User Icon"
+                        style={{ height: "30px", width: "auto" }} // Ensure consistent height
+                    /></Link>
+                    <button
+                        type="button"
+                        className="btn btn-sm btn-primary ms-2"
+                        onClick={openModal}
+                        style={{ height: "30px" }} // Adjust the height as needed
+                    >Add Machine</button>
+                    <div className="input-group" style={{ height: "30px", width: "auto" }}>
+                        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
+                        <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
                 <div className="table-responsive">
-        <table className="table table-hover">
-                
-                    <thead>
-                        <tr>
-                            <th>Machine ID</th>
-                            <th>Machine Name</th>
-                            <th>Machine Own</th>
-                            <th>Number Plate</th>
-                            <th>Register Date</th>
-                            <th>Owner's Name</th>
-                            <th>Contact Number</th>
-                            <th>Machine Condition</th>
-                            <th>Machine Type</th>
-                            <th>Machine Details</th>
-                            <th>Purchase Price</th>
-                            <th>Purchase Date</th>
-                            <th>Sold Price</th>
-                            <th>Sold Out Date</th>
-                            <th>Other Details</th>
-                            <th>Machine Working</th>
-                            <th>Update</th>
-                            <th>Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filter_machinesDetails.length > 0 ? (
-                            filter_machinesDetails.map((y) => (
-                                <tr key={y.machine_id}>
-                                    <td>{y.machine_id || "N/A"}</td>
+                    <table className="table table-hover">
 
-                                    <td onClick={() => displayData(y.machine_id, `Machine - ${y.machine_name} ${y.machine_number_plate} ${y.machine_types_id__machine_type_name}`)}>{y.machine_name || "N/A"}</td>
-                                    <td>{y.machine_own || "N/A"}</td>
-                                    <td>{y.machine_number_plate || "N/A"}</td>
-                                    <td>{y.machine_register_date || "N/A"}</td>
-                                    <td>{y.machine_owner_name || "N/A"}</td>
-                                    <td>{y.machine_owner_contact || "N/A"}</td>
-                                    <td>{y.machine_condition || "N/A"}</td>
-                                    <td>{y.machine_types_id__machine_type_name || "N/A"}</td>
-                                    <td>{y.machine_details || "N/A"}</td>
-                                    <td>{y.machine_buy_price || "N/A"}</td>
-                                    <td>{y.machine_buy_date || "N/A"}</td>
-                                    <td>{y.machine_sold_price || "N/A"}</td>
-                                    <td>{y.machine_sold_out_date || "N/A"}</td>
-                                    <td>{y.machine_other_details || "N/A"}</td>
-                                    <td>{y.machine_working ? "Yes" : "No"}</td>
-                                    <td>
-                                        <i
-                                            className="fa-regular fa-pen-to-square"
-                                            onClick={() => editDetailsGetData(y.machine_id)}
-                                        ></i>
-                                    </td>
-                                    <td>
-                                        <i className="fa-regular fa-trash-can" onClick={() => opendeleteModal(y.machine_id)}></i>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
+                        <thead>
                             <tr>
-                                <td colSpan="18">No machine details available.</td>
+                                <th>Machine ID</th>
+                                <th>Machine Name</th>
+                                <th>Machine Own</th>
+                                <th>Number Plate</th>
+                                <th>Register Date</th>
+                                <th>Owner's Name</th>
+                                <th>Contact Number</th>
+                                <th>Machine Condition</th>
+                                <th>Machine Type</th>
+                                <th>Machine Details</th>
+                                <th>Purchase Price</th>
+                                <th>Purchase Date</th>
+                                <th>Sold Price</th>
+                                <th>Sold Out Date</th>
+                                <th>Other Details</th>
+                                <th>Machine Working</th>
+                                <th>Update</th>
+                                <th>Remove</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-                    </div>
-            </div>
-        {FilterMachineName && (
-            <div className='mt-3'> 
-            <h5>{FilterMachineName}</h5>
-            <h5>{profitlossonmachine > 0 ? <span className='text-success'>Profit: <i class="fa-solid fa-indian-rupee-sign"></i> {profitlossonmachine}</span> : <span className='text-danger'>Loss: <i class="fa-solid fa-indian-rupee-sign"></i> {profitlossonmachine}</span>}</h5>
+                        </thead>
+                        <tbody>
+                            {filter_machinesDetails.length > 0 ? (
+                                filter_machinesDetails.map((y) => (
+                                    <tr key={y.machine_id}>
+                                        <td>{y.machine_id || "N/A"}</td>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
-                    <div className="card">
-                        <h5>Machine Earning</h5>
-                        <div className="table-responsive">
-                            <table className="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>S.N</th>
-                                        <th>Date</th>
-                                        <th>Work Type</th>
-                                        <th>Work No.</th>
-                                        <th>Price</th>
-                                        <th>Total Amount</th>
+                                        <td onClick={() => displayData(y.machine_id, `Machine - ${y.machine_name} ${y.machine_number_plate} ${y.machine_types_id__machine_type_name}`)}>{y.machine_name || "N/A"}</td>
+                                        <td>{y.machine_own || "N/A"}</td>
+                                        <td>{y.machine_number_plate || "N/A"}</td>
+                                        <td>{y.machine_register_date || "N/A"}</td>
+                                        <td>{y.machine_owner_name || "N/A"}</td>
+                                        <td>{y.machine_owner_contact || "N/A"}</td>
+                                        <td>{y.machine_condition || "N/A"}</td>
+                                        <td>{y.machine_types_id__machine_type_name || "N/A"}</td>
+                                        <td>{y.machine_details || "N/A"}</td>
+                                        <td>{y.machine_buy_price || "N/A"}</td>
+                                        <td>{y.machine_buy_date || "N/A"}</td>
+                                        <td>{y.machine_sold_price || "N/A"}</td>
+                                        <td>{y.machine_sold_out_date || "N/A"}</td>
+                                        <td>{y.machine_other_details || "N/A"}</td>
+                                        <td>{y.machine_working ? "Yes" : "No"}</td>
+                                        <td>
+                                            <i
+                                                className="fa-regular fa-pen-to-square"
+                                                onClick={() => editDetailsGetData(y.machine_id)}
+                                            ></i>
+                                        </td>
+                                        <td>
+                                            <i className="fa-regular fa-trash-can" onClick={() => opendeleteModal(y.machine_id)}></i>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {projectmachineData.length > 0 ? (
-                                        projectmachineData.map((x, index) => (
-                                            <tr key={x.project_machine_data_id}>
-                                                <td>{index + 1}</td>
-                                                <td>{x.project_machine_date || "N/A"}</td>
-                                                <td>{x.work_type_id__work_type_name || "N/A"}</td>
-                                                <td>{x.project_machine_data_work_number || "N/A"}</td>
-                                                <td>{x.project_machine_data_work_price || "N/A"}</td>
-                                                <td>{x.project_machine_data_total_amount || "N/A"}</td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="9">No data available.</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                            <div className='font-semibold text-base'>Total Amt: <i class="fa-solid fa-indian-rupee-sign"></i>{totalProjectMachineAmount}</div>
-                        </div>
-                    </div>
-    
-                    <div className="card">
-                        <h5>Machine Maintenance Cost</h5>
-                        <div className="table-responsive">
-                            <table className="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>S.N</th>
-                                        <th>Date</th>
-                                        <th>Type Name</th>
-                                        <th>Amount</th>
-                                        <th>Paid By</th>
-                                        <th>Maintenance Person</th>
-                                        <th>Driver</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {machinemaintenanceData.length > 0 ? (
-                                        machinemaintenanceData.map((x, index) => (
-                                            <tr key={x.machine_maintenance_id}>
-                                                <td>{index + 1}</td>
-                                                <td>{x.machine_maintenance_date || "N/A"}</td>
-                                                <td>{x.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
-                                                <td>{x.machine_maintenance_amount || "N/A"}</td>
-                                                <td>{x.machine_maintenance_amount_paid_by || "N/A"}</td>
-                                                <td>{x.machine_maintenance_person_id__person_name || "N/A"}</td>
-                                                <td>{x.machine_maintenance_driver_name || "N/A"}</td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="9">No data available.</td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                            <div className='font-semibold text-base'>Total Amt: <i class="fa-solid fa-indian-rupee-sign"></i>{totalMachineMaintenance}</div>
-    
-                        </div>
-                    </div>
-    
-    
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="18">No machine details available.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        )}
-        
-          
+            {FilterMachineName && (
+                <div className='mt-3'>
+                    <h5>{FilterMachineName}</h5>
+                    <h5>{profitlossonmachine > 0 ? <span className='text-success'>Profit: <i class="fa-solid fa-indian-rupee-sign"></i> {profitlossonmachine}</span> : <span className='text-danger'>Loss: <i class="fa-solid fa-indian-rupee-sign"></i> {profitlossonmachine}</span>}</h5>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
+                        <div className="card">
+                            <h5>Machine Earning</h5>
+                            <div className="table-responsive">
+                                <table className="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>S.N</th>
+                                            <th>Date</th>
+                                            <th>Work Type</th>
+                                            <th>Work No.</th>
+                                            <th>Price</th>
+                                            <th>Total Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {projectmachineData.length > 0 ? (
+                                            projectmachineData.map((x, index) => (
+                                                <tr key={x.project_machine_data_id}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{x.project_machine_date || "N/A"}</td>
+                                                    <td>{x.work_type_id__work_type_name || "N/A"}</td>
+                                                    <td>{x.project_machine_data_work_number || "N/A"}</td>
+                                                    <td>{x.project_machine_data_work_price || "N/A"}</td>
+                                                    <td>{x.project_machine_data_total_amount || "N/A"}</td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="9">No data available.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                                <div className='font-semibold text-base'>Total Amt: <i class="fa-solid fa-indian-rupee-sign"></i>{totalProjectMachineAmount}</div>
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <h5>Machine Maintenance Cost</h5>
+                            <div className="table-responsive">
+                                <table className="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>S.N</th>
+                                            <th>Date</th>
+                                            <th>Type Name</th>
+                                            <th>Amount</th>
+                                            <th>Paid By</th>
+                                            <th>Maintenance Person</th>
+                                            <th>Driver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {machinemaintenanceData.length > 0 ? (
+                                            machinemaintenanceData.map((x, index) => (
+                                                <tr key={x.machine_maintenance_id}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{x.machine_maintenance_date || "N/A"}</td>
+                                                    <td>{x.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
+                                                    <td>{x.machine_maintenance_amount || "N/A"}</td>
+                                                    <td>{x.machine_maintenance_amount_paid_by || "N/A"}</td>
+                                                    <td>{x.machine_maintenance_person_id__person_name || "N/A"}</td>
+                                                    <td>{x.machine_maintenance_driver_name || "N/A"}</td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="9">No data available.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                                <div className='font-semibold text-base'>Total Amt: <i class="fa-solid fa-indian-rupee-sign"></i>{totalMachineMaintenance}</div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            )}
+
+
 
             {/* Modal for Add/Edit Machine */}
             <div
@@ -506,15 +506,15 @@ const displayData = async (id, machine_name) => {
                                 </div>
 
                                 <Select
-                options={personsoptions}
-                value={personsoptions.find((option) => option.value === formData.machine_owner_id)}
-                onChange={handleMachineOwnerChange}
-                placeholder="Select Machine Owner*"
-                isSearchable
-                isClearable
-                className="react-select-container mb-3"
-                classNamePrefix="react-select"
-            />
+                                    options={personsoptions}
+                                    value={personsoptions.find((option) => option.value === formData.machine_owner_id)}
+                                    onChange={handleMachineOwnerChange}
+                                    placeholder="Select Machine Owner*"
+                                    isSearchable
+                                    isClearable
+                                    className="react-select-container mb-3"
+                                    classNamePrefix="react-select"
+                                />
 
                                 <div className='mb-3'>
                                     <input
@@ -545,7 +545,7 @@ const displayData = async (id, machine_name) => {
                                     />
                                 </div>
 
-                                
+
 
                                 <div className='mb-3'>
                                     <input
@@ -591,16 +591,16 @@ const displayData = async (id, machine_name) => {
                                     />
                                 </div>
 
-    
+
 
                                 <div className="mb-3">
-                    <div class="form-check">
-                    <input class="form-check-input" onChange={handleChange} checked={formData.machine_working} name="machine_working" type="checkbox" id="flexCheckChecked" />
-                    <label class="form-check-label" for="flexCheckChecked">
-                      Machine is Working
-                    </label>
-                  </div>
-                </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" onChange={handleChange} checked={formData.machine_working} name="machine_working" type="checkbox" id="flexCheckChecked" />
+                                        <label class="form-check-label" for="flexCheckChecked">
+                                            Machine is Working
+                                        </label>
+                                    </div>
+                                </div>
 
                                 <div className='mb-3'>
                                     <select name="machine_types_id" value={formData.machine_types_id} onChange={handleChange} className='form-select' required>
@@ -623,7 +623,7 @@ const displayData = async (id, machine_name) => {
                                         name="machine_details"
                                         value={formData.machine_details}
                                         onChange={handleChange}
-                                        
+
                                     ></textarea>
                                 </div>
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
 import Person_insert from "./insert_update/person_insert";
+import Select from 'react-select';
+
 
 const Machines = () => {
   const [Salary, setSalary] = useState([]);
@@ -16,6 +18,18 @@ const Machines = () => {
   const deletemodel = useRef();
   const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState("");
+
+  const personsoptions = PersonsData.map((x) => ({
+    value: x.person_id,
+    label: x.person_name + x.person_contact_number,
+  }));
+
+  const handlePersonChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      person_id: selectedOption ? selectedOption.value : "",
+    });
+  };
 
   useEffect(() => {
     const total = MoneyTransaction.reduce(
@@ -344,22 +358,18 @@ const Machines = () => {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <select
-                    name="person_id"
-                    value={formData.person_id}
-                    onChange={handleChange}
-                    className="form-select"
-                    required
-                  >
-                    <option value="">Select person</option>
-                    {PersonsData.map((x) => (
-                      <option key={x.person_id} value={x.person_id}>
-                        {x.person_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                
+                
+
+            <Select options={personsoptions} value={personsoptions.find((option) => option.value === formData.person_id)}
+            onChange={handlePersonChange}
+            placeholder="Select Person"
+            isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
+
                 <div className="mb-3">
                   <input
                     type="text"
