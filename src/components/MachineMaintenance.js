@@ -4,12 +4,16 @@ import { Modal } from 'bootstrap';
 import Maintenance_types_insert from './insert_update/maintenance_types_insert';
 import Person_insert from './insert_update/person_insert';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+
 
 const MachineMaintenance = () => {
   const [machineMaintenance, setMachineMaintenance] = useState([]);
   const [maintenanceTypes, setMaintenanceTypes] = useState([]);
   const [machineData, setmachineData] = useState([]);
   const [personData, setpersonData] = useState([]);
+  const [driverpersonData, setdriverpersonData] = useState([]);
+  const [projectData, setprojectData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState("");
@@ -18,7 +22,57 @@ const MachineMaintenance = () => {
   const [delid, setdelid] = useState("");
   const [Messages, setMessages] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  
+
+  const machineoptions = machineData.map((machine) => ({
+    value: machine.machine_id,
+    label: machine.machine_name,
+  }));
+
+  const handleMachineChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      machine_machine_id: selectedOption ? selectedOption.value : "",
+    });
+  };
+
+  const driverpersonoptions = driverpersonData.map((x) => ({
+    value: x.person_id,
+    label: x.person_name,
+  }));
+
+  const repairpersonoptions = personData.map((x) => ({
+    value: x.person_id,
+    label: x.person_name,
+  }));
+
+
+  const handleDriverPersonChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      machine_maintenance_driver_id: selectedOption ? selectedOption.value : "",
+    });
+  };
+
+  const handleRepairPersonChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      machine_maintenance_person_id: selectedOption ? selectedOption.value : "",
+    });
+  };
+
+  const projectoptions = projectData.map((x) => ({
+    value: x.project_id,
+    label: x.project_name,
+  }));
+
+  const handleProjectChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      project_id: selectedOption ? selectedOption.value : "",
+    });
+  };
+
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -27,22 +81,21 @@ const MachineMaintenance = () => {
   // Filter data based on search term
   const filter_machineMaintenance = machineMaintenance.filter((item) => {
 
-      const matchesSearchTerm =
-        (item?.machine_machine_id__machine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_machine_id__machine_number_plate?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_machine_id__machine_types_id__machine_type_name?.toString().includes(searchTerm)) ||
-        (item?.machine_maintenance_amount?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_maintenance_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_maintenance_amount_paid_by?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_maintenance_driver_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_maintenance_driver_contact?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_maintenance_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.machine_maintenance_person_id__person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase()));
-        (item?.machine_maintenance_types_id__maintenance_type_name?.toLowerCase().includes(searchTerm.toLowerCase()));
-        (item?.project_id__project_name?.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      return matchesSearchTerm;
-      });
+    const matchesSearchTerm =
+      (item?.machine_machine_id__machine_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_machine_id__machine_number_plate?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_machine_id__machine_types_id__machine_type_name?.toString().includes(searchTerm)) ||
+      (item?.machine_maintenance_amount?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_maintenance_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_maintenance_amount_paid_by?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_maintenance_driver_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_maintenance_person_id__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.machine_maintenance_person_id__person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase()));
+    (item?.machine_maintenance_types_id__maintenance_type_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+    (item?.project_id__project_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return matchesSearchTerm;
+  });
 
 
   const [formData, setFormData] = useState({
@@ -54,11 +107,9 @@ const MachineMaintenance = () => {
     machine_maintenance_amount_paid_by: '',
     machine_maintenance_types_id: '',
     machine_maintenance_details: '',
-    machine_maintenance_driver_name: '',
-    machine_maintenance_driver_contact: '',
+    machine_maintenance_driver_id: '',
     machine_maintenance_person_id: '',
     project_id: '',
-
   });
 
   const fetchMaintenanceDetails = async () => {
@@ -68,6 +119,8 @@ const MachineMaintenance = () => {
       setMaintenanceTypes(response.data.maintenance_types_data || []);
       setmachineData(response.data.machines_data || []);
       setpersonData(response.data.persons_data || []);
+      setdriverpersonData(response.data.driver_persons_data || []);
+      setprojectData(response.data.projects_data || []);
       setTitle(response.data.title);
       setLoading(false);
     } catch (err) {
@@ -163,6 +216,8 @@ const MachineMaintenance = () => {
       setMaintenanceTypes(response.data.maintenance_types_data || []);
       setmachineData(response.data.machines_data || []);
       setpersonData(response.data.persons_data || []);
+      setdriverpersonData(response.data.driver_persons_data || []);
+      setprojectData(response.data.projects_data || []);
       openModal()
     } catch (err) {
       setError('Failed to load machine details');
@@ -192,8 +247,7 @@ const MachineMaintenance = () => {
       machine_maintenance_amount_paid_by: '',
       machine_maintenance_types_id: '',
       machine_maintenance_details: '',
-      machine_maintenance_driver_name: '',
-      machine_maintenance_driver_contact: '',
+      machine_maintenance_driver_id: '',
       machine_maintenance_person_id: '',
       project_id: '',
     });
@@ -266,7 +320,7 @@ const MachineMaintenance = () => {
                     <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_person_id__person_contact_number || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_driver_name || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_driver_id__person_name || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_details || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
                     <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(maintenance.machine_maintenance_id)}></i></td>
@@ -313,23 +367,16 @@ const MachineMaintenance = () => {
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
 
-                <div className="mb-3">
-                  <label className="form-label">Machine:</label>
-                  <select
-                    name="machine_machine_id"
-                    value={formData.machine_machine_id}
-                    onChange={handleChange}
-                    className="form-select"
-                    required
-                  >
-                    <option value="">Select machine*</option>
-                    {machineData.map((type) => (
-                      <option key={type.machine_id} value={type.machine_id}>
-                        {type.machine_name} - {type.machine_number_plate}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <Select
+                  options={machineoptions}
+                  value={machineoptions.find((option) => option.value === formData.machine_machine_id)}
+                  onChange={handleMachineChange}
+                  placeholder="Select Machine*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
 
 
                 <div className="mb-3">
@@ -400,45 +447,39 @@ const MachineMaintenance = () => {
                 </div>
 
 
-                <div className="mb-3">
-                  <label className="form-label">Maintenance Driver Name:</label>
-                  <input
-                    type="text"
-                    name="machine_maintenance_driver_name"
-                    value={formData.machine_maintenance_driver_name}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
-                </div>
+                <Select
+                  options={repairpersonoptions}
+                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_person_id)}
+                  onChange={handleRepairPersonChange}
+                  placeholder="Select Repair Person*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
 
-                <div className="mb-3">
-                  <label className="form-label">Driver Contact:</label>
-                  <input
-                    type="text"
-                    name="machine_maintenance_driver_contact"
-                    value={formData.machine_maintenance_driver_contact}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
-                </div>
+                <Select
+                  options={driverpersonoptions}
+                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_driver_id)}
+                  onChange={handleDriverPersonChange}
+                  placeholder="Select Driver Person*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
 
-                <div className="mb-3">
-                  <label className="form-label">Repair Person:</label>
-                  <select
-                    name="machine_maintenance_person_id"
-                    value={formData.machine_maintenance_person_id}
-                    onChange={handleChange}
-                    className="form-select"
-                    required
-                  >
-                    <option value="">Select person</option>
-                    {personData.map((type) => (
-                      <option key={type.person_id} value={type.person_id}>
-                        {type.person_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <Select
+                  options={projectoptions}
+                  value={machineoptions.find((option) => option.value === formData.project_id)}
+                  onChange={handleProjectChange}
+                  placeholder="Select Project*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+
 
 
                 <div className="mb-3">

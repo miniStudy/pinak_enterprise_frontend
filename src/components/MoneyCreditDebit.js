@@ -95,6 +95,26 @@ const MoneyCreditDebit = () => {
         machine_id: '',
     });
 
+    const personoptions = PersonData.map((x) => ({
+        value: x.person_id,
+        label: x.person_name,
+      }));
+    
+    const handleSenderPersonChange = (selectedOption) => {
+    setFormData({
+        ...formData,
+        sender_person_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+
+
+    const handleReceiverPersonChange = (selectedOption) => {
+    setFormData({
+        ...formData,
+        receiver_person_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+
     const sender_options = [
         { value: "", label: "પૈસા આપનાર" },
         ...PersonData.map((type) => ({
@@ -559,35 +579,28 @@ const MoneyCreditDebit = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
-                                    <select name="sender_person_id" value={formData.sender_person_id} onChange={handleChange} className="form-select" required>
-                                        <option value="">Select Sender-Person</option>
-                                        {PersonData.length > 0 ? (
-                                            PersonData.map((x) => (
-                                                <option key={x.person_id} value={x.person_id}>
-                                                    {x.person_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </select>
-                                </div>
 
-                                <div className="mb-3">
-                                    <select name="receiver_person_id" value={formData.receiver_person_id} onChange={handleChange} className="form-select" required>
-                                        <option value="">Select Receiver-Person</option>
-                                        {PersonData.length > 0 ? (
-                                            PersonData.map((x) => (
-                                                <option key={x.person_id} value={x.person_id}>
-                                                    {x.person_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </select>
-                                </div>
+                <Select
+                  options={personoptions}
+                  value={personoptions.find((option) => option.value === formData.sender_person_id)}
+                  onChange={handleReceiverPersonChange}
+                  placeholder="Select Sender-Person*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+
+                <Select
+                  options={personoptions}
+                  value={personoptions.find((option) => option.value === formData.receiver_person_id)}
+                  onChange={handleSenderPersonChange}
+                  placeholder="Select Receiver-Person*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
 
                                 <div className="mb-3">
                                     <input
