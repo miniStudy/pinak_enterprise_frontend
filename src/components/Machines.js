@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
+import Machine_types_insert from './insert_update/machine_types_insert';
+import Person_insert from './insert_update/person_insert';
 import { Link } from 'react-router-dom';
 const Machines = () => {
     const [machinesDetails, setMachinesDetails] = useState([]);
@@ -451,6 +453,10 @@ const displayData = async (id, machine_name) => {
                             <h5 className="modal-title" id="machineModalLabel">
                                 {formData.machine_id ? 'Edit Machine' : 'Add Machine'}
                             </h5>
+
+                            <Machine_types_insert fetchdata={fetchMachines} />
+                            <Person_insert fetchdata={fetchMachines} />
+
                             <button
                                 type="button"
                                 className="btn-close"
@@ -467,8 +473,9 @@ const displayData = async (id, machine_name) => {
                                         name="machine_name"
                                         value={formData.machine_name}
                                         onChange={handleChange}
-                                        placeholder='Machine Name'
+                                        placeholder='Machine Name*'
                                         className='form-control'
+                                        required
                                     />
                                 </div>
 

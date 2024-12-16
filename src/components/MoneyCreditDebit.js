@@ -2,6 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
 import Select from 'react-select';
+import Person_types_insert from './insert_update/person_types_insert';
+import Bank_insert from './insert_update/bank_insert';
+import Pay_types_insert from './insert_update/pay_types_insert';
+
+
 import { Link } from 'react-router-dom';
 
 const MoneyCreditDebit = () => {
@@ -540,6 +545,11 @@ const MoneyCreditDebit = () => {
                             <h5 className="modal-title" id="machineModalLabel">
                                 {formData.money_id ? 'Edit Money Debit/Credit' : 'Add Money Debit/Credit'}
                             </h5>
+                            
+                            <Person_types_insert fetchdata={fetchMoneyCreditDebit} />
+                            <Pay_types_insert fetchdata={fetchMoneyCreditDebit} />
+                            <Bank_insert fetchdata={fetchMoneyCreditDebit} />
+
                             <button
                                 type="button"
                                 className="btn-close"

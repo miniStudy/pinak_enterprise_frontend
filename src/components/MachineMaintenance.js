@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Maintenance_types_insert from './insert_update/maintenance_types_insert';
+import Person_insert from './insert_update/person_insert';
 import { Link } from 'react-router-dom';
 
 const MachineMaintenance = () => {
@@ -297,6 +299,10 @@ const MachineMaintenance = () => {
               <h5 className="modal-title" id="maintenanceModalLabel">
                 {formData.machine_maintenance_id ? 'Edit Maintenance' : 'Add Maintenance'}
               </h5>
+
+              <Maintenance_types_insert fetchdata={fetchMaintenanceDetails} />
+              <Person_insert fetchdata={fetchMaintenanceDetails} />
+
               <button
                 type="button"
                 className="btn-close"

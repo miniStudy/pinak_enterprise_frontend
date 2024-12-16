@@ -221,25 +221,28 @@ const ProjectTypes = () => {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
-                <div>
-                  <label>Project Type Name:</label>
+                <div className="mb-3">
                   <input
                     type="text"
                     name="project_type_name"
                     value={formData.project_type_name}
                     onChange={handleChange}
+                    className="form-control"
+                    placeholder="Project Type Name*"
                     required
                   />
                 </div>
-                <div>
-                  <label>Project Type Details:</label>
-                  <textarea
+
+                <div className="mb-3">
+                <textarea
                     name="project_type_details"
                     value={formData.project_type_details}
                     onChange={handleChange}
-                    required
+                    className="form-control"
+                    placeholder="Project Type Details*"
                   ></textarea>
                 </div>
+
                 <button type="submit" className="btn btn-primary">
                   Submit
                 </button>
