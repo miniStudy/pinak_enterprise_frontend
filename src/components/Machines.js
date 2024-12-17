@@ -509,7 +509,8 @@ const Machines = () => {
                                     <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select' required>
                                         <option value="">Ownership</option>
                                         <option value="Company">Company</option>
-                                        <option value="Rented">Rented</option>
+                                        <option value="Rented_fixedprice">Fixed Price</option>
+                                        <option value="Rented_variableprice">Variable Price</option>
                                     </select>
                                 </div>
 
@@ -589,6 +590,10 @@ const Machines = () => {
 
                                     </select>
                                 </div> */}
+                                
+                                
+                                {formData.machine_own === 'Rented_variableprice'  && (
+                                    <>
                                 <div className='mb-3'>
                                     <select name="machine_rented_work_type" value={formData.machine_rented_work_type} onChange={handleChange} className='form-select'>
                                         <option value="">Work Type</option>
@@ -613,8 +618,11 @@ const Machines = () => {
                                         placeholder='Price'
                                     />
                                 </div>
+                                </>
+                                )}
 
 
+{formData.machine_own === 'Company' && (
 
                                 <div className='mb-3'>
                                     <input
@@ -626,6 +634,7 @@ const Machines = () => {
                                         placeholder='Price'
                                     />
                                 </div>
+)}
 
                                 {/* <div className='mb-3'>
                                     <input
