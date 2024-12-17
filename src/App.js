@@ -5,7 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import Home from './components/Home';
-import Banks from './components/Banks';
+import CreateUser from './components/CreateUser'
+import UserLogin from './components/UserLogin'
+import Banks from './components/Banks'
 import MachineTypes from './components/MachineTypes'
 import Machines from './components/Machines'
 import MoneyCreditDebit from './components/MoneyCreditDebit'
@@ -40,6 +42,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<BaseLayout />}>
           <Route index element={<Home />} />
+          <Route path="create-user" element={<CreateUser />} />
+          <Route path="login-user" element={<UserLogin />} />
           <Route path="banks" element={<Banks />} />
           <Route path="machine-types" element={<MachineTypes />} />
           <Route path="machines" element={<Machines />} />

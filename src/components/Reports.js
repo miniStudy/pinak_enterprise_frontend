@@ -114,7 +114,7 @@ const Reports = () => {
 
     return (
         <div>
-            <h1>Projects</h1>
+            <h3>Reports</h3>
             <Select
                 options={projectOptions}
                 value={projectOptions.find((option) => option.value === projectID)}
