@@ -3,7 +3,7 @@ import React from 'react'
 function Home() {
   return (
     <div className='card'>
-              Hello
+              Welcome To, Pinak Enterprise Home Page
           </div>
   )
 }

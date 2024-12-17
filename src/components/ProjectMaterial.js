@@ -7,6 +7,7 @@ const ProjectMaterial = ({project_id}) => {
     const [MaterialData, setMaterialData] = useState([]);
     const [MaterialTypeData, setMaterialTypeData] = useState([]);
     const [WorkTypeData, setWorkTypeData] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [title, setTitle] = useState("");
@@ -37,6 +38,7 @@ const ProjectMaterial = ({project_id}) => {
             setMaterialData(response.data.materials_data || []);
             setMaterialTypeData(response.data.material_types_data || []);
             setWorkTypeData(response.data.work_types_data || []);
+            setTotalAmount(response.data.total_amount || 0);
             setTitle(response.data.title)
             setLoading(false);
         } catch (err) {
@@ -174,14 +176,17 @@ const ProjectMaterial = ({project_id}) => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h3>{title}</h3>
-                <button
-                    type="button"
-                    className="btn btn-sm mb-3 btn-primary"
-                    onClick={openModal}
-                >
-                    Add Project Material Data
-                </button>
+                <div className="d-flex align-items-center mb-3">
+                    <button
+                        type="button"
+                        className="btn btn-sm btn-primary ms-2"
+                        onClick={openModal}
+                        style={{ height: "30px" }} // Adjust the height as needed
+                    >Add Project Material</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-1">
+                    <div className="card">
+                        <h6 className='mb-2'>PROJECT Material</h6>
                 <div className="table-responsive">
                     <table className="table table-hover">
                         <thead>
@@ -235,9 +240,11 @@ const ProjectMaterial = ({project_id}) => {
                             )}
                         </tbody>
                     </table>
-
+                    <div className='font-semibold text-base text-green-800' >Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{totalAmount}</div>
 
                 </div>
+                </div>
+                    </div>
             </div>
             <div
                 className="modal fade"

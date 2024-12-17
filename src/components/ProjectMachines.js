@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Select from 'react-select';
+
 
 const ProjectMachines = ({project_id}) => {
     const [ProjectMachineData, setProjectMachineData] = useState([]);
+    const [MachineMaintenanceData, setMachineMaintenanceData] = useState([]);
+    const [maintenanceTotalAmount, setmaintenanceTotalAmount] = useState([]);
     const [MachineData, setMachineData] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [WorkTypeData, setWorkTypeData] = useState([]);
@@ -14,6 +18,13 @@ const ProjectMachines = ({project_id}) => {
     const deletemodel = useRef();
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
+
+
+    const [maintenanceTypes, setMaintenanceTypes] = useState([]);
+    const [machineData, setmachineData] = useState([]);
+    const [personData, setpersonData] = useState([]);
+    const [driverpersonData, setdriverpersonData] = useState([]);
+    const [projectData, setprojectData] = useState([]);
 
     const [formData, setFormData] = useState({
         project_machine_data_id: "",
@@ -30,6 +41,124 @@ const ProjectMachines = ({project_id}) => {
 
     });
 
+    const machineoptions = machineData.map((machine) => ({
+        value: machine.machine_id,
+        label: machine.machine_name,
+      }));
+    
+    const handleMachineChange = (selectedOption) => {
+        setmaintenanceformData({
+          ...maintenanceformData,
+          machine_machine_id: selectedOption ? selectedOption.value : "",
+        });
+    };
+    
+    const driverpersonoptions = driverpersonData.map((x) => ({
+        value: x.person_id,
+        label: x.person_name,
+    }));
+    
+    const repairpersonoptions = personData.map((x) => ({
+        value: x.person_id,
+        label: x.person_name,
+    }));
+    
+    
+    const handleDriverPersonChange = (selectedOption) => {
+        setmaintenanceformData({
+        ...maintenanceformData,
+        machine_maintenance_driver_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+    
+    const handleRepairPersonChange = (selectedOption) => {
+        setmaintenanceformData({
+        ...maintenanceformData,
+        machine_maintenance_person_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+    
+    const projectoptions = projectData.map((x) => ({
+    value: x.project_id,
+    label: x.project_name,
+    }));
+    
+    const handleProjectChange = (selectedOption) => {
+        setmaintenanceformData({
+        ...maintenanceformData,
+        project_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+
+    const [maintenanceformData, setmaintenanceformData] = useState({
+        machine_maintenance_id: '',
+        machine_machine_id: '',
+        machine_maintenance_amount: '',
+        machine_maintenance_date: '',
+        machine_maintenance_amount_paid: false,
+        machine_maintenance_amount_paid_by: '',
+        machine_maintenance_types_id: '',
+        machine_maintenance_details: '',
+        machine_maintenance_driver_id: '',
+        machine_maintenance_person_id: '',
+      });
+
+
+    const resetmaintenanceForm = () => {
+        setmaintenanceformData({
+        machine_maintenance_id: '',
+        machine_machine_id: '',
+        machine_maintenance_amount: '',
+        machine_maintenance_date: '',
+        machine_maintenance_amount_paid: false,
+        machine_maintenance_amount_paid_by: '',
+        machine_maintenance_types_id: '',
+        machine_maintenance_details: '',
+        machine_maintenance_driver_id: '',
+        machine_maintenance_person_id: '',
+    });
+    };
+
+    const openMaintenanceModal = () => {
+        const modalInstance = new Modal(modalRef.current);
+        modalInstance.show();
+    };
+
+    const closeMaintenanceModal = () => {
+        const modalInstance = Modal.getInstance(modalRef.current);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    };
+
+    const handlemaintenanceChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setmaintenanceformData((prevData) => ({
+          ...prevData,
+          [name]: type === 'checkbox' ? checked : value,
+
+        }));
+      };
+
+    const handlemaintenanSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          const response = await axios.post(
+            `http://127.0.0.1:8000/insert_update_machine_maintenance/?project_id=${project_id}`,
+            maintenanceformData
+          );
+          if (response.status === 200) {
+            fetchProjectMachines();
+            resetmaintenanceForm();
+            closeMaintenanceModal();
+          } else {
+            alert('Failed to save maintenance details.');
+          }
+        } catch (err) {
+          alert('Error occurred while saving machine details.');
+        }
+    
+      };
 
     const fetchProjectMachines = async () => {
         try {
@@ -38,6 +167,15 @@ const ProjectMachines = ({project_id}) => {
             setTotalAmount(response.data.total_amount || 0);
             setMachineData(response.data.machines_data || []);
             setWorkTypeData(response.data.work_types_data || []);
+
+
+            setMachineMaintenanceData(response.data.machine_maintenance_data || []);
+            setmaintenanceTotalAmount(response.data.maintenance_total_amount)
+            setMaintenanceTypes(response.data.maintenance_types_data || []);
+            setmachineData(response.data.machines_data || []);
+            setpersonData(response.data.persons_data || []);
+            setdriverpersonData(response.data.driver_persons_data || []);
+            setprojectData(response.data.projects_data || []);
             setTitle(response.data.title)
             setLoading(false);
         } catch (err) {
@@ -118,6 +256,8 @@ const ProjectMachines = ({project_id}) => {
         });
     };
 
+    
+
     const openModal = () => {
         const modalInstance = new Modal(modalRef.current);
         modalInstance.show();
@@ -129,6 +269,8 @@ const ProjectMachines = ({project_id}) => {
             modalInstance.hide();
         }
     };
+
+    
 
     const closedeleteModal = () => {
         const modalInstance = Modal.getInstance(deletemodel.current);
@@ -179,7 +321,14 @@ const ProjectMachines = ({project_id}) => {
                 >
                     Add Project Machine Data
                 </button>
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-1">
+                <button
+                    type="button"
+                    className="btn btn-sm mb-1 mt-3 btn-primary ms-2"
+                    onClick={openMaintenanceModal}
+                >
+                    Add Machine Maintenance
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
                 <div className="card">
                     <h6 className='mb-2'>PROJECT Machines</h6>
                 <div className="table-responsive">
@@ -241,6 +390,60 @@ const ProjectMachines = ({project_id}) => {
                     </table>
                     <div className='font-semibold text-base text-green-800'>Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{totalAmount}</div>
                     </div>
+                </div>
+
+                <div className="card">
+                <h6 className='mb-2'>MACHINE Maintenance</h6>
+                <div className="table-responsive">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>S.N	</th>
+                <th>Machine Name</th>
+                <th>Maintenance Amount</th>
+                <th>Maintenance Date</th>
+                <th>Amount Paid</th>
+                <th>Paid By</th>
+                <th>Maintenance Person</th>
+                <th>Contact</th>
+                <th>Driver</th>
+                <th>Details</th>
+                <th>Type Name</th>
+                {/* <th>Update</th>
+                <th>Remove</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {MachineMaintenanceData.length > 0 ? (
+                MachineMaintenanceData.map((maintenance, index) => (
+                  <tr key={maintenance.machine_maintenance_id}>
+                    <td>{index + 1}</td>
+                    <td>{maintenance.machine_machine_id__machine_name} - {maintenance.machine_machine_id__machine_number_plate} - {maintenance.machine_machine_id__machine_types_id__machine_type_name}</td>
+                    <td>{maintenance.machine_maintenance_amount || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_date || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_amount_paid ? "Yes" : "No"}</td>
+                    <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_person_id__person_contact_number || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_driver_id__person_name || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_details || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
+                    {/* <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(maintenance.machine_maintenance_id)}></i></td>
+                    <td><i class="fa-regular fa-trash-can" onClick={() => opendeleteModal(maintenance.machine_maintenance_id)}></i></td> */}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="11" style={{ textAlign: "center" }}>
+                    No machine maintenance records available.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          <div className='font-semibold text-base text-green-800'>Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{maintenanceTotalAmount}</div>
+        </div>
+
                 </div>
 
                 </div>
@@ -387,6 +590,11 @@ const ProjectMachines = ({project_id}) => {
                 </div>
             </div>
 
+
+
+
+            
+
             {/* delete Model confirmation */}
             <div
                 className="modal fade"
@@ -430,6 +638,170 @@ const ProjectMachines = ({project_id}) => {
                     </div>
                 </div>
             </div>
+
+
+
+
+
+        <div
+        className="modal fade"
+        id="maintenanceModal"
+        tabIndex="-1"
+        aria-labelledby="maintenanceModalLabel"
+        aria-hidden="true"
+        ref={modalRef}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="maintenanceModalLabel">
+                {formData.machine_maintenance_id ? 'Edit Maintenance' : 'Add Maintenance'}
+              </h5>
+
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={handlemaintenanSubmit}>
+
+                <Select
+                  options={machineoptions}
+                  value={machineoptions.find((option) => option.value === formData.machine_machine_id)}
+                  onChange={handleMachineChange}
+                  placeholder="Select Machine*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+
+
+                <div className="mb-3">
+                  <label className="form-label">Maintenance Type:</label>
+                  <select
+                    name="machine_maintenance_types_id"
+                    value={formData.machine_maintenance_types_id}
+                    onChange={handlemaintenanceChange}
+                    className="form-select"
+                    required
+                  >
+                    <option value="">Select maintenance types</option>
+                    {maintenanceTypes.map((type) => (
+                      <option key={type.maintenance_type_id} value={type.maintenance_type_id}>
+                        {type.maintenance_type_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Maintenance Amount:</label>
+                  <input
+                    type="text"
+                    name="machine_maintenance_amount"
+                    value={formData.machine_maintenance_amount}
+                    onChange={handlemaintenanceChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Maintenance Date:</label>
+                  <input
+                    type="date"
+                    name="machine_maintenance_date"
+                    value={formData.machine_maintenance_date}
+                    onChange={handlemaintenanceChange}
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="">
+                  <input
+                    type="checkbox"
+                    name="machine_maintenance_amount_paid"
+                    checked={formData.machine_maintenance_amount_paid}
+                    onChange={handlemaintenanceChange}
+                    className="form-check-input"
+                    id="machine_maintenance_amount_paid"
+                  />
+                  <label className="form-label ms-2" for="machine_maintenance_amount_paid">Amount Paid:</label>
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Paid By:</label>
+                  <select
+                    name="machine_maintenance_amount_paid_by"
+                    onChange={handlemaintenanceChange}
+                    className="form-select"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="Machine_Owner">Machine Owner</option>
+                    <option value="Pinak_Enterprise">Pinak Enterprise</option>
+                    <option value="Pinak">Pinak</option>
+                  </select>
+                </div>
+
+
+                <Select
+                  options={repairpersonoptions}
+                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_person_id)}
+                  onChange={handleRepairPersonChange}
+                  placeholder="Select Repair Person*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+
+                <Select
+                  options={driverpersonoptions}
+                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_driver_id)}
+                  onChange={handleDriverPersonChange}
+                  placeholder="Select Driver Person*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+
+                <Select
+                  options={projectoptions}
+                  value={machineoptions.find((option) => option.value === formData.project_id)}
+                  onChange={handleProjectChange}
+                  placeholder="Select Project*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+
+
+
+                <div className="mb-3">
+                  <label className="form-label">Details:</label>
+                  <textarea
+                    name="machine_maintenance_details"
+                    value={formData.machine_maintenance_details}
+                    onChange={handlemaintenanceChange}
+                    className="form-control"
+                  ></textarea>
+                </div>
+
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
         </>
     );
 };
