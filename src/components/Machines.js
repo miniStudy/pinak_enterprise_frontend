@@ -509,8 +509,8 @@ const Machines = () => {
                                     <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select' required>
                                         <option value="">Ownership</option>
                                         <option value="Company">Company</option>
-                                        <option value="Rented_fixedprice">Fixed Price</option>
-                                        <option value="Rented_variableprice">Variable Price</option>
+                                        <option value="Rented_fixedprice">Rented - Fixed Price</option>
+                                        <option value="Rented_variableprice">Rented - Variable Price</option>
                                     </select>
                                 </div>
 
@@ -530,7 +530,7 @@ const Machines = () => {
                                     </select>
                                 </div>
 
-                {formData.machine_own === 'Rented' && (
+                {(formData.machine_own === 'Rented_fixedprice' || formData.machine_own === 'Rented_variableprice') && (
 
                     <Select
                     options={personsoptions}
@@ -594,7 +594,8 @@ const Machines = () => {
                                 
                                 {formData.machine_own === 'Rented_variableprice'  && (
                                     <>
-                                <div className='mb-3'>
+                                <div className='grid grid-cols-2 gap-2 mb-3'> 
+                                <div className=''>
                                     <select name="machine_rented_work_type" value={formData.machine_rented_work_type} onChange={handleChange} className='form-select'>
                                         <option value="">Work Type</option>
                                         {machine_rented_work_type.length > 0 ? (
@@ -608,7 +609,7 @@ const Machines = () => {
                                         )}
                                     </select>
                                 </div>
-                                <div className='mb-3'>
+                                <div className=''>
                                     <input
                                         type="number"
                                         name="machine_rented_work_price"
@@ -618,11 +619,12 @@ const Machines = () => {
                                         placeholder='Price'
                                     />
                                 </div>
+                                </div>   
                                 </>
                                 )}
 
 
-{formData.machine_own === 'Company' && (
+{(formData.machine_own === 'Company' || formData.machine_own === 'Rented_fixedprice') && (
 
                                 <div className='mb-3'>
                                     <input
@@ -631,7 +633,7 @@ const Machines = () => {
                                         value={formData.machine_buy_price}
                                         onChange={handleChange}
                                         className='form-control'
-                                        placeholder='Price'
+                                        placeholder='Buy Price'
                                     />
                                 </div>
 )}
