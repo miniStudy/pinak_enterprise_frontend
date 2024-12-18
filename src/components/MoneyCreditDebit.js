@@ -583,7 +583,7 @@ const MoneyCreditDebit = () => {
                 <Select
                   options={personoptions}
                   value={personoptions.find((option) => option.value === formData.sender_person_id)}
-                  onChange={handleReceiverPersonChange}
+                  onChange={handleSenderPersonChange}
                   placeholder="Select Sender-Person*"
                   isSearchable
                   isClearable
@@ -594,7 +594,7 @@ const MoneyCreditDebit = () => {
                 <Select
                   options={personoptions}
                   value={personoptions.find((option) => option.value === formData.receiver_person_id)}
-                  onChange={handleSenderPersonChange}
+                  onChange={handleReceiverPersonChange}
                   placeholder="Select Receiver-Person*"
                   isSearchable
                   isClearable

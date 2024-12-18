@@ -5,6 +5,10 @@ import { Modal } from 'bootstrap';
 
 const Banks = () => {
   const [bankDetails, setBankDetails] = useState([]);
+  const [ComapnyBankDeatils, setComapnyBankDeatils] = useState([]);
+  const [CreditDebitData, setCreditDebitData] = useState([]);
+  const [creditTotalAmount, setcreditTotalAmount] = useState(0);
+  const [debitTotalAmount, setdebitTotalAmount] = useState(0);
   const [PersonsData, setPersonsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,6 +29,7 @@ const Banks = () => {
     bank_initial_amount: "",
     bank_open_closed: true,
     person_id: "",
+    company_bank_account: "",
   });
 
 
@@ -35,6 +40,10 @@ const Banks = () => {
         "http://127.0.0.1:8000/show_bank_details/"
       );
       setBankDetails(response.data.data);
+      setComapnyBankDeatils(response.data.company_bank_details_data || []);
+      setCreditDebitData(response.data.credit_debit_data || []);
+      setcreditTotalAmount(response.data.bank_credit_total || 0);
+      setdebitTotalAmount(response.data.bank_debit_total || 0);
       setPersonsData(response.data.persons || []);
       setTitle(response.data.title);
       setLoading(false);
@@ -160,6 +169,7 @@ const Banks = () => {
       bank_initial_amount: "",
       bank_open_closed: true,
       person_id: "",
+      company_bank_account: "",
     });
   };
 
@@ -177,7 +187,7 @@ const Banks = () => {
     <>
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h3>{title}</h3>
+        <h3>{title} Accounts</h3>
 
         {/* Button to open modal */}
         <button
@@ -188,8 +198,62 @@ const Banks = () => {
           Add Bank
         </button>
 
-        {/* Bank Details Table */}
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
+        <div className="card">
+        <h5 className='mb-1'>Company's Bank Accounts</h5>
         <div className="table-responsive">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              <th>Person</th>
+              <th>Bank</th>
+              <th>Branch</th>
+              <th>Acc.No</th>
+              <th>IFSC</th>
+              <th>Acc.Holder</th>
+              <th>Initial Amt</th>
+              <th>Status</th>
+              <th>Contact</th>
+              <th>Update</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ComapnyBankDeatils.map((bank,index) => (
+              <tr key={bank.bank_id}>
+                <td>{index+1}</td>
+                <td>{bank.person_id__person_name || 'N/A'}</td>
+                <td>{bank.bank_name}</td>
+                <td>{bank.bank_branch}</td>
+                <td>{bank.bank_account_number}</td>
+                <td>{bank.bank_ifsc_code}</td>
+                <td>{bank.bank_account_holder || 'N/A'}</td>
+                <td><i className="fa-solid fa-indian-rupee-sign"></i> {bank.bank_initial_amount || 0}</td>
+                <td>{bank.bank_open_closed ? "Open" : "Closed"}</td>
+                
+                <td>{bank.person_id__person_contact_number || 'N/A'}</td>
+                <td>
+                  <i
+                    className="fa-regular fa-pen-to-square"
+                    onClick={() => editDetailsGetData(bank.bank_id)}
+                  ></i>
+                </td>
+                <td>
+                  <i className="fa-regular fa-trash-can" onClick={() => opendeleteModal(bank.bank_id)}></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>
+        </div>
+        </div>
+
+
+
+        <h5 className='mb-1'>Other's Bank Accounts</h5>
+        <div className="table-responsive mb-3">
         <table className="table table-hover">
           <thead>
             <tr>
@@ -217,7 +281,7 @@ const Banks = () => {
                 <td>{bank.bank_account_number}</td>
                 <td>{bank.bank_ifsc_code}</td>
                 <td>{bank.bank_account_holder || 'N/A'}</td>
-                <td>{bank.bank_initial_amount || 'N/A'}</td>
+                <td><i className="fa-solid fa-indian-rupee-sign"></i> {bank.bank_initial_amount || 0}</td>
                 <td>{bank.bank_open_closed ? "Open" : "Closed"}</td>
                 
                 <td>{bank.person_id__person_contact_number || 'N/A'}</td>
@@ -235,6 +299,69 @@ const Banks = () => {
           </tbody>
         </table>
         </div>
+
+
+
+        <h5 className='mb-1'>Bank Credit/Debit</h5>
+        <div className="table-responsive">
+  <table className="table table-hover">
+    <thead>
+      <tr>
+        <th>S.N</th>
+        <th>Credit/Debit</th>
+        <th>Sender</th>
+        <th>Receiver</th>
+        <th>Amount</th>
+        <th>Payment Type</th>
+        <th>Mode</th>
+        <th>Date</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {CreditDebitData.map((bank, index) => (
+        <tr key={index}>
+          <td>{index + 1}</td>
+          <td>{bank.credit_debit || 'N/A'}</td>
+          <td>
+            {bank.sender_person_id__person_name} {bank.sender_bank_id__bank_name}
+          </td>
+          <td>
+            {bank.receiver_person_id__person_name} {bank.receiver_bank_id__bank_name}
+          </td>
+          <td>{bank.credit_debit === 'Credit' ? (
+            <span className="text-green-600"><i className="fa-solid fa-indian-rupee-sign"></i> {bank.money_amount}</span>
+          ) : (
+            <span className="text-red-600"><i className="fa-solid fa-indian-rupee-sign"></i> {bank.money_amount}</span>
+          )}</td>
+          <td>{bank.pay_type_id__pay_type_name}</td>
+          <td>{bank.money_payment_mode || 'N/A'}</td>
+          <td>{bank.money_date || 'N/A'}</td>
+          <td>{bank.money_payment_details || 'N/A'}</td>
+        </tr>
+      ))}
+
+      {/* Calculate totals */}
+      <tr>
+      <td colSpan="4" className="text-end font-bold">Total Credit Amount:</td>
+      <td>
+        <span  className="text-green-600 font-bold"><i className="fa-solid fa-indian-rupee-sign"></i> {creditTotalAmount}</span>
+      </td>
+
+      <td colSpan="4"></td>
+      </tr>
+      <tr>
+      <td colSpan="4" className="text-end font-bold">Total Debit Amount:</td>
+      <td>
+      <span  className="text-red-600 font-bold"><i className="fa-solid fa-indian-rupee-sign"></i> {debitTotalAmount}</span>
+      </td>
+      <td colSpan="4"></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
       </div>
 
       {/* Modal for Add/Edit Bank */}
@@ -331,7 +458,7 @@ const Banks = () => {
                             target: { name: "bank_open_closed", value: e.target.checked },
                         })
                         }
-                        checked={formData.material_status}
+                        checked={formData.bank_open_closed}
                         name="bank_open_closed"
                         type="checkbox"
                         id="flexCheckChecked"
@@ -362,6 +489,28 @@ const Banks = () => {
                     ))}
                   </select>
                 </div>
+
+                <div className="mb-3">
+                    <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        onChange={(e) =>
+                        handleChange({
+                            target: { name: "company_bank_account", value: e.target.checked },
+                        })
+                        }
+                        checked={formData.company_bank_account}
+                        name="company_bank_account"
+                        type="checkbox"
+                        id="flexCheckChecked"
+                    />
+                    <label className="form-check-label" htmlFor="flexCheckChecked">
+                    Company Bank
+                    </label>
+                    </div>
+                </div>
+
+
                 <button type="submit" className="btn btn-primary">
                   Submit
                 </button>

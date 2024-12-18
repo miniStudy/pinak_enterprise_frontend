@@ -16,6 +16,7 @@ function Bank_insert({ fetchdata }) {
         bank_initial_amount: "",
         bank_open_closed: true,
         person_id: "",
+        company_bank_account: false,
     });
 
     const handleChange = (e) => {
@@ -88,6 +89,7 @@ function Bank_insert({ fetchdata }) {
             bank_initial_amount: "",
             bank_open_closed: true,
             person_id: "",
+            company_bank_account: false,
         });
     };
 
