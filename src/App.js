@@ -34,6 +34,7 @@ import PersonWorkMachines from './components/PersonWorkMachines'
 import DocumentTypes from './components/DocumentTypes'
 import Documents from './components/Documents'
 import Single_project from './components/Single_project';
+import CompanyDetails from './components/CompanyDetails';
 
 const App = () => { 
   return (
@@ -44,6 +45,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="create-user" element={<CreateUser />} />
           <Route path="login-user" element={<UserLogin />} />
+          <Route path="company-details" element={<CompanyDetails />} />
           <Route path="banks" element={<Banks />} />
           <Route path="machine-types" element={<MachineTypes />} />
           <Route path="machines" element={<Machines />} />
