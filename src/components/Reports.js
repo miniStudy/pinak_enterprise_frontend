@@ -9,7 +9,7 @@ const Reports = () => {
     const [error, setError] = useState(null);
     const [projectID, setProjectID] = useState('');
 
-
+    const [singleprojectdata, setsingleprojectdata] = useState(null)
     const [projectMachineData, setProjectMachineData] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [ProjectDayDetailsData, setProjectDayDetailsData] = useState([]);
@@ -80,8 +80,11 @@ const Reports = () => {
             setProjectDayDetailsTotalAmount(project_day_detail_response.data.total_amount || 0);
 
             const project_person_response = await axios.get(`http://127.0.0.1:8000/show_project_person/?project_id=${newProjectID}`);
+
+            setsingleprojectdata(project_person_response.data.project_data)
             setProjectPersonData(project_person_response.data.data || []);
             setProjectPersonTotalAmount(project_person_response.data.total_amount || 0);
+            
 
             const project_expense_response = await axios.get(`http://127.0.0.1:8000/show_project_expense/?project_id=${newProjectID}`);
             setProjectExpenseData(project_expense_response.data.data || []);
@@ -127,65 +130,74 @@ const Reports = () => {
                 styles={{ container: (base) => ({ ...base, width: '300px' }) }}
             />
             <div className="mt-4">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={showProjectMachine}
-                        onChange={() => setShowProjectMachine(!showProjectMachine)}
-                    />
-                    Project Machine
-                </label>
-                <label className="ml-4">
-                    <input
-                        type="checkbox"
-                        checked={showProjectDayDetails}
-                        onChange={() => setShowProjectDayDetails(!showProjectDayDetails)}
-                    />
-                    Project Day Details
-                </label>
-                <label className="ml-4">
-                    <input
-                        type="checkbox"
-                        checked={showProjectPerson}
-                        onChange={() => setShowProjectPerson(!showProjectPerson)}
-                    />
-                    Project Person
-                </label>
-                <label className="ml-4">
-                    <input
-                        type="checkbox"
-                        checked={showProjectExpense}
-                        onChange={() => setShowProjectExpense(!showProjectExpense)}
-                    />
-                    Project Expense
-                </label>
+             
+
+                <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="projectmachine" checked={showProjectMachine}
+                        onChange={() => setShowProjectMachine(!showProjectMachine)} />
+  <label class="form-check-label" for="projectmachine">
+    Project Machine
+  </label>
+</div>
+
+                
+                
+
+                <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="projectdaydetail" checked={showProjectDayDetails}
+                        onChange={() => setShowProjectDayDetails(!showProjectDayDetails)} />
+  <label class="form-check-label" for="projectdaydetail">
+    Project Day-Details
+  </label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="Project_Person" checked={showProjectPerson}
+                        onChange={() => setShowProjectPerson(!showProjectPerson)} />
+  <label class="form-check-label" for="Project_Person">
+    Project Person
+  </label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="Project_Expense" checked={showProjectExpense}
+                        onChange={() => setShowProjectExpense(!showProjectExpense)} />
+  <label class="form-check-label" for="Project_Expense">
+    Project Expense
+  </label>
+</div>
+               
             </div>
 
-            <div className="mt-4 flex space-x-4">
-                <div className="max-w-xs p-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg">
-                    <h2 className="text-xl font-semibold">Project Machine Total Amt</h2>
-                    <div className="text-2xl font-bold mt-2">
-                        <i className="fa-solid fa-indian-rupee-sign"></i>
-                        {totalAmount}
-                    </div>
-                </div>
+            
 
-                <div className="max-w-xs p-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg">
-                    <h2 className="text-xl font-semibold">Final Total Amount</h2>
-                    <div className="text-2xl font-bold mt-2">
-                        <i className="fa-solid fa-indian-rupee-sign"></i>
-                        {finalTotalAmount}
-                    </div>
-                </div>
+
+            {singleprojectdata &&(
+            <div className='card mt-4 reportbackground p-4'>
+            
+            <div className="mb-2 flex justify-center items-center">
+            <img
+              src="/static/pinak enterprise gujrati logo_page-0001.jpg"
+              alt="Logo"
+              className="w-20 rounded-full"
+            />
             </div>
-
-
-
-
+            
+            <div className='grid grid-cols-2 md:grid-cols-4 mb-4 mt-4'>
+                <h6>Project Name : {singleprojectdata.project_name}</h6>
+                <h6>Amount : {singleprojectdata.project_amount}</h6>
+                <h6>Location : {singleprojectdata.project_location}</h6>
+                <h6>Project Types : {singleprojectdata.project_type}</h6>
+                <h6>Status : {singleprojectdata.project_status}</h6>
+                <h6>Start Date : {singleprojectdata.project_start_date}</h6>
+                <h6>End Date : {singleprojectdata.project_end_date}</h6>
+                <h6>Owner Name : {singleprojectdata.owner_name}</h6>
+                <h6>Owner Contact : {singleprojectdata.owner_contact_number}</h6>
+            </div>
             {showProjectMachine && (
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-4">
-                    <div className="card">
-                        <h6 className="mb-2">Project Machines</h6>
+                <div className="reports">
+                    <div className="">
+                        <div className="borderr reporttitle font-bold">Machines</div>
                         <div className="table-responsive">
                             {loading ? (
                                 <div>Loading...</div>
@@ -203,7 +215,7 @@ const Reports = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {projectMachineData.length > 0 ? (
+                                        {projectMachineData.length > 0 && (
                                             projectMachineData.map((detail, index) => (
                                                 <tr key={detail.project_machine_data_id}>
                                                     <td>{index + 1 || 'N/A'}</td>
@@ -215,29 +227,28 @@ const Reports = () => {
                                                     <td>{detail.project_machine_data_total_amount || 'N/A'}</td>
                                                 </tr>
                                             ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="7" style={{ textAlign: 'center' }}>
-                                                    No project machine data available.
-                                                </td>
-                                            </tr>
                                         )}
-                                    </tbody>
-                                </table>
-                            )}
-                            <div className="font-semibold text-base text-green-800">
+                                                <tr>
+                                                <td colSpan="7">
+                                                <span className="font-semibold text-base text-green-800">
                                 Total Amount:{' '}
                                 <i className="fa-solid fa-indian-rupee-sign"></i>
                                 {totalAmount}
-                            </div>
+                            </span>
+                                                </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            )}
+                            
                         </div>
                     </div>
                 </div>)}
 
             {showProjectDayDetails && (
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-4">
-                    <div className="card">
-                        <h6 className='mb-2'>PROJECT Day Details</h6>
+                <div class="">
+                    <div className="">
+                    <div className="borderr reporttitle font-bold">Day-Details</div>
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
@@ -252,7 +263,7 @@ const Reports = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {ProjectDayDetailsData.length > 0 ? (
+                                    {ProjectDayDetailsData.length > 0 && (
                                         ProjectDayDetailsData.map((detail, index) => (
                                             <tr key={detail.project_day_detail_id}>
                                                 <td>{index + 1 || "N/A"}</td>
@@ -264,24 +275,26 @@ const Reports = () => {
                                                 <td>{detail.project_day_detail_total_price || "N/A"}</td>
                                             </tr>
                                         ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="10" style={{ textAlign: "center" }}>
-                                                No project day details data available.
-                                            </td>
-                                        </tr>
                                     )}
+                                    <tr>
+                                                <td colSpan="7">
+                                                <span className="font-semibold text-base text-green-800">
+                                                    Total Amount:{' '}
+                                                    <i className="fa-solid fa-indian-rupee-sign"></i>
+                                                    {ProjectDayDetailsTotalAmount}
+                                                </span>
+                                                </td>
+                                            </tr>
                                 </tbody>
                             </table>
-                            <div className='font-semibold text-base text-green-800'>Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{ProjectDayDetailsTotalAmount}</div>
                         </div>
                     </div>
                 </div>)}
 
             {showProjectPerson && (
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-4">
-                    <div className="card">
-                        <h6 className='mb-2'>PROJECT Persons</h6>
+                <div class="">
+                    <div className="">
+                    <div className="borderr reporttitle font-bold">Persons</div>
                         <div className="table-responsive">
                             <table className="table table-hover">
                                 <thead>
@@ -298,7 +311,7 @@ const Reports = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {ProjectPersonData.length > 0 ? (
+                                    {ProjectPersonData.length > 0 && (
                                         ProjectPersonData.map((detail, index) => (
                                             <tr key={detail.project_person_id}>
                                                 <td>{index + 1 || "N/A"}</td>
@@ -318,24 +331,27 @@ const Reports = () => {
                                                 <td>{detail.project_person_paid_by || "N/A"}</td>
                                             </tr>
                                         ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="13" style={{ textAlign: "center" }}>
-                                                No project person data available.
-                                            </td>
-                                        </tr>
                                     )}
+
+                                            <tr>
+                                                <td colSpan="9">
+                                                <span className="font-semibold text-base text-green-800">
+                                                    Total Amount:{' '}
+                                                    <i className="fa-solid fa-indian-rupee-sign"></i>
+                                                    {ProjectPersonTotalAmount}
+                                                </span>
+                                                </td>
+                                            </tr>
                                 </tbody>
                             </table>
-                            <div className='font-semibold text-base text-green-800' >Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{ProjectPersonTotalAmount}</div>
                         </div>
                     </div>
                 </div>)}
 
             {showProjectExpense && (
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-4">
-                <div className="card">
-                    <h6 className='mb-2'>PROJECT Expense</h6>
+                <div class="">
+                <div className="">
+                <div className="borderr reporttitle font-bold">Expense</div>
                 <div className="table-responsive">
                 <table className="table table-hover">
                     <thead>
@@ -350,7 +366,7 @@ const Reports = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {ProjectExpenseData.length > 0 ? (
+                        {ProjectExpenseData.length > 0 && (
                             ProjectExpenseData.map((y, index) => (
                                 <tr key={y.project_expense_id}>
                                     <td>{index + 1}</td>
@@ -363,15 +379,19 @@ const Reports = () => {
                                     
                                 </tr>
                             ))
-                        ) : (
-                            <tr>
-                                <td colSpan="10">No expense details available.</td>
-                            </tr>
                         )}
+
+<tr>
+                                                <td colSpan="7">
+                                                <span className="font-semibold text-base text-green-800">
+                                                    Total Amount:{' '}
+                                                    <i className="fa-solid fa-indian-rupee-sign"></i>
+                                                    {ProjectExpenseTotalAmount}
+                                                </span>
+                                                </td>
+                                            </tr>
                     </tbody>
                 </table>
-                <div className='font-semibold text-base text-green-800' >Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{ProjectExpenseTotalAmount}</div>
-
             </div>
             </div>
         </div>
@@ -381,6 +401,21 @@ const Reports = () => {
 
 
         </div>
+        )}
+
+        <div className="mt-4 flex space-x-4">
+                <div className="max-w-xs p-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg">
+                    <h2 className="text-xl font-semibold">Final Total Amount</h2>
+                    <div className="text-2xl font-bold mt-2">
+                        <i className="fa-solid fa-indian-rupee-sign"></i>
+                        {finalTotalAmount}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+            
     );
 };
 

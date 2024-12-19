@@ -13,14 +13,19 @@ div.border {
     border-color: var(--border1) !important;
   }
 
+  .borderr{border: 1px solid var(--border1) !important;}
+  .reporttitle{padding: 5px;background-color: var(--color4);}
+  .reports .table-responsive{margin: 0px !important;}
 .maincontent{margin-left: 270px;padding: 8px;margin-right: 15px;margin-top: 15px;}
 .card{background-color: var(--card1) !important;padding: 8px;border: 1px solid var(--border1) !important;border-radius: 8px;}
 
-
+.reportbackground{background-color: rgb(240 249 255) !important;}
+/* .reportbackground{background-color: rgb(240 249 255) !important;} */
+table{box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px !important;}
 .iconsize{width: 20px !important;height: 20px !important;}
 
 
-table,th,td{border: 1px solid var(--border1) !important;}
+table,th,td{border: 1px solid var(--border1) !important;background-color: transparent !important;}
 td,th{padding: 4px;}
 /* .form-control:hover{border: 1px solid var(--color2);} */
 .icondiv{text-align: center !important;}
