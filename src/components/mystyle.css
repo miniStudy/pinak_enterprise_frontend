@@ -17,7 +17,7 @@ div.border {
   .reporttitle{padding: 5px;background-color: var(--color4);}
   .reports .table-responsive{margin: 0px !important;}
 .maincontent{margin-left: 270px;padding: 8px;margin-right: 15px;margin-top: 15px;}
-.card{background-color: var(--card1) !important;padding: 8px;border: 1px solid var(--border1) !important;border-radius: 8px;}
+.card{padding: 8px;border: 1px solid var(--border1) !important;border-radius: 8px;}
 
 .reportbackground{background-color: rgb(240 249 255) !important;}
 /* .reportbackground{background-color: rgb(240 249 255) !important;} */
