@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Bank_cash_insert from './insert_update/bank_cash_insert';
+import { use } from "react";
 
 
 const Banks = () => {
@@ -10,12 +12,15 @@ const Banks = () => {
   const [creditTotalAmount, setcreditTotalAmount] = useState(0);
   const [debitTotalAmount, setdebitTotalAmount] = useState(0);
   const [PersonsData, setPersonsData] = useState([]);
+  const [BankCashData, setBankCashData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState("");
   const modalRef = useRef();
   const deletemodel = useRef();
+  const deleteModalBankCash = useRef();
   const [delid, setdelid] = useState("");
+  const [delbankcashid,setdelbankcashid] = useState("")
   const [Messages, setMessages] = useState('');
 
   // Form states
@@ -45,6 +50,7 @@ const Banks = () => {
       setcreditTotalAmount(response.data.bank_credit_total || 0);
       setdebitTotalAmount(response.data.bank_debit_total || 0);
       setPersonsData(response.data.persons || []);
+      setBankCashData(response.data.bank_cash_data || []);
       setTitle(response.data.title);
       setLoading(false);
     } catch (err) {
@@ -130,6 +136,19 @@ const Banks = () => {
 
   };
 
+  const opendeleteModalBankCash = (id) => {
+    const modalInstance = new Modal(deleteModalBankCash.current);
+    setdelbankcashid(id);
+    modalInstance.show();
+
+  };
+  const closedeleteModalBankCash = () => {
+    const modalInstance = Modal.getInstance(deleteModalBankCash.current);
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  };
+
   // Fetch data for editing a specific bank record
   const editDetailsGetData = async (id) => {
     try {
@@ -156,6 +175,20 @@ const Banks = () => {
       setError("Failed to delete Bank Data")
     }
   }
+
+  const deleteDataBankCash = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/delete_bank_cash/?bank_cash_id=${id}`
+      );
+      setMessages(response.data.message)
+      fetchBankDetails();
+      closedeleteModalBankCash();
+    } catch (err) {
+      setError("Failed to delete Bank Data")
+    }
+  }
+
 
   // Reset the form state
   const resetForm = () => {
@@ -304,7 +337,7 @@ const Banks = () => {
 
         <h5 className='mb-1'>Bank Credit/Debit</h5>
         <div className="table-responsive">
-  <table className="table table-hover">
+    <table className="table table-hover">
     <thead>
       <tr>
         <th>S.N</th>
@@ -361,6 +394,40 @@ const Banks = () => {
     </tbody>
   </table>
 </div>
+
+
+<Bank_cash_insert fetchdata={fetchBankDetails} />
+<div className="table-responsive">
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              <th>Credit/Debit</th>
+              <th>Amount</th>
+              <th>Bank Name</th>
+              <th>Date</th>
+              <th>Details</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {BankCashData.map((bank,index) => (
+              <tr key={bank.bank_cash_id}>
+                <td>{index+1}</td>
+                <td>{bank.credit_debit || 'N/A'}</td>
+                <td><i className="fa-solid fa-indian-rupee-sign"></i> {bank.amount}</td>
+                <td>{bank.bank_id__bank_name}</td>
+                <td>{bank.date}</td>
+                <td>{bank.details}</td>
+                <td>
+                  <i className="fa-regular fa-trash-can" onClick={() => opendeleteModalBankCash(bank.bank_cash_id)}></i>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </div>
+
 
       </div>
 
@@ -549,6 +616,49 @@ const Banks = () => {
                   type="button"
                   className="btn btn-sm btn-primary"
                   onClick={() => deleteData(delid)}
+                >Delete</button>
+
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary ms-2"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="Modal"
+        tabIndex="-1"
+        aria-labelledby="ModalLabel"
+        aria-hidden="true"
+        ref={deleteModalBankCash}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="ModalLabel">
+                Delete Bank Cash Data
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              Confirm Delete..?<br />
+
+              <div className="mt-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={() => deleteDataBankCash(delbankcashid)}
                 >Delete</button>
 
                 <button
