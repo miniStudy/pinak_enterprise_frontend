@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Person_insert from './insert_update/person_insert';
+
 
 const ProjectPersons = ({project_id}) => {
     const [ProjectPersonData, setProjectPersonData] = useState([]);
@@ -269,6 +271,7 @@ const ProjectPersons = ({project_id}) => {
                             <h5 className="modal-title">
                                 {formData.project_person_id ? 'Edit Project-Person' : 'Add Project-Person'}
                             </h5>
+                            <Person_insert fetchdata={fetchProjectPersons} />
                             <button
                                 type="button"
                                 className="btn-close"

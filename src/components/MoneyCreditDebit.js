@@ -18,6 +18,7 @@ const MoneyCreditDebit = () => {
     const [PersonData, setPersonData] = useState([]);
     const [PayTypeData, setPayTypeData] = useState([]);
     const [MachineData, setMachineData] = useState([]);
+    const [ProjectData, setProjectData] = useState([]);
     const [BankData, setBankData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -93,6 +94,7 @@ const MoneyCreditDebit = () => {
         receiver_bank_id: '',
         money_payment_details: '',
         machine_id: '',
+        project_id: '',
     });
 
     const personoptions = PersonData.map((x) => ({
@@ -104,6 +106,30 @@ const MoneyCreditDebit = () => {
     setFormData({
         ...formData,
         sender_person_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+
+    const projectoptions = ProjectData.map((x) => ({
+        value: x.project_id,
+        label: x.project_name,
+      }));
+    
+    const handleProjectChange = (selectedOption) => {
+    setFormData({
+        ...formData,
+        project_id: selectedOption ? selectedOption.value : "",
+    });
+    };
+
+    const machineoptions = MachineData.map((x) => ({
+        value: x.machine_id,
+        label: x.machine_name,
+      }));
+    
+    const handleMachineChange = (selectedOption) => {
+    setFormData({
+        ...formData,
+        machine_id: selectedOption ? selectedOption.value : "",
     });
     };
 
@@ -186,6 +212,7 @@ const MoneyCreditDebit = () => {
             setPersonData(response.data.persons_data || []);
             setPayTypeData(response.data.pay_types_data || []);
             setMachineData(response.data.machines_data || []);
+            setProjectData(response.data.projects_data || []);
             setBankData(response.data.banks_data || []);
             setTitle(response.data.title);
             setLoading(false);
@@ -280,6 +307,7 @@ const MoneyCreditDebit = () => {
             setPersonData(response.data.persons_data || []);
             setPayTypeData(response.data.pay_types_data || []);
             setMachineData(response.data.machines_data || []);
+            setProjectData(response.data.projects_data || []);
             setBankData(response.data.banks_data || []);
             openModal()
         } catch (err) {
@@ -316,6 +344,7 @@ const MoneyCreditDebit = () => {
             receiver_bank_id: '',
             money_payment_details: '',
             machine_id: '',
+            project_id: '',
         });
     };
 
@@ -414,6 +443,7 @@ const MoneyCreditDebit = () => {
                                 <th>Receiver Bank Name</th>
                                 <th>Payment Details</th>
                                 <th>Machine</th>
+                                <th>Project</th>
                                 <th>Update</th>
                                 <th>Remove</th>
                             </tr>
@@ -434,6 +464,7 @@ const MoneyCreditDebit = () => {
                                         <td>{y.receiver_bank_id__bank_name || "N/A"}</td>
                                         <td>{y.money_payment_details || "N/A"}</td>
                                         <td>{y.machine_id__machine_name || "N/A"}</td>
+                                        <td>{y.project_id__project_name || "N/A"}</td>
                                         <td>
                                             <i
                                                 className="fa-regular fa-pen-to-square"
@@ -711,20 +742,28 @@ const MoneyCreditDebit = () => {
                                     />
                                 </div>
 
-                                <div className="mb-3">
-                                    <select name="machine_id" value={formData.machine_id} onChange={handleChange} className="form-select">
-                                        <option value="">Select Machine</option>
-                                        {MachineData.length > 0 ? (
-                                            MachineData.map((x) => (
-                                                <option key={x.machine_id} value={x.machine_id}>
-                                                    {x.machine_name}
-                                                </option>
-                                            ))
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </select>
-                                </div>
+                                <Select
+                                options={machineoptions}
+                                value={machineoptions.find((option) => option.value === formData.machine_id)}
+                                onChange={handleMachineChange}
+                                placeholder="Select Machine"
+                                isSearchable
+                                isClearable
+                                className="react-select-container mb-3"
+                                classNamePrefix="react-select"
+                                />
+
+                                <Select
+                                options={projectoptions}
+                                value={projectoptions.find((option) => option.value === formData.project_id)}
+                                onChange={handleProjectChange}
+                                placeholder="Select Project"
+                                isSearchable
+                                isClearable
+                                className="react-select-container mb-3"
+                                classNamePrefix="react-select"
+                                />
+
                                 <button type="submit" className="btn btn-sm btn-primary">Submit</button>
                             </form>
 

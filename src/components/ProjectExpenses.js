@@ -256,7 +256,7 @@ const ProjectExpenses = ({ project_id }) => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="machineModalLabel">
-                                {formData.machine_id ? 'Edit Machine' : 'Add Machine'}
+                                {formData.project_expense_id ? 'Edit Project-Expense' : 'Add Project-Expense'}
                             </h5>
                             <button
                                 type="button"

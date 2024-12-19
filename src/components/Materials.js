@@ -41,6 +41,7 @@ const Materials = () => {
     'material_owner': "",
     'material_status': true,
     'material_buy_date': "",
+    'material_buy_location': "",
     'material_work_type': "",
     'material_work_no': "",
     'material_price': "",
@@ -134,6 +135,7 @@ const Materials = () => {
       'material_owner': "",
       'material_status': true,
       'material_buy_date': "",
+      'material_buy_location': "",
       'material_work_type': "",
       'material_work_no': "",
       'material_price': "",
@@ -236,6 +238,7 @@ const Materials = () => {
                 <th>Owner's Name</th>
                 <th>Status</th>
                 <th>Buy Date</th>
+                <th>Buy Location</th>
                 <th>Work Type</th>
                 <th>Work No</th>
                 <th>Price</th>
@@ -263,6 +266,7 @@ const Materials = () => {
                     <td>{material.material_owner__person_name || "N/A"}</td>
                     <td>{material.material_status ? "Active" : "Inactive"}</td>
                     <td>{material.material_buy_date || "N/A"}</td>
+                    <td>{material.material_buy_location || "N/A"}</td>
                     <td>{material.material_work_type__work_type_name || "N/A"}</td>
                     <td>{material.material_work_no || "N/A"}</td>
                     <td>{material.material_price || "N/A"}</td>
@@ -376,6 +380,7 @@ const Materials = () => {
                 </div>
 
                 <div className="mb-3">
+                  <label>Enter buy date here:</label>
                   <input
                     type="date"
                     name="material_buy_date"
@@ -385,6 +390,17 @@ const Materials = () => {
                     required
                   />
                 </div>
+
+                <div className="mb-3">
+                  <textarea
+                    name="material_buy_location"
+                    value={formData.material_buy_location}
+                    onChange={handleChange}
+                    className="form-control"
+                    placeholder="Buy Location"
+                  />
+                </div>
+
 
                 <div className="mb-3">
                   <select
