@@ -221,15 +221,12 @@ const Machines = () => {
                 (sum, x) => sum + parseFloat(x.machine_maintenance_amount || 0),
                 0
             );
-
             // Set the project and maintenance data to state
             setprojectmachineData(projectData);
             setmachinemaintenanceData(maintenanceData);
             setFilterMachineName(machine_name);
             settotalProjectMachineAmount(totalProjectAmount);
             settotalMachineMaintenance(totalMaintenanceAmount);
-
-
             // Calculate profit/loss and display it
             const profitLoss = totalProjectAmount - totalMaintenanceAmount;
             setprofitlossonmachine(profitLoss);
@@ -239,7 +236,6 @@ const Machines = () => {
             setLoading(false);
         }
     };
-
     const deleteData = async (id) => {
         try {
             const response = await axios.delete(
