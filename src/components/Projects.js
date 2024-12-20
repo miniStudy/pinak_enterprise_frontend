@@ -9,6 +9,7 @@ import Select from 'react-select';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
+  const [agentPersons, setagentPersons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState(""); // To store the title from API response
@@ -63,6 +64,11 @@ const filter_projects = projects.filter((item) => {
     project_sgst: "",
     project_tax: "",
     project_discount: "",
+    project_agent: false,
+    project_agent_id: "",
+    project_agent_type: "",
+    project_agent_percentage: "",
+    project_agent_fixed_amount: "",
   })
 
   const projecttypesoptions = projectTypes.map((type) => ({
@@ -74,12 +80,18 @@ const personsoptions = persons.map((pers) => ({
   value: pers.person_id,
   label: pers.person_name + pers.person_contact_number,
 }));
+
+const agentoptions = agentPersons.map((agent) => ({
+  value: agent.person_id,
+  label: agent.person_name + agent.person_contact_number,
+}))
+
   // Fetch machine details
   const fetchProjects = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/show_projects/');
-      console.log(response.data.data)
       setProjects(response.data.data || []);
+      setagentPersons(response.data.agent_persons || []);
       setprojectTypes(response.data.project_types_data || []);
       setpersons(response.data.persons_data || []);
       setTitle(response.data.title);
@@ -128,6 +140,13 @@ const personsoptions = persons.map((pers) => ({
     });
   };
 
+  const handleAgentChange = (selectedOption) => {
+    setformData({
+      ...formData,
+      project_agent_id: selectedOption ? selectedOption.value : "",
+    })
+  }
+
   // Handle form submission for Add/Update
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -142,11 +161,11 @@ const personsoptions = persons.map((pers) => ({
         resetForm();
         closeModal();
       } else {
-        alert('Failed to save machine details.');
+        alert('Failed to save project details.');
       }
     } catch (err) {
       console.error('Error:', err);
-      alert('Error occurred while saving machine details.');
+      alert('Error occurred while saving project details.');
     }
   };
 
@@ -188,7 +207,7 @@ const personsoptions = persons.map((pers) => ({
       setprojectTypes(response.data.project_types_data || []);
       openModal()
     } catch (err) {
-      setError('Failed to load machine details');
+      setError('Failed to load project details');
     }
   };
 
@@ -201,7 +220,7 @@ const personsoptions = persons.map((pers) => ({
       fetchProjects();
       closedeleteModal();
     } catch (err) {
-      setError("Failed to delete document type data")
+      setError("Failed to delete project data")
     }
   }
 
@@ -222,6 +241,11 @@ const personsoptions = persons.map((pers) => ({
       project_sgst: "",
       project_tax: "",
       project_discount: "",
+      project_agent: "",
+      project_agent_id: "",
+      project_agent_type: "",
+      project_agent_percentage: "",
+    project_agent_fixed_amount: "",
     });
   };
 
@@ -497,6 +521,77 @@ const personsoptions = persons.map((pers) => ({
                     placeholder="Discount"
                   />
                 </div>
+
+                <div className="mb-3">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      onChange={(e) =>
+                        handleChange({
+                          target: { name: "project_agent", value: e.target.checked },
+                        })
+                      }
+                      checked={formData.project_agent}
+                      name="project_agent"
+                      type="checkbox"
+                      id="isAgent"
+                    />
+                    <label className="form-check-label" htmlFor="isAgent">
+                      Is Agent
+                    </label>
+                  </div>
+                </div>
+
+                {formData.project_agent === true && (
+                  <>
+                  <Select
+                  options={agentoptions}
+                  value={agentoptions.find((option) => option.value === formData.project_agent_id)}
+                  onChange={handleAgentChange}
+                  placeholder="Select Agent"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"/>
+
+                  <div className="mb-3">
+                      <select name="project_agent_type"
+                        value={formData.project_agent_type} onChange={handleChange} className="form-select">
+                        <option value=''>Select Agent Method</option>
+                        <option value='Percentage'>On Percentage</option>
+                        <option value='Fixed'>On Fixed_Amount</option>
+                      </select>
+                    </div>
+                    </>
+                )}
+
+                    {formData.project_agent_type === 'Percentage' && (
+                      <div className="mb-3">
+                        <input
+                          type="number"
+                          name="project_agent_percentage"
+                          value={formData.project_agent_percentage}
+                          onChange={handleChange}
+                          className="form-control"
+                          placeholder="Agent Percentage"
+                        />
+                      </div>
+                    )}
+
+                    {formData.project_agent_type === 'Fixed' && (
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          name="project_agent_fixed_amount"
+                          value={formData.project_agent_fixed_amount}
+                          onChange={handleChange}
+                          className="form-control"
+                          placeholder="Agent Amount"
+                        />
+                      </div>
+                    )}
+
+
                 <button type="submit" className="btn btn-sm btn-primary">
                   Submit
                 </button>
