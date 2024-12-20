@@ -5,8 +5,7 @@ import Bank_cash_insert from './insert_update/bank_cash_insert';
 import useLanguageData from "./languagedata";
 
 const Banks = () => {
-  const { languageData } = useLanguageData();
-
+  const { languageData } = useLanguageData([]);
   const [bankDetails, setBankDetails] = useState([]);
   const [ComapnyBankDeatils, setComapnyBankDeatils] = useState([]);
   const [CreditDebitData, setCreditDebitData] = useState([]);
@@ -23,12 +22,6 @@ const Banks = () => {
   const [delid, setdelid] = useState("");
   const [delbankcashid,setdelbankcashid] = useState("")
   const [Messages, setMessages] = useState('');
-
-
-
-
-
- 
 
 
   // Form states
@@ -87,6 +80,7 @@ const Banks = () => {
   // Handle input changes for form
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
@@ -391,7 +385,7 @@ const Banks = () => {
 
       {/* Calculate totals */}
       <tr>
-      <td colSpan="4" className="text-end font-bold">Total Credit Amount:</td>
+      <td colSpan="4" className="text-end font-bold">{languageData[23].lang}</td>
       <td>
         <span  className="text-green-600 font-bold"><i className="fa-solid fa-indian-rupee-sign"></i> {creditTotalAmount}</span>
       </td>
@@ -399,7 +393,7 @@ const Banks = () => {
       <td colSpan="4"></td>
       </tr>
       <tr>
-      <td colSpan="4" className="text-end font-bold">Total Debit Amount:</td>
+      <td colSpan="4" className="text-end font-bold">{languageData[24].lang}</td>
       <td>
       <span  className="text-red-600 font-bold"><i className="fa-solid fa-indian-rupee-sign"></i> {debitTotalAmount}</span>
       </td>
@@ -416,18 +410,18 @@ const Banks = () => {
 <Bank_cash_insert fetchdata={fetchBankDetails} />
 <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
         <div className="card">
-        <h6 className='mb-1'>BANK CASH</h6>
+        <h6 className='mb-1'>{languageData[25].lang}</h6>
 <div className="table-responsive">
         <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>
-              <th>Credit/Debit</th>
-              <th>Amount</th>
-              <th>Bank Name</th>
-              <th>Date</th>
-              <th>Details</th>
-              <th>Remove</th>
+              <th>{languageData[27].lang}</th>
+              <th>{languageData[18].lang}</th>
+              <th>{languageData[3].lang}</th>
+              <th>{languageData[21].lang}</th>
+              <th>{languageData[22].lang}</th>
+              <th>{languageData[12].lang}</th>
             </tr>
           </thead>
           <tbody>
@@ -478,7 +472,7 @@ const Banks = () => {
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label className="form-label">બેંકનું નામ:</label>
+                  <label className="form-label">{languageData[26].lang}:</label>
                   <input
                     type="text"
                     name="bank_name"
@@ -488,7 +482,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Branch:</label>
+                  <label className="form-label">{languageData[4].lang}</label>
                   <input
                     type="text"
                     name="bank_branch"
@@ -498,7 +492,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Account Number:</label>
+                  <label className="form-label">{languageData[5].lang}</label>
                   <input
                     type="text"
                     name="bank_account_number"
@@ -508,7 +502,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">IFSC Code:</label>
+                  <label className="form-label">{languageData[6].lang}</label>
                   <input
                     type="text"
                     name="bank_ifsc_code"
@@ -518,7 +512,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Initial Amount:</label>
+                  <label className="form-label">{languageData[8].lang}</label>
                   <input
                     type="text"
                     name="bank_initial_amount"
@@ -528,7 +522,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Account Holder:</label>
+                  <label className="form-label">{languageData[7].lang}</label>
                   <input
                     type="text"
                     name="bank_account_holder"
@@ -559,7 +553,7 @@ const Banks = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">Person</label>
+                  <label className="form-label">{languageData[2].lang}</label>
                   <select
                     className="form-select"
                     name="person_id"
@@ -567,7 +561,7 @@ const Banks = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Select Person</option>
+                    <option value="">Select {languageData[2].lang}</option>
                     {PersonsData.map((type) => (
                       <option
                         key={type.person_id}
@@ -594,7 +588,7 @@ const Banks = () => {
                         id="flexCheckChecked"
                     />
                     <label className="form-check-label" htmlFor="flexCheckChecked">
-                    Company Bank
+                    {languageData[28].lang}
                     </label>
                     </div>
                 </div>
