@@ -7,7 +7,14 @@ import axios from 'axios';
 
 function BaseLayout() {
 
-      
+  const [lang, setlang] = useState('');
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const response = axios.get(`http://127.0.0.1:8000/language_data?language_change=${value}`);
+    setlang(value)
+    window.location.reload();
+  };
+ 
 
   return (
     <>
@@ -134,7 +141,13 @@ function BaseLayout() {
       
       </ul>
     
+      <select name='language' onChange={handleChange}>
+        <option value=''>Language</option>
+        <option value='gujarati'>Gujarati</option>
+        <option value='english'>English</option>
+      </select>
     </div>
+    
     
   </aside>
     

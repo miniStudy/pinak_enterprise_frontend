@@ -7,8 +7,11 @@ import ProjectMaterial from "./ProjectMaterial";
 import ProjectPersons from "./ProjectPersons";
 import ProjectExpenses from "./ProjectExpenses";
 import Reports from "./Reports";
+import useLanguageData from "./languagedata";
 
 function SingleProject() {
+
+  const { languageData } = useLanguageData([]);
   const { project_id } = useParams();
   const [singleprojectdata, setSingleProjectData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -52,7 +55,7 @@ function SingleProject() {
 
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
         <div className="p-1">
-          <span className="font-semibold">Project Name:</span>{" "}
+          <span className="font-semibold">{languageData[30].lang} : </span>{" "}
           {singleprojectdata.project_name}
         </div>
         <div className="p-1">
