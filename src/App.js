@@ -28,6 +28,7 @@ import Materials from './components/Materials'
 import ProjectMaterial from './components/ProjectMaterial'
 import ProjectDayDetails from './components/ProjectDayDetails'
 import Reports from './components/Reports'
+import DailyReports from './components/DailyReports'
 import ProjectExpenses from './components/ProjectExpenses'
 
 import PersonWorkMachines from './components/PersonWorkMachines'
@@ -71,6 +72,7 @@ const App = () => {
           <Route path="person-work-machine" element={<PersonWorkMachines  />} />
           <Route path="document-types" element={<DocumentTypes  />} />
           <Route path="documents" element={<Documents  />} />
+          <Route path="daily-report" element={<DailyReports  />} />
           <Route path="project/:project_id" element={<Single_project  />} />
         </Route>
       </Routes>
