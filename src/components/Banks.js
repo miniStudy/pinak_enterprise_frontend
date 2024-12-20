@@ -220,20 +220,22 @@ const Banks = () => {
     <>
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h3>{title} Accounts</h3>
+        <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">
+  BANK ACCOUNTS
+</h5>
 
         {/* Button to open modal */}
         <button
           type="button"
-          className="btn btn-sm btn-primary mb-3"
+          className="btn btn-sm btn-primary mt-2"
           onClick={openModal}
         >
           Add Bank
         </button>
 
-        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
         <div className="card">
-        <h5 className='mb-1'>Company's Bank Accounts</h5>
+        <h6 className='mb-1'>COMPANY BANK ACCOUNTS</h6>
         <div className="table-responsive">
         <table className="table table-hover">
           <thead>
@@ -284,8 +286,9 @@ const Banks = () => {
         </div>
 
 
-
-        <h5 className='mb-1'>Other's Bank Accounts</h5>
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
+        <div className="card">
+        <h6 className='mb-1'>OTHER'S BANK ACCOUNTS</h6>
         <div className="table-responsive mb-3">
         <table className="table table-hover">
           <thead>
@@ -332,10 +335,14 @@ const Banks = () => {
           </tbody>
         </table>
         </div>
+        </div>
+        </div>
 
 
 
-        <h5 className='mb-1'>Bank Credit/Debit</h5>
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
+        <div className="card">
+        <h6 className='mb-1'>BANK CREDIT/DEBIT</h6>
         <div className="table-responsive">
     <table className="table table-hover">
     <thead>
@@ -393,10 +400,15 @@ const Banks = () => {
 
     </tbody>
   </table>
-</div>
+        </div>
+        </div>
+        </div>
 
 
 <Bank_cash_insert fetchdata={fetchBankDetails} />
+<div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
+        <div className="card">
+        <h6 className='mb-1'>BANK CASH</h6>
 <div className="table-responsive">
         <table className="table table-hover">
           <thead>
@@ -426,6 +438,8 @@ const Banks = () => {
             ))}
           </tbody>
         </table>
+        </div>
+        </div>
         </div>
 
 
