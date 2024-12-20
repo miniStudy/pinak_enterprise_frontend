@@ -13,6 +13,8 @@ const DailyReports = () => {
     const [title, setTitle] = useState('');
     const [Messages, setMessages] = useState('');
 
+    const [Report_date, setReport_date] = useState(null);
+
     
 
 
@@ -36,6 +38,17 @@ const DailyReports = () => {
         fetchDailyReport();
     }, []);
 
+
+    const dateChange = async (e) => {
+            const { value } = e.target;
+            const response = await axios.get(`http://127.0.0.1:8000/show_daily_report?report_date=${value}`);
+            setReport_date(value)
+            setDailyCreditReport(response.data.dailywise_credit_report || []);
+            setDailyDebitReport(response.data.dailywise_debit_report || []);
+            setDailyCreditReportTotal(response.data.total_credit_amount || 0);
+            setDailyDebitReportTotal(response.data.total_debit_amount || 0);
+    };
+
     useEffect(() => {
         if (Messages) {
             const timer = setTimeout(() => {
@@ -56,11 +69,20 @@ const DailyReports = () => {
 
     return (
         <>
-        <input type="date" id="money_date" name="money_date" onChange={dateChange}></input>
+        
+
 
             <div>
                 <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">DAILY REPORT</h5>
             </div>
+            <input 
+            type="date" 
+            id="money_date" 
+            name="money_date" 
+            value={Report_date} 
+            onChange={dateChange}
+            className="block px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white hover:shadow-md transition duration-300 mt-3"/>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
                 <div className="card">
                     <h5 className='mb-2 text-center'>આવક</h5>

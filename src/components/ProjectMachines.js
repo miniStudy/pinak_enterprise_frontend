@@ -15,6 +15,7 @@ const ProjectMachines = ({project_id}) => {
     const [error, setError] = useState(null);
     const [title, setTitle] = useState("");
     const modalRef = useRef();
+    const maintenancemodalRef = useRef();
     const deletemodel = useRef();
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
@@ -37,7 +38,6 @@ const ProjectMachines = ({project_id}) => {
         project_machine_data_work_details: "",
         project_machine_data_more_details: "",
         project_id: project_id
-
 
     });
 
@@ -120,12 +120,12 @@ const ProjectMachines = ({project_id}) => {
     };
 
     const openMaintenanceModal = () => {
-        const modalInstance = new Modal(modalRef.current);
+        const modalInstance = new Modal(maintenancemodalRef.current);
         modalInstance.show();
     };
 
     const closeMaintenanceModal = () => {
-        const modalInstance = Modal.getInstance(modalRef.current);
+        const modalInstance = Modal.getInstance(maintenancemodalRef.current);
         if (modalInstance) {
             modalInstance.hide();
         }
@@ -269,8 +269,6 @@ const ProjectMachines = ({project_id}) => {
             modalInstance.hide();
         }
     };
-
-    
 
     const closedeleteModal = () => {
         const modalInstance = Modal.getInstance(deletemodel.current);
@@ -649,7 +647,7 @@ const ProjectMachines = ({project_id}) => {
         tabIndex="-1"
         aria-labelledby="maintenanceModalLabel"
         aria-hidden="true"
-        ref={modalRef}
+        ref={maintenancemodalRef}
       >
         <div className="modal-dialog">
           <div className="modal-content">

@@ -235,7 +235,7 @@ const Banks = () => {
           Add Bank
         </button>
 
-        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
         <div className="card">
         <h5 className='mb-1'>{languageData[1].lang}</h5>
         <div className="table-responsive">
@@ -408,7 +408,7 @@ const Banks = () => {
 
 
 <Bank_cash_insert fetchdata={fetchBankDetails} />
-<div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
+<div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
         <div className="card">
         <h6 className='mb-1'>{languageData[25].lang}</h6>
 <div className="table-responsive">
