@@ -2,10 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 import Bank_cash_insert from './insert_update/bank_cash_insert';
-import { use } from "react";
-
+import useLanguageData from "./languagedata";
 
 const Banks = () => {
+  const { languageData } = useLanguageData();
+
   const [bankDetails, setBankDetails] = useState([]);
   const [ComapnyBankDeatils, setComapnyBankDeatils] = useState([]);
   const [CreditDebitData, setCreditDebitData] = useState([]);
@@ -22,6 +23,13 @@ const Banks = () => {
   const [delid, setdelid] = useState("");
   const [delbankcashid,setdelbankcashid] = useState("")
   const [Messages, setMessages] = useState('');
+
+
+
+
+
+ 
+
 
   // Form states
   const [formData, setFormData] = useState({
@@ -233,23 +241,23 @@ const Banks = () => {
 
         <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
         <div className="card">
-        <h5 className='mb-1'>Company's Bank Accounts</h5>
+        <h5 className='mb-1'>{languageData[1].lang}</h5>
         <div className="table-responsive">
         <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>
-              <th>Person</th>
-              <th>Bank</th>
-              <th>Branch</th>
-              <th>Acc.No</th>
-              <th>IFSC</th>
-              <th>Acc.Holder</th>
-              <th>Initial Amt</th>
-              <th>Status</th>
-              <th>Contact</th>
-              <th>Update</th>
-              <th>Remove</th>
+              <th>{languageData[2].lang}</th>
+              <th>{languageData[3].lang}</th>
+              <th>{languageData[4].lang}</th>
+              <th>{languageData[5].lang}</th>
+              <th>{languageData[6].lang}</th>
+              <th>{languageData[7].lang}</th>
+              <th>{languageData[8].lang}</th>
+              <th>{languageData[9].lang}</th>
+              <th>{languageData[10].lang}</th>
+              <th>{languageData[11].lang}</th>
+              <th>{languageData[12].lang}</th>
             </tr>
           </thead>
           <tbody>
@@ -285,23 +293,23 @@ const Banks = () => {
 
 
 
-        <h5 className='mb-1'>Other's Bank Accounts</h5>
+        <h5 className='mb-1'>{languageData[13].lang}</h5>
         <div className="table-responsive mb-3">
         <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>
-              <th>Person</th>
-              <th>Bank</th>
-              <th>Branch</th>
-              <th>Acc.No</th>
-              <th>IFSC</th>
-              <th>Acc.Holder</th>
-              <th>Initial Amt</th>
-              <th>Status</th>
-              <th>Contact</th>
-              <th>Update</th>
-              <th>Remove</th>
+              <th>{languageData[2].lang}</th>
+              <th>{languageData[3].lang}</th>
+              <th>{languageData[4].lang}</th>
+              <th>{languageData[5].lang}</th>
+              <th>{languageData[6].lang}</th>
+              <th>{languageData[7].lang}</th>
+              <th>{languageData[8].lang}</th>
+              <th>{languageData[9].lang}</th>
+              <th>{languageData[10].lang}</th>
+              <th>{languageData[11].lang}</th>
+              <th>{languageData[12].lang}</th>
             </tr>
           </thead>
           <tbody>
@@ -335,20 +343,20 @@ const Banks = () => {
 
 
 
-        <h5 className='mb-1'>Bank Credit/Debit</h5>
+        <h5 className='mb-1'>{languageData[14].lang}</h5>
         <div className="table-responsive">
     <table className="table table-hover">
     <thead>
       <tr>
         <th>S.N</th>
-        <th>Credit/Debit</th>
-        <th>Sender</th>
-        <th>Receiver</th>
-        <th>Amount</th>
-        <th>Payment Type</th>
-        <th>Mode</th>
-        <th>Date</th>
-        <th>Details</th>
+        <th>{languageData[15].lang}</th>
+        <th>{languageData[16].lang}</th>
+        <th>{languageData[17].lang}</th>
+        <th>{languageData[18].lang}</th>
+        <th>{languageData[19].lang}</th>
+        <th>{languageData[20].lang}</th>
+        <th>{languageData[21].lang}</th>
+        <th>{languageData[22].lang}</th>
       </tr>
     </thead>
     <tbody>
