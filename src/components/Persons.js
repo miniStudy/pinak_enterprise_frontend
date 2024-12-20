@@ -196,7 +196,7 @@ const Persons = () => {
             );
 
             const personProjectPriceResponse = await axios.get(
-                `http://127.0.0.1:8000/show_project_person/?machine_id=${id}`
+                `http://127.0.0.1:8000/show_project_person/?person_id=${id}`
             );
 
             const salaryData = personSalaryResponse.data.data || [];
@@ -271,8 +271,6 @@ const Persons = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-
-
                 <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">PERSONS DATA</h5>
                 <div className="d-flex align-items-center mb-3 mt-3">
                     <Link to="/person-types"><img
@@ -306,6 +304,9 @@ const Persons = () => {
                     classNamePrefix="react-select"
                     styles={{ width: "200px" }}
                 />
+
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3">
+                    <div className="card">
                 <div className="table-responsive">
                     <table className="table table-hover">
                         <thead>
@@ -333,7 +334,12 @@ const Persons = () => {
                                 filter_personDetails.map((person, index) => (
                                     <tr key={index + 1}>
                                         <td>{person.person_id || 'N/A'}</td>
-                                        <td onClick={() => displayData(person.person_id, person.person_name)}>{person.person_name || 'N/A'}</td>
+                                        <td 
+                                            onClick={() => displayData(person.person_id, person.person_name)} 
+                                            className="cursor-pointer text-blue-600 hover:text-blue-800 font-semibold underline"
+                                            >
+                                            {person.person_name || 'N/A'}
+                                        </td>
                                         <td>{person.person_type_id__person_type_name || 'N/A'}</td>
                                         <td>{person.person_contact_number || 'N/A'}</td>
                                         <td>{person.person_salary || 'N/A'}</td>
@@ -368,34 +374,33 @@ const Persons = () => {
                         </tbody>
                     </table>
                 </div>
+                </div>
+                </div>
 
             </div>
 
 
             {PersonName && (
                 <div className="bg-white shadow-md rounded-lg p-4">
-                    <h2 className="text-lg font-semibold mb-2">Person Name: {PersonName}</h2>
+                    <h2 className="text-lg font-bold mb-2">Person Name: {PersonName}</h2>
+                    <hr/>
                     <div className="flex">
-                        <p>Total Salary Amount:</p>
                         <p className="font-semibold">
-                            <i className="fa-solid fa-indian-rupee-sign"></i> {totalSalaryAmount}
+                        Total Salary Amount: <i className="fa-solid fa-indian-rupee-sign"></i> {totalSalaryAmount}
                         </p>
                     </div>
-                    {PersonTotalPrice && (
                         <div className="flex">
-                            <p>Total Earned:</p>
                             <p className="font-semibold">
-                                <i className="fa-solid fa-indian-rupee-sign"></i> {PersonTotalPrice}
+                            Total Earned: <i className="fa-solid fa-indian-rupee-sign"></i>{PersonTotalPrice}
                             </p>
                         </div>
-                    )}
-                    <h5 className="mt-4">
+                    <h5 className="mt-1">
                         {ProfitLossPerson > 0 ? (
-                            <span className="text-green-500">
+                            <span className="text-green-600 font-bold">
                                 Profit: <i className="fa-solid fa-indian-rupee-sign"></i> {ProfitLossPerson}
                             </span>
                         ) : (
-                            <span className="text-red-500">
+                            <span className="text-red-600 font-bold">
                                 Loss: <i className="fa-solid fa-indian-rupee-sign"></i> {Math.abs(ProfitLossPerson)}
                             </span>
                         )}

@@ -304,6 +304,8 @@ const Machines = () => {
                         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3">
+                    <div className="card">
                 <div className="table-responsive">
                     <table className="table table-hover">
 
@@ -368,6 +370,8 @@ const Machines = () => {
                             )}
                         </tbody>
                     </table>
+                </div>
+                </div>
                 </div>
             </div>
             {FilterMachineName && (
