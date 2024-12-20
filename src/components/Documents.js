@@ -135,9 +135,9 @@ const Documents = () => {
       {messages && <div className="alert alert-success">{messages}</div>}
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <h3>Documents</h3>
+      <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">DOCUMENTS DATA</h5>
       <button
-        className="btn btn-primary mb-3"
+        className="btn btn-primary mb-3 mt-3"
         onClick={() => openModal()}
       >
         Add Document

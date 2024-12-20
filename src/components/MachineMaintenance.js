@@ -213,11 +213,6 @@ const MachineMaintenance = () => {
         `http://127.0.0.1:8000/insert_update_machine_maintenance/?getdata_id=${id}`
       );
       setFormData(response.data.data);
-      setMaintenanceTypes(response.data.maintenance_types_data || []);
-      setmachineData(response.data.machines_data || []);
-      setpersonData(response.data.persons_data || []);
-      setdriverpersonData(response.data.driver_persons_data || []);
-      setprojectData(response.data.projects_data || []);
       openModal()
     } catch (err) {
       setError('Failed to load machine details');
@@ -270,8 +265,8 @@ const MachineMaintenance = () => {
     <>
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h3>{title}</h3> {/* Display the title */}
-        <div className="d-flex align-items-center mb-3">
+        <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">MACHINES MAINTENANCE</h5> {/* Display the title */}
+        <div className="d-flex align-items-center mb-3 mt-3">
           <Link to="/maintenance-types"><img
             src="/static/icons/troubleshooting.png"
             alt="User Icon"
@@ -297,6 +292,7 @@ const MachineMaintenance = () => {
                 <th>Machine Name</th>
                 <th>Maintenance Amount</th>
                 <th>Maintenance Date</th>
+                <th>Project</th>
                 <th>Amount Paid</th>
                 <th>Paid By</th>
                 <th>Maintenance Person</th>
@@ -316,6 +312,7 @@ const MachineMaintenance = () => {
                     <td>{maintenance.machine_machine_id__machine_name} - {maintenance.machine_machine_id__machine_number_plate} - {maintenance.machine_machine_id__machine_types_id__machine_type_name}</td>
                     <td>{maintenance.machine_maintenance_amount || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_date || "N/A"}</td>
+                    <td>{maintenance.project_id__project_name || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_amount_paid ? "Yes" : "No"}</td>
                     <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
@@ -471,7 +468,7 @@ const MachineMaintenance = () => {
 
                 <Select
                   options={projectoptions}
-                  value={machineoptions.find((option) => option.value === formData.project_id)}
+                  value={projectoptions.find((option) => option.value === formData.project_id)}
                   onChange={handleProjectChange}
                   placeholder="Select Project*"
                   isSearchable

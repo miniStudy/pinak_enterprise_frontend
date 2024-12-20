@@ -87,9 +87,10 @@ function Bank_cash_insert({ fetchdata }) {
 
     return (
         <>
+            <hr/>
             <button
                 type="button"
-                className="btn btn-sm btn-primary mb-3"
+                className="btn btn-sm btn-primary mt-3"
                 onClick={() => openModal()}
             >
                 Add Bank Cash

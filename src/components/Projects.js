@@ -264,8 +264,8 @@ const agentoptions = agentPersons.map((agent) => ({
     <>
       <div>
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-        <h3>{title}</h3> {/* Display the title */}
-        <div className="d-flex align-items-center mb-3">
+        <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">PROJECTS DATA</h5> {/* Display the title */}
+        <div className="d-flex align-items-center mb-3 mt-3">
     <Link to="/project-types"><img 
         src="/static/icons/projecttype2.png" 
         alt="User Icon" 
@@ -290,7 +290,7 @@ const agentoptions = agentPersons.map((agent) => ({
           <table className="table table-hover">
             <thead>
               <tr>
-                <th>Project ID</th>
+                <th>S.N</th>
                 <th>Project Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -312,7 +312,7 @@ const agentoptions = agentPersons.map((agent) => ({
               {filter_projects.length > 0 ? (
                 filter_projects.map((project, index) => (
                   <tr key={project.project_id}>
-                    <td>{index + 1} {project.project_id}</td>
+                    <td>{index + 1}</td>
                     <td><Link to={`/project/${project.project_id}`}>{project.project_name || "N/A"}</Link></td>
                     <td>{project.project_start_date || "N/A"}</td>
                     <td>{project.project_end_date || "N/A"}</td>

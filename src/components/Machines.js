@@ -286,8 +286,8 @@ const Machines = () => {
         <>
             <div>
                 {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
-                <h3>{title}</h3>
-                <div className="d-flex align-items-center mb-3">
+                <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">MACHINES DATA</h5>
+                <div className="d-flex align-items-center mb-3 mt-3">
                     <Link to="/machine-types"><img
                         src="/static/icons/machine_type.png"
                         alt="User Icon"

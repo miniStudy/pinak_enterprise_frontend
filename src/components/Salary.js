@@ -206,10 +206,13 @@ const Machines = () => {
             {Messages}
           </div>
         )}
-        <h3>{title}</h3>
+        <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">
+  SALARY DETAILS
+</h5>
+
         <button
           type="button"
-          className="btn btn-sm mb-3 btn-primary"
+          className="btn btn-sm mb-3 btn-primary mt-2"
           onClick={openModal}
         >
           Add Salary
@@ -217,14 +220,14 @@ const Machines = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-6  gap-3 mb-3">
 
-        <div className="card cardbg2">
-          <div>Total Payable Salary</div>
-          <div><i class="fa-solid fa-indian-rupee-sign"></i> {TotalSalaryAmount}</div>
+        <div className="card cardbg3">
+          <div className="text-yellow-500 font-bold">Total Payable Salary</div>
+          <div className="text-yellow-500 font-bold"><i class="fa-solid fa-indian-rupee-sign"></i> {TotalSalaryAmount}</div>
         </div>
 
-        <div className="card cardbg2">
-          <div className="">Total Paid Salary</div>
-          <div className=""><i class="fa-solid fa-indian-rupee-sign"></i> {TotalAmount}</div>
+        <div className="card cardbg3">
+          <div className="text-green-500 font-bold">Total Paid Salary</div>
+          <div className="text-green-500 font-bold"><i class="fa-solid fa-indian-rupee-sign"></i> {TotalAmount}</div>
         </div>
 
         
@@ -235,7 +238,7 @@ const Machines = () => {
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mt-3">
         <div className="card">
-        <h5>Payable Salary</h5>
+        <h6>PAYABLE SALARY</h6>
         <div className="table-responsive">
           <table className="table table-striped table-hover">
             <thead>
@@ -290,7 +293,7 @@ const Machines = () => {
       
         
         <div className="card">
-        <h5>Paid Salary</h5>
+        <h6>PAID SALARY</h6>
         <div className="table-responsive">
         
           <table className="table table-striped table-hover">
