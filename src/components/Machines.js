@@ -507,8 +507,8 @@ const Machines = () => {
                                     <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select' required>
                                         <option value="">Ownership</option>
                                         <option value="Company">Company</option>
-                                        <option value="Rented_fixedprice">Rented - Fixed Price</option>
-                                        <option value="Rented_variableprice">Rented - Variable Price</option>
+                                        <option value="Rented">Rented - Fixed Price</option>
+                                        
                                     </select>
                                 </div>
 
