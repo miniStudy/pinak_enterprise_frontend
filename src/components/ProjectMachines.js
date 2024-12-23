@@ -2,13 +2,17 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 import Select from 'react-select';
+import Maintenance_types_insert from './insert_update/maintenance_types_insert';
+import Person_insert from './insert_update/person_insert';
+import Machine_insert from './insert_update/machine_insert';
+import Work_types_insert from './insert_update/work_types_insert';
+
 
 
 const ProjectMachines = ({project_id}) => {
     const [ProjectMachineData, setProjectMachineData] = useState([]);
     const [MachineMaintenanceData, setMachineMaintenanceData] = useState([]);
     const [maintenanceTotalAmount, setmaintenanceTotalAmount] = useState([]);
-    const [MachineData, setMachineData] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [WorkTypeData, setWorkTypeData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -25,6 +29,7 @@ const ProjectMachines = ({project_id}) => {
     const [machineData, setmachineData] = useState([]);
     const [personData, setpersonData] = useState([]);
     const [driverpersonData, setdriverpersonData] = useState([]);
+    const [repairpersonData, setrepairpersonData] = useState([]);
     const [projectData, setprojectData] = useState([]);
 
     const [formData, setFormData] = useState({
@@ -43,7 +48,7 @@ const ProjectMachines = ({project_id}) => {
 
     const machineoptions = machineData.map((machine) => ({
         value: machine.machine_id,
-        label: machine.machine_name,
+        label: `${machine.machine_name} (${machine.machine_number_plate})`
       }));
     
     const handleMachineChange = (selectedOption) => {
@@ -52,13 +57,27 @@ const ProjectMachines = ({project_id}) => {
           machine_machine_id: selectedOption ? selectedOption.value : "",
         });
     };
+
+    
+
+    const projectmachineoptions = machineData.map((machine) => ({
+        value: machine.machine_id,
+        label: `${machine.machine_name} (${machine.machine_number_plate})`
+      }));
+
+    const handleProjectMachineChange = (selectedOption) => {
+    setmaintenanceformData({
+        ...maintenanceformData,
+        machine_project_id: selectedOption ? selectedOption.value : "",
+    });
+    };
     
     const driverpersonoptions = driverpersonData.map((x) => ({
         value: x.person_id,
         label: x.person_name,
     }));
     
-    const repairpersonoptions = personData.map((x) => ({
+    const repairpersonoptions = repairpersonData.map((x) => ({
         value: x.person_id,
         label: x.person_name,
     }));
@@ -77,18 +96,6 @@ const ProjectMachines = ({project_id}) => {
         machine_maintenance_person_id: selectedOption ? selectedOption.value : "",
     });
     };
-    
-    const projectoptions = projectData.map((x) => ({
-    value: x.project_id,
-    label: x.project_name,
-    }));
-    
-    const handleProjectChange = (selectedOption) => {
-        setmaintenanceformData({
-        ...maintenanceformData,
-        project_id: selectedOption ? selectedOption.value : "",
-    });
-    };
 
     const [maintenanceformData, setmaintenanceformData] = useState({
         machine_maintenance_id: '',
@@ -101,6 +108,7 @@ const ProjectMachines = ({project_id}) => {
         machine_maintenance_details: '',
         machine_maintenance_driver_id: '',
         machine_maintenance_person_id: '',
+        project_id: project_id,
       });
 
 
@@ -116,6 +124,7 @@ const ProjectMachines = ({project_id}) => {
         machine_maintenance_details: '',
         machine_maintenance_driver_id: '',
         machine_maintenance_person_id: '',
+        project_id: project_id,
     });
     };
 
@@ -165,7 +174,6 @@ const ProjectMachines = ({project_id}) => {
             const response = await axios.get(`http://127.0.0.1:8000/show_project_machine/?project_id=${project_id}`);
             setProjectMachineData(response.data.data || []);
             setTotalAmount(response.data.total_amount || 0);
-            setMachineData(response.data.machines_data || []);
             setWorkTypeData(response.data.work_types_data || []);
 
 
@@ -175,6 +183,7 @@ const ProjectMachines = ({project_id}) => {
             setmachineData(response.data.machines_data || []);
             setpersonData(response.data.persons_data || []);
             setdriverpersonData(response.data.driver_persons_data || []);
+            setrepairpersonData(response.data.repair_persons_data || []);
             setprojectData(response.data.projects_data || []);
             setTitle(response.data.title)
             setLoading(false);
@@ -233,8 +242,6 @@ const ProjectMachines = ({project_id}) => {
                 `http://127.0.0.1:8000/insert_update_project_machine/?getdata_id=${id}`
             );
             setFormData(response.data.data);
-            setMachineData(response.data.machines_data || []);
-            setWorkTypeData(response.data.work_types_data || []);
             openModal();
         } catch (err) {
             alert('Failed to load project machine data');
@@ -459,6 +466,8 @@ const ProjectMachines = ({project_id}) => {
                             <h5 className="modal-title">
                                 {formData.project_machine_data_id ? 'Edit Project-Machine' : 'Add Project-Machine'}
                             </h5>
+                            <Machine_insert fetchdata={fetchProjectMachines} />
+                            <Work_types_insert fetchdata={fetchProjectMachines} />
                             <button
                                 type="button"
                                 className="btn-close"
@@ -467,37 +476,29 @@ const ProjectMachines = ({project_id}) => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+                                {formData.project_machine_data_id && (
                                 <div className="mb-3">
-                                    <label htmlFor="workNoInput" className="form-label">Enter Date here*</label>
+                                    <label htmlFor="workNoInput" className="form-label">Enter Date here</label>
                                     <input
                                         type="date"
                                         name="project_machine_date"
                                         value={formData.project_machine_date}
                                         onChange={handleChange}
                                         className="form-control"
-                                        required
                                     />
                                 </div>
+                                )}
 
-                                <div className="mb-3">
-                                    <select
-                                        name="machine_project_id"
-                                        value={formData.machine_project_id}
-                                        onChange={handleChange}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Machine*</option>
-                                        {MachineData.map((type) => (
-                                            <option
-                                                key={type.machine_id}
-                                                value={type.machine_id}
-                                            >
-                                                {type.machine_name} {type.machine_number_plate}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                                <Select
+                                    options={projectmachineoptions}
+                                    value={projectmachineoptions.find((option) => option.value === formData.machine_project_id)}
+                                    onChange={handleProjectMachineChange}
+                                    placeholder="Select Machine*"
+                                    isSearchable
+                                    isClearable
+                                    className="react-select-container mb-3"
+                                    classNamePrefix="react-select"
+                                />
 
                                 <div className="mb-3">
                                     <select
@@ -655,6 +656,9 @@ const ProjectMachines = ({project_id}) => {
               <h5 className="modal-title" id="maintenanceModalLabel">
                 {formData.machine_maintenance_id ? 'Edit Maintenance' : 'Add Maintenance'}
               </h5>
+              <Maintenance_types_insert fetchdata={fetchProjectMachines} />
+              <Person_insert fetchdata={fetchProjectMachines} />
+              <Machine_insert fetchdata={fetchProjectMachines} />
 
               <button
                 type="button"
@@ -707,6 +711,7 @@ const ProjectMachines = ({project_id}) => {
                   />
                 </div>
 
+                {formData.machine_maintenance_id && (
                 <div className="mb-3">
                   <label className="form-label">Maintenance Date:</label>
                   <input
@@ -717,6 +722,7 @@ const ProjectMachines = ({project_id}) => {
                     className="form-control"
                   />
                 </div>
+                )}
 
                 <div className="">
                   <input
@@ -748,7 +754,7 @@ const ProjectMachines = ({project_id}) => {
 
                 <Select
                   options={repairpersonoptions}
-                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_person_id)}
+                  value={repairpersonoptions.find((option) => option.value === formData.machine_maintenance_person_id)}
                   onChange={handleRepairPersonChange}
                   placeholder="Select Repair Person*"
                   isSearchable
@@ -759,7 +765,7 @@ const ProjectMachines = ({project_id}) => {
 
                 <Select
                   options={driverpersonoptions}
-                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_driver_id)}
+                  value={driverpersonoptions.find((option) => option.value === formData.machine_maintenance_driver_id)}
                   onChange={handleDriverPersonChange}
                   placeholder="Select Driver Person*"
                   isSearchable
@@ -767,19 +773,6 @@ const ProjectMachines = ({project_id}) => {
                   className="react-select-container mb-3"
                   classNamePrefix="react-select"
                 />
-
-                <Select
-                  options={projectoptions}
-                  value={machineoptions.find((option) => option.value === formData.project_id)}
-                  onChange={handleProjectChange}
-                  placeholder="Select Project*"
-                  isSearchable
-                  isClearable
-                  className="react-select-container mb-3"
-                  classNamePrefix="react-select"
-                />
-
-
 
                 <div className="mb-3">
                   <label className="form-label">Details:</label>

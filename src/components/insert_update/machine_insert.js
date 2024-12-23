@@ -5,6 +5,7 @@ import Select from 'react-select';
 
 
 
+
 function Machine_insert({ fetchdata }) {
     const modalRef = useRef();
     const [machineTypes, setmachineTypes] = useState([]);
