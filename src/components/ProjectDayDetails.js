@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 import Machine_insert from './insert_update/machine_insert';
+import Work_types_insert from './insert_update/work_types_insert';
 import Select from 'react-select';
 
 
@@ -112,9 +113,11 @@ const ProjectDayDetails = ({project_id}) => {
             const response = await axios.get(
                 `http://127.0.0.1:8000/insert_update_project_day_detail/?getdata_id=${id}`
             );
-            setFormData(response.data.data);
-            setMachineData(response.data.machines_data || []);
-            setWorkTypeData(response.data.work_types_data || []);
+            const ProjectDayDetailsData = response.data.data;
+            setFormData({
+                ...ProjectDayDetailsData,
+                project_id: project_id // Ensure project_id is set here
+            });
             openModal();
         } catch (err) {
             alert('Failed to load project day details');
@@ -272,6 +275,7 @@ const ProjectDayDetails = ({project_id}) => {
                                 {formData.project_day_detail_id ? 'Edit Project-Day-Detail' : 'Add Project-Day-Detail'}
                             </h5>
                             <Machine_insert fetchdata={fetchProjectDayDetails} />
+                            <Work_types_insert fetchdata={fetchProjectDayDetails} />
                             <button
                                 type="button"
                                 className="btn-close"

@@ -72,8 +72,6 @@ const ProjectMaterial = ({project_id}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        alert(formData.project_id);
-
         try {
             const response = await axios.post(
                 'http://127.0.0.1:8000/insert_update_project_material/',
@@ -267,17 +265,18 @@ const ProjectMaterial = ({project_id}) => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+                                {formData.project_material_id && (
                                 <div className="mb-3">
-                                    <label htmlFor="workNoInput" className="form-label">Enter Date here*</label>
+                                    <label htmlFor="workNoInput" className="form-label">Enter Date here</label>
                                     <input
                                         type="date"
                                         name="project_material_date"
                                         value={formData.project_material_date}
                                         onChange={handleChange}
                                         className="form-control"
-                                        required
                                     />
                                 </div>
+                                )}
 
                                 <div className="mb-3">
                                     <select

@@ -66,7 +66,8 @@ const ProjectMachines = ({project_id}) => {
       }));
 
     const handleProjectMachineChange = (selectedOption) => {
-    setmaintenanceformData({
+        
+        setFormData({
         ...maintenanceformData,
         machine_project_id: selectedOption ? selectedOption.value : "",
     });
@@ -241,7 +242,11 @@ const ProjectMachines = ({project_id}) => {
             const response = await axios.get(
                 `http://127.0.0.1:8000/insert_update_project_machine/?getdata_id=${id}`
             );
-            setFormData(response.data.data);
+            const ProjectMachineData = response.data.data;
+            setFormData({
+                ...ProjectMachineData,
+                project_id: project_id // Ensure project_id is set here
+            });
             openModal();
         } catch (err) {
             alert('Failed to load project machine data');

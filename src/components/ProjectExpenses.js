@@ -293,8 +293,10 @@ const ProjectExpenses = ({ project_id }) => {
                                         )}
                                     </select>
                                 </div>
-
+                                
+                                {formData.project_expense_id && (
                                 <div className='mb-3'>
+                                    <label>Expense Date: </label>
                                     <input
                                         type="date"
                                         name="project_expense_date"
@@ -303,6 +305,7 @@ const ProjectExpenses = ({ project_id }) => {
                                         className='form-control'
                                     />
                                 </div>
+                                )}
 
                                 <div className='mb-3'>
                                     <input
