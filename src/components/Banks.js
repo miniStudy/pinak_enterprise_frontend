@@ -237,23 +237,23 @@ const Banks = () => {
 
         <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
         <div className="card">
-        <h5 className='mb-1'>{languageData[1].lang}</h5>
+        <h5 className='mb-1'>Company Bank Accounts</h5>
         <div className="table-responsive">
         <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>
-              <th>{languageData[2].lang}</th>
-              <th>{languageData[3].lang}</th>
-              <th>{languageData[4].lang}</th>
-              <th>{languageData[5].lang}</th>
-              <th>{languageData[6].lang}</th>
-              <th>{languageData[7].lang}</th>
-              <th>{languageData[8].lang}</th>
-              <th>{languageData[9].lang}</th>
-              <th>{languageData[10].lang}</th>
-              <th>{languageData[11].lang}</th>
-              <th>{languageData[12].lang}</th>
+              <th>Person Name</th>
+              <th>Bank Name</th>
+              <th>Branch</th>
+              <th>acc No</th>
+              <th>IFSC</th>
+              <th>Account Holder</th>
+              <th>Status</th>
+              <th>Contact Number</th>
+              <th>Edit</th>
+              <th>Delete</th>
+      
             </tr>
           </thead>
           <tbody>
@@ -290,23 +290,23 @@ const Banks = () => {
 
         <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
         <div className="card">
-        <h6 className='mb-1'>{languageData[13].lang}</h6>
+        <h6 className='mb-1'>Others Acc.</h6>
         <div className="table-responsive mb-3">
         <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>
-              <th>{languageData[2].lang}</th>
-              <th>{languageData[3].lang}</th>
-              <th>{languageData[4].lang}</th>
-              <th>{languageData[5].lang}</th>
-              <th>{languageData[6].lang}</th>
-              <th>{languageData[7].lang}</th>
-              <th>{languageData[8].lang}</th>
-              <th>{languageData[9].lang}</th>
-              <th>{languageData[10].lang}</th>
-              <th>{languageData[11].lang}</th>
-              <th>{languageData[12].lang}</th>
+              <th>Person Name</th>
+              <th>Bank Name</th>
+              <th>Branch</th>
+              <th>Account Number</th>
+              <th>IFSC Code</th>
+              <th>Account Holder</th>
+              <th>Initial Amount</th>
+              <th>Status</th>
+              <th>Contact number</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -344,20 +344,21 @@ const Banks = () => {
 
         <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-2 mb-4">
         <div className="card">
-        <h6 className='mb-1'>{languageData[14].lang}</h6>
+        <h6 className='mb-1'>Cash Transfer</h6>
         <div className="table-responsive">
     <table className="table table-hover">
     <thead>
       <tr>
         <th>S.N</th>
-        <th>{languageData[15].lang}</th>
-        <th>{languageData[16].lang}</th>
-        <th>{languageData[17].lang}</th>
-        <th>{languageData[18].lang}</th>
-        <th>{languageData[19].lang}</th>
-        <th>{languageData[20].lang}</th>
-        <th>{languageData[21].lang}</th>
-        <th>{languageData[22].lang}</th>
+        
+        <th>Debit/Credit</th>
+        <th>Sender Name</th>
+        <th>Receiver Name</th>
+        <th>Amount</th>
+        <th>Pay type</th>
+        <th>Pay Mode</th>
+        <th>Date</th>
+        <th>Details</th>
       </tr>
     </thead>
     <tbody>
@@ -385,7 +386,7 @@ const Banks = () => {
 
       {/* Calculate totals */}
       <tr>
-      <td colSpan="4" className="text-end font-bold">{languageData[23].lang}</td>
+      <td colSpan="4" className="text-end font-bold">Total Credit</td>
       <td>
         <span  className="text-green-600 font-bold"><i className="fa-solid fa-indian-rupee-sign"></i> {creditTotalAmount}</span>
       </td>
@@ -393,7 +394,7 @@ const Banks = () => {
       <td colSpan="4"></td>
       </tr>
       <tr>
-      <td colSpan="4" className="text-end font-bold">{languageData[24].lang}</td>
+      <td colSpan="4" className="text-end font-bold">Total Debit</td>
       <td>
       <span  className="text-red-600 font-bold"><i className="fa-solid fa-indian-rupee-sign"></i> {debitTotalAmount}</span>
       </td>
@@ -410,18 +411,18 @@ const Banks = () => {
 <Bank_cash_insert fetchdata={fetchBankDetails} />
 <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-3 mb-4">
         <div className="card">
-        <h6 className='mb-1'>{languageData[25].lang}</h6>
+        <h6 className='mb-1'>Bank Transfer</h6>
 <div className="table-responsive">
         <table className="table table-hover">
           <thead>
             <tr>
               <th>S.N</th>
-              <th>{languageData[27].lang}</th>
-              <th>{languageData[18].lang}</th>
-              <th>{languageData[3].lang}</th>
-              <th>{languageData[21].lang}</th>
-              <th>{languageData[22].lang}</th>
-              <th>{languageData[12].lang}</th>
+              <th>Credit/Debit</th>
+              <th>Amount</th>
+              <th>Bank Name</th>
+              <th>Date</th>
+              <th>Details</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -472,7 +473,7 @@ const Banks = () => {
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label className="form-label">{languageData[26].lang}:</label>
+                  <label className="form-label">Bank Name:</label>
                   <input
                     type="text"
                     name="bank_name"
@@ -482,7 +483,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">{languageData[4].lang}</label>
+                  <label className="form-label">Branch</label>
                   <input
                     type="text"
                     name="bank_branch"
@@ -492,7 +493,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">{languageData[5].lang}</label>
+                  <label className="form-label">Acc No</label>
                   <input
                     type="text"
                     name="bank_account_number"
@@ -502,7 +503,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">{languageData[6].lang}</label>
+                  <label className="form-label">IFSC</label>
                   <input
                     type="text"
                     name="bank_ifsc_code"
@@ -512,7 +513,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">{languageData[8].lang}</label>
+                  <label className="form-label">Initial Amount</label>
                   <input
                     type="text"
                     name="bank_initial_amount"
@@ -522,7 +523,7 @@ const Banks = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">{languageData[7].lang}</label>
+                  <label className="form-label">Acc Holder Name</label>
                   <input
                     type="text"
                     name="bank_account_holder"
@@ -553,7 +554,7 @@ const Banks = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">{languageData[2].lang}</label>
+                  <label className="form-label">Person</label>
                   <select
                     className="form-select"
                     name="person_id"
@@ -561,7 +562,7 @@ const Banks = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Select {languageData[2].lang}</option>
+                    <option value="">Select Person</option>
                     {PersonsData.map((type) => (
                       <option
                         key={type.person_id}
@@ -588,7 +589,7 @@ const Banks = () => {
                         id="flexCheckChecked"
                     />
                     <label className="form-check-label" htmlFor="flexCheckChecked">
-                    {languageData[28].lang}
+                    Company Bank Acc
                     </label>
                     </div>
                 </div>
