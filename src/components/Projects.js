@@ -399,8 +399,7 @@ const agentoptions = agentPersons.map((agent) => ({
                     value={formData.project_amount}
                     onChange={handleChange}
                     className="form-control"
-                    placeholder="Amount*"
-                    required
+                    placeholder="Amount"
                   />
                 </div>
 

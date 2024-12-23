@@ -155,7 +155,7 @@ const ProjectPersons = ({project_id}) => {
     const deleteData = async (id) => {
         try {
             const response = await axios.delete(
-                `http://127.0.0.1:8000/delete_project_machine/?project_person_id=${id}`
+                `http://127.0.0.1:8000/delete_project_person/?project_person_id=${id}`
             );
             setMessages(response.data.message)
             fetchProjectPersons();
@@ -219,7 +219,7 @@ const ProjectPersons = ({project_id}) => {
                                             {detail.person_id__person_name || "N/A"}
                                         </td>
                                         <td>
-                                            {detail.project_machine_data_id__machine_project_id__machine_name || "N/A"}
+                                            {detail.project_machine_data_id__machine_project_id__machine_name || "N/A"} - {detail.project_machine_data_id__machine_project_id__machine_number_plate}
                                         </td>
                                         <td>
                                             {detail.work_type_id__work_type_name || "N/A"}

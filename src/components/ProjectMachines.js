@@ -353,7 +353,7 @@ const ProjectMachines = ({project_id}) => {
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{detail.project_machine_date || "N/A"}</td>
                                         <td>
-                                            {detail.machine_project_id__machine_name || "N/A"}
+                                            {detail.machine_project_id__machine_name || "N/A"} - {detail.machine_project_id__machine_number_plate}
                                         </td>
                                         <td>
                                             {detail.work_type_id__work_type_name || "N/A"}

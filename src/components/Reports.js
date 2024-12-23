@@ -21,12 +21,15 @@ const Reports = () => {
     const [ProjectExpenseTotalAmount, setProjectExpenseTotalAmount] = useState(0);
     const [MachineMaintenanceData, setMachineMaintenanceData] = useState([]);
     const [MachineMaintenanceTotalAmount, setMachineMaintenanceTotalAmount] = useState(0);
+    const [ProjectMaterialData, setProjectMaterialData] = useState([]);
+    const [ProjectMaterialTotalAmount, setProjectMaterialTotalAmount] = useState(0);
 
     const [showProjectMachine, setShowProjectMachine] = useState(true);
     const [showProjectDayDetails, setShowProjectDayDetails] = useState(true);
     const [showProjectPerson, setShowProjectPerson] = useState(true);
     const [showProjectExpense, setShowProjectExpense] = useState(true);
     const [showProjectMachineMaintenance, setShowProjectMachineMaintenance] = useState(true);
+    const [showProjectMaterial, setShowProjectMaterial] = useState(true);
 
 
     const projectOptions = [
@@ -97,6 +100,10 @@ const Reports = () => {
             setMachineMaintenanceData(machine_maintenance_response.data.data || []);
             setMachineMaintenanceTotalAmount(machine_maintenance_response.data.total_amount || 0);
 
+            const project_material_response = await axios.get(`http://127.0.0.1:8000/show_project_material/?project_id=${newProjectID}`);
+            setProjectMaterialData(project_material_response.data.data || []);
+            setProjectMaterialTotalAmount(project_material_response.data.total_amount || 0);
+
             setError(null);
         } catch (err) {
             console.error('Error fetching project machine data:', err);
@@ -156,6 +163,14 @@ const Reports = () => {
                         onChange={() => setShowProjectMachineMaintenance(!showProjectMachineMaintenance)} />
                     <label class="form-check-label" for="projectmachinemaintenance">
                         Project Machine Maintenance
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="projectmaterial" checked={showProjectMaterial}
+                        onChange={() => setShowProjectMaterial(!showProjectMaterial)} />
+                    <label class="form-check-label" for="projectmachinemaintenance">
+                        Project Material
                     </label>
                 </div>
 
@@ -233,7 +248,7 @@ const Reports = () => {
                                             )}
                                             <tr>
                                                 <td colSpan="7">
-                                                    <span className="font-bold text-base text-red-800">
+                                                    <span className="font-bold text-base text-green-800">
                                                         Total Amount:{' '}
                                                         <i className="fa-solid fa-indian-rupee-sign"></i>
                                                         {ProjectDayDetailsTotalAmount}
@@ -282,7 +297,7 @@ const Reports = () => {
                                                 )}
                                                 <tr>
                                                     <td colSpan="7">
-                                                        <span className="font-bold text-base text-red-800">
+                                                        <span className="font-bold text-base text-green-800">
                                                             Total Amount:{' '}
                                                             <i className="fa-solid fa-indian-rupee-sign"></i>
                                                             {totalAmount}
@@ -311,6 +326,7 @@ const Reports = () => {
                                                 <tr>
                                                     <th>S.N</th>
                                                     <th>Machine Name</th>
+                                                    <th>Maintenance Type</th>
                                                     <th>Type</th>
                                                     <th>Amount</th>
                                                     <th>Date</th>
@@ -325,6 +341,7 @@ const Reports = () => {
                                                             <td>{index + 1 || 'N/A'}</td>
                                                             <td>{detail.machine_machine_id__machine_name || 'N/A'} {detail.machine_machine_id__machine_number_plate || 'N/A'}</td>
                                                             <td>{detail.machine_machine_id__machine_types_id__machine_type_name || 'N/A'}</td>
+                                                            <td>{detail.machine_machine_id__machine_types_id__machine_type_name || 'N/A'}</td>
                                                             <td>{detail.machine_maintenance_amount || 'N/A'}</td>
                                                             <td>{detail.machine_maintenance_date || 'N/A'}</td>
                                                             <td>{detail.machine_maintenance_amount_paid_by || 'N/A'}</td>
@@ -338,6 +355,64 @@ const Reports = () => {
                                                             Total Amount:{' '}
                                                             <i className="fa-solid fa-indian-rupee-sign"></i>
                                                             {MachineMaintenanceTotalAmount}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    )}
+
+                                </div>
+                            </div>
+                        </div>)}
+
+
+
+                        {showProjectMaterial && (
+                        <div className="reports">
+                            <div className="">
+                                <div className="borderr reporttitle font-bold">Project Material</div>
+                                <div className="table-responsive">
+                                    {loading ? (
+                                        <div>Loading...</div>
+                                    ) : (
+                                        <table className="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.N</th>
+                                                    <th>Date</th>
+                                                    <th>Material Type</th>
+                                                    <th>Material Owner Name</th>
+                                                    <th>Work Type</th>
+                                                    <th>Work No</th>
+                                                    <th>Price</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Material Info</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {ProjectMaterialData.length > 0 && (
+                                                    ProjectMaterialData.map((detail, index) => (
+                                                        <tr key={detail.project_machine_data_id}>
+                                                            <td>{index + 1 || 'N/A'}</td>
+
+                                                            <td>{detail.project_material_date || 'N/A'}</td>
+                                                            <td>{detail.project_material_material_type_id__material_type_name || 'N/A'}</td>
+                                                            <td>{detail.project_material_material_id__material_owner__person_name || 'N/A'}</td>
+                                                            <td>{detail.project_material_work_type_id__work_type_name || 'N/A'}</td>
+                                                            <td>{detail.project_material_work_no || 'N/A'}</td>
+                                                            <td>{detail.project_material_price || 'N/A'}</td>
+                                                            <td>{detail.project_material_total_amount || 'N/A'}</td>
+                                                            <td>{detail.person_material_information || 'N/A'}</td>
+                                                        </tr>
+                                                    ))
+                                                )}
+                                                <tr>
+                                                    <td colSpan="7">
+                                                        <span className="font-bold text-base text-red-800">
+                                                            Total Amount:{' '}
+                                                            <i className="fa-solid fa-indian-rupee-sign"></i>
+                                                            {ProjectMaterialTotalAmount}
                                                         </span>
                                                     </td>
                                                 </tr>

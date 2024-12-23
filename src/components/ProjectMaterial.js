@@ -366,16 +366,19 @@ const ProjectMaterial = ({project_id}) => {
                                         required
                                     />
                                 </div>
-                                <div className="d-flex align-items-center">Total Price : {formData.project_material_work_no * formData.project_material_price}</div>
+
+                                <div className="d-flex align-items-center">
+    Total Price: {formData.project_material_work_no && formData.project_material_price
+        ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(
+              formData.project_material_work_no * formData.project_material_price
+          )
+        : '₹0.00'}
+</div>
+
+
                                 </div>
                                 
 
-                               
-                               
-
-                           
-
-                               
 
 
                                 {/* Details Textarea */}

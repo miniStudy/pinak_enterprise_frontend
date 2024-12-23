@@ -323,6 +323,7 @@ const ProjectExpenses = ({ project_id }) => {
                                     </select>
                                 </div>
 
+                                {formData.project_payment_mode === 'Bank' && (
                                 <div className='mb-3'>
                                     <select name="bank_id" value={formData.bank_id} onChange={handleChange} className='form-select'>
                                         <option value="">Select Bank</option>
@@ -337,6 +338,7 @@ const ProjectExpenses = ({ project_id }) => {
                                         )}
                                     </select>
                                 </div>
+                                )}
 
                                 <div className='mb-3'>
                                     <textarea

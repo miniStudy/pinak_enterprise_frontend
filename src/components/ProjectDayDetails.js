@@ -202,7 +202,7 @@ const ProjectDayDetails = ({project_id}) => {
                                     <tr key={detail.project_day_detail_id}>
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{detail.proejct_day_detail_date || "N/A"}</td>
-                                        <td>{detail.project_day_detail_machine_id__machine_name || "N/A"}</td>
+                                        <td>{detail.project_day_detail_machine_id__machine_name || "N/A"} - {detail.project_day_detail_machine_id__machine_number_plate}</td>
                                         <td>{detail.project_day_detail_work_type__work_type_name || "N/A"}</td>
                                         <td>{detail.project_day_detail_work_no || "N/A"}</td>
                                         <td>{detail.project_day_detail_price || "N/A"}</td>
