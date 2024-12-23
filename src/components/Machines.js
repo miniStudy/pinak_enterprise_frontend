@@ -45,7 +45,7 @@ const Machines = () => {
         machine_other_details: '',
         machine_rented_work_type: '',
         machine_rented_work_price: '',
-        price_filter: '',
+        machine_km: ''
     });
 
     const handleSearchChange = (e) => {
@@ -190,7 +190,6 @@ const Machines = () => {
                 `http://127.0.0.1:8000/insert_update_machine/?getdata_id=${id}`
             );
             setFormData(response.data.data);
-            // setmachine_types(response.data.machine_types || []);
             openModal()
         } catch (err) {
             setError('Failed to load machine details');
@@ -269,7 +268,7 @@ const Machines = () => {
             machine_other_details: '',
             machine_rented_work_type: '',
             machine_rented_work_price: '',
-            price_filter: '',
+            machine_km : '',
         });
     };
 
@@ -507,7 +506,7 @@ const Machines = () => {
                                     <select name="machine_own" value={formData.machine_own} onChange={handleChange} className='form-select' required>
                                         <option value="">Ownership</option>
                                         <option value="Company">Company</option>
-                                        <option value="Rented">Rented - Fixed Price</option>
+                                        <option value="Rented">Rented</option>
                                         
                                     </select>
                                 </div>
@@ -528,7 +527,7 @@ const Machines = () => {
                                     </select>
                                 </div>
 
-                                {(formData.machine_own === 'Rented_fixedprice' || formData.machine_own === 'Rented_variableprice') && (
+                                {(formData.machine_own === 'Rented') && (
 
                                     <Select
                                         options={personsoptions}
@@ -558,7 +557,7 @@ const Machines = () => {
                                 </div>
 
 
-
+                                {formData.machine_id && (
                                 <div className='mb-3'>
                                     <input
                                         type="date"
@@ -566,9 +565,10 @@ const Machines = () => {
                                         value={formData.machine_register_date}
                                         onChange={handleChange}
                                         className='form-control'
-                                        required
+                                        
                                     />
                                 </div>
+                                )}
 
                                 {formData.machine_own === 'Company' && (
                                     <div className='mb-3'>
@@ -581,18 +581,9 @@ const Machines = () => {
                                 )}
 
 
-
-
-                                {/* <div className='mb-3'>
-                                    <select className='form-select' name='price_filter' value={formData.machine_rented_work_type}>
-
-                                    </select>
-                                </div> */}
-
-
-                                {formData.machine_own === 'Rented_variableprice' && (
+                                {formData.machine_own === 'Rented' && (
                                     <>
-                                        <div className='grid grid-cols-2 gap-2 mb-3'>
+                                        <div className='grid grid-cols-3 gap-2 mb-3'>
                                             <div className=''>
                                                 <select name="machine_rented_work_type" value={formData.machine_rented_work_type} onChange={handleChange} className='form-select'>
                                                     <option value="">Work Type</option>
@@ -617,12 +608,23 @@ const Machines = () => {
                                                     placeholder='Price'
                                                 />
                                             </div>
+
+                                            <div className=''>
+                                                <input
+                                                    type="number"
+                                                    name="machine_km"
+                                                    value={formData.machine_km}
+                                                    onChange={handleChange}
+                                                    className='form-control'
+                                                    placeholder='KM'
+                                                />
+                                            </div>
                                         </div>
                                     </>
                                 )}
 
 
-                                {(formData.machine_own === 'Company' || formData.machine_own === 'Rented_fixedprice') && (
+                                {formData.machine_own === 'Company' && (
 
                                     <div className='mb-3'>
                                         <input
@@ -636,7 +638,9 @@ const Machines = () => {
                                     </div>
                                 )}
 
-                                {/* <div className='mb-3'>
+                                {formData.machine_id && (
+                                    <>
+                                <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_buy_date"
@@ -645,9 +649,9 @@ const Machines = () => {
                                         className='form-control'
                                         placeholder='Buy Date'
                                     />
-                                </div> */}
+                                </div>
 
-                                {/* <div className='mb-3'>
+                                <div className='mb-3'>
                                     <input
                                         type="date"
                                         name="machine_sold_out_date"
@@ -667,7 +671,7 @@ const Machines = () => {
                                         placeholder='sold Price'
                                         className='form-control'
                                     />
-                                </div> */}
+                                </div>
 
 
 
@@ -679,6 +683,8 @@ const Machines = () => {
                                         </label>
                                     </div>
                                 </div>
+                                </>
+                                )}
 
 
 
