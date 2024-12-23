@@ -493,7 +493,7 @@ const ProjectMachines = ({project_id}) => {
                                                 key={type.machine_id}
                                                 value={type.machine_id}
                                             >
-                                                {type.machine_name}
+                                                {type.machine_name} {type.machine_number_plate}
                                             </option>
                                         ))}
                                     </select>
