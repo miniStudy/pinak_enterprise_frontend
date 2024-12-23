@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 import Machine_insert from './insert_update/machine_insert';
+import Select from 'react-select';
+
 
 
 const ProjectDayDetails = ({project_id}) => {
@@ -25,9 +27,23 @@ const ProjectDayDetails = ({project_id}) => {
         project_day_detail_work_no: "",
         project_day_detail_price: "",
         project_day_detail_total_price: 0,
+        project_day_detail_total_tyres : "",
         project_day_detail_details: "",
         project_id: project_id
     });
+
+
+    const machineoptions = MachineData.map((machine) => ({
+        value: machine.machine_id,
+        label: machine.machine_name,
+      }));
+    
+    const handleMachineChange = (selectedOption) => {
+        setFormData({
+          ...formData,
+          project_day_detail_machine_id: selectedOption ? selectedOption.value : "",
+        });
+    };
 
 
     const fetchProjectDayDetails = async () => {
@@ -112,6 +128,7 @@ const ProjectDayDetails = ({project_id}) => {
             project_day_detail_machine_id: "",
             project_day_detail_work_type: "",
             project_day_detail_work_no: "",
+            project_day_detail_total_tyres: "",
             project_day_detail_price: "",
             project_day_detail_total_price: "",
             project_day_detail_details: "",
@@ -191,6 +208,7 @@ const ProjectDayDetails = ({project_id}) => {
                                 <th>Machine Name</th>
                                 <th>Work Type</th>
                                 <th>Work No</th>
+                                <th>Tyres</th>
                                 <th>Price</th>
                                 <th>Total Price</th>
                                 <th>Details</th>
@@ -207,6 +225,7 @@ const ProjectDayDetails = ({project_id}) => {
                                         <td>{detail.project_day_detail_machine_id__machine_name || "N/A"} - {detail.project_day_detail_machine_id__machine_number_plate}</td>
                                         <td>{detail.project_day_detail_work_type__work_type_name || "N/A"}</td>
                                         <td>{detail.project_day_detail_work_no || "N/A"}</td>
+                                        <td>{detail.project_day_detail_total_tyres || "N/A"}</td>
                                         <td>{detail.project_day_detail_price || "N/A"}</td>
                                         <td>{detail.project_day_detail_total_price || "N/A"}</td>
                                         <td>{detail.project_day_detail_details || "N/A"}</td>
@@ -261,37 +280,29 @@ const ProjectDayDetails = ({project_id}) => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+                            {formData.project_day_detail_id && (
                             <div className="mb-3">
-                                <label htmlFor="workNoInput" className="form-label">Enter Date here*</label>
+                                <label htmlFor="workNoInput" className="form-label">Enter Date here</label>
                                     <input
                                         type="date"
                                         name="proejct_day_detail_date"
                                         value={formData.proejct_day_detail_date}
                                         onChange={handleChange}
                                         className="form-control"
-                                        required
                                     />
                                 </div>
+                                )}
 
-                                <div className="mb-3">
-                                    <select
-                                        name="project_day_detail_machine_id"
-                                        value={formData.project_day_detail_machine_id}
-                                        onChange={handleChange}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Machine*</option>
-                                        {MachineData.map((type) => (
-                                            <option
-                                                key={type.machine_id}
-                                                value={type.machine_id}
-                                            >
-                                                {type.machine_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                                <Select
+                                options={machineoptions}
+                                value={machineoptions.find((option) => option.value === formData.project_day_detail_machine_id)}
+                                onChange={handleMachineChange}
+                                placeholder="Select Machine*"
+                                isSearchable
+                                isClearable
+                                className="react-select-container mb-3"
+                                classNamePrefix="react-select"
+                                />
 
                                 <div className="mb-3">
                                     <select
@@ -325,7 +336,20 @@ const ProjectDayDetails = ({project_id}) => {
                                     />
                                 </div>
 
-                                {/* Price Field */}
+                                <div className="mb-3">
+                                    <select
+                                        name="project_day_detail_total_tyres"
+                                        value={formData.project_day_detail_total_tyres}
+                                        onChange={handleChange}
+                                        className="form-select"
+                                        required
+                                    >
+                                        <option value="">Select Tyres*</option>
+                                        <option value="10-Tyres">10-Tyres</option>
+                                        <option value="12-Tyres">12-Tyres</option>
+                                    </select>
+                                    </div>
+
                                 <div className="mb-3">
                                     <input
                                         id="priceInput"
@@ -339,7 +363,7 @@ const ProjectDayDetails = ({project_id}) => {
                                     />
                                 </div>
 
-                                {/* Details Textarea */}
+
                                 <div className="mb-3">
                                     <label htmlFor="detailsTextarea" className="form-label">Details</label>
                                     <textarea
@@ -352,7 +376,6 @@ const ProjectDayDetails = ({project_id}) => {
                                     ></textarea>
                                 </div>
 
-                                {/* Submit Button */}
                                 <div className="d-grid">
                                     <button type="submit" className="btn btn-primary">
                                         Submit

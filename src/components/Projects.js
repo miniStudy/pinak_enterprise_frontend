@@ -24,29 +24,29 @@ const Projects = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-};
+  };
 
 
-// Filter data based on search term
-const filter_projects = projects.filter((item) => {
+  // Filter data based on search term
+  const filter_projects = projects.filter((item) => {
 
     const matchesSearchTerm =
-        (item?.project_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_start_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_end_date?.toString().includes(searchTerm)) ||
-        (item?.project_amount?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.person_address?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_owner_name__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_owner_name__person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_status?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_types_id__project_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.project_cgst?.toLowerCase().includes(searchTerm.toLowerCase()));
-        (item?.project_sgst?.toLowerCase().includes(searchTerm.toLowerCase()));
-        (item?.project_tax?.toLowerCase().includes(searchTerm.toLowerCase()));
-        (item?.project_discount?.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-      return matchesSearchTerm;
-    });
+      (item?.project_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_start_date?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_end_date?.toString().includes(searchTerm)) ||
+      (item?.project_amount?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.person_address?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_owner_name__person_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_owner_name__person_contact_number?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_status?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_types_id__project_type_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item?.project_cgst?.toLowerCase().includes(searchTerm.toLowerCase()));
+    (item?.project_sgst?.toLowerCase().includes(searchTerm.toLowerCase()));
+    (item?.project_tax?.toLowerCase().includes(searchTerm.toLowerCase()));
+    (item?.project_discount?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return matchesSearchTerm;
+  });
 
 
 
@@ -74,17 +74,17 @@ const filter_projects = projects.filter((item) => {
   const projecttypesoptions = projectTypes.map((type) => ({
     value: type.project_type_id,
     label: type.project_type_name,
-}));
+  }));
 
-const personsoptions = persons.map((pers) => ({
-  value: pers.person_id,
-  label: pers.person_name + pers.person_contact_number,
-}));
+  const personsoptions = persons.map((pers) => ({
+    value: pers.person_id,
+    label: pers.person_name + pers.person_contact_number,
+  }));
 
-const agentoptions = agentPersons.map((agent) => ({
-  value: agent.person_id,
-  label: agent.person_name + agent.person_contact_number,
-}))
+  const agentoptions = agentPersons.map((agent) => ({
+    value: agent.person_id,
+    label: agent.person_name + agent.person_contact_number,
+  }))
 
   // Fetch machine details
   const fetchProjects = async () => {
@@ -241,11 +241,11 @@ const agentoptions = agentPersons.map((agent) => ({
       project_sgst: "",
       project_tax: "",
       project_discount: "",
-      project_agent: "",
+      project_agent: false,
       project_agent_id: "",
       project_agent_type: "",
       project_agent_percentage: "",
-    project_agent_fixed_amount: "",
+      project_agent_fixed_amount: "",
     });
   };
 
@@ -266,26 +266,26 @@ const agentoptions = agentPersons.map((agent) => ({
         {Messages && <div class="alert alert-success alert-dismissible fade show" role="alert">{Messages}</div>}
         <h5 className="text-1xl font-extrabold text-black-600 decoration-dashed tracking-wide">PROJECTS DATA</h5> {/* Display the title */}
         <div className="d-flex align-items-center mb-3 mt-3">
-    <Link to="/project-types"><img 
-        src="/static/icons/projecttype2.png" 
-        alt="User Icon" 
-        style={{ height: "30px", width: "auto" }} // Ensure consistent height
-    /></Link>
-    <button
-        type="button"
-        className="btn btn-sm btn-primary ms-2"
-        onClick={openModal}
-        style={{ height: "30px" }} // Adjust the height as needed
-    >
-        Add Project
-    </button>
-    
-    <div className="input-group" style={{ height: "30px", width: "auto" }}>
-        <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
-         <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
-    </div>
+          <Link to="/project-types"><img
+            src="/static/icons/projecttype2.png"
+            alt="User Icon"
+            style={{ height: "30px", width: "auto" }} // Ensure consistent height
+          /></Link>
+          <button
+            type="button"
+            className="btn btn-sm btn-primary ms-2"
+            onClick={openModal}
+            style={{ height: "30px" }} // Adjust the height as needed
+          >
+            Add Project
+          </button>
 
-</div>
+          <div className="input-group" style={{ height: "30px", width: "auto" }}>
+            <input type="text" class="form-control ms-2" style={{ height: "30px", width: "100px" }} placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2" value={searchTerm} onChange={handleSearchChange} />
+            <button className="btn btn-sm btn-outline-primary d-flex align-items-center" type="button" id="button-addon2" style={{ height: "30px", width: "auto" }}><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+
+        </div>
         <div className="table-responsive">
           <table className="table table-hover">
             <thead>
@@ -416,17 +416,17 @@ const agentoptions = agentPersons.map((agent) => ({
                 </div>
 
                 <div className="mb-3">
-            <Select
-                options={projecttypesoptions}
-                value={projecttypesoptions.find((option) => option.value === formData.project_types_id)}
-                onChange={handleProjectTypeChange}
-                placeholder="Select Project Type*"
-                isSearchable
-                isClearable
-                className="react-select-container mb-3"
-                classNamePrefix="react-select"
-            />
-        </div>
+                  <Select
+                    options={projecttypesoptions}
+                    value={projecttypesoptions.find((option) => option.value === formData.project_types_id)}
+                    onChange={handleProjectTypeChange}
+                    placeholder="Select Project Type*"
+                    isSearchable
+                    isClearable
+                    className="react-select-container mb-3"
+                    classNamePrefix="react-select"
+                  />
+                </div>
 
                 <div className="mb-3">
                   <select
@@ -444,82 +444,76 @@ const agentoptions = agentPersons.map((agent) => ({
                 </div>
 
                 <Select
-                options={personsoptions}
-                value={personsoptions.find((option) => option.value === formData.project_owner_name)}
-                onChange={handleOwnerChange}
-                placeholder="Select Project Owner*"
-                isSearchable
-                isClearable
-                className="react-select-container mb-3"
-                classNamePrefix="react-select"
-            />
+                  options={personsoptions}
+                  value={personsoptions.find((option) => option.value === formData.project_owner_name)}
+                  onChange={handleOwnerChange}
+                  placeholder="Select Project Owner*"
+                  isSearchable
+                  isClearable
+                  className="react-select-container mb-3"
+                  classNamePrefix="react-select"
+                />
+                {formData.project_id && (
+                  <>
+                    <div className="mb-3">
+                      <label>Start Date:</label>
+                      <input
+                        type="date"
+                        name="project_start_date"
+                        value={formData.project_start_date}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    </div>
 
-                <div className="mb-3">
-                  <label>Start Date:</label>
-                  <input
-                    type="date"
-                    name="project_start_date"
-                    value={formData.project_start_date}
-                    onChange={handleChange}
-                    className="form-control"
-                  />
-                </div>
+                    <div className="mb-3">
+                      <label>End Date:</label>
+                      <input
+                        type="date"
+                        name="project_end_date"
+                        value={formData.project_end_date}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="End Date"
+                      />
+                    </div>
 
-                <div className="mb-3">
-                <label>End Date:</label>
-                  <input
-                    type="date"
-                    name="project_end_date"
-                    value={formData.project_end_date}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="End Date"
-                  />
-                </div>
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        name="project_cgst"
+                        value={formData.project_cgst}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="CGST"
+                      />
+                    </div>
 
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="project_cgst"
-                    value={formData.project_cgst}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="CGST"
-                  />
-                </div>
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        name="project_sgst"
+                        value={formData.project_sgst}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="SGST"
+                      />
+                    </div>
 
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="project_sgst"
-                    value={formData.project_sgst}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="SGST"
-                  />
-                </div>
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        name="project_discount"
+                        value={formData.project_discount}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="Discount"
+                      />
+                    </div>
+                  </>
+                )}
 
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="project_tax"
-                    value={formData.project_tax}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="Tax"
-                  />
-                </div>
 
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    name="project_discount"
-                    value={formData.project_discount}
-                    onChange={handleChange}
-                    className="form-control"
-                    placeholder="Discount"
-                  />
-                </div>
 
                 <div className="mb-3">
                   <div className="form-check">
@@ -543,17 +537,17 @@ const agentoptions = agentPersons.map((agent) => ({
 
                 {formData.project_agent === true && (
                   <>
-                  <Select
-                  options={agentoptions}
-                  value={agentoptions.find((option) => option.value === formData.project_agent_id)}
-                  onChange={handleAgentChange}
-                  placeholder="Select Agent"
-                  isSearchable
-                  isClearable
-                  className="react-select-container mb-3"
-                  classNamePrefix="react-select"/>
+                    <Select
+                      options={agentoptions}
+                      value={agentoptions.find((option) => option.value === formData.project_agent_id)}
+                      onChange={handleAgentChange}
+                      placeholder="Select Agent"
+                      isSearchable
+                      isClearable
+                      className="react-select-container mb-3"
+                      classNamePrefix="react-select" />
 
-                  <div className="mb-3">
+                    <div className="mb-3">
                       <select name="project_agent_type"
                         value={formData.project_agent_type} onChange={handleChange} className="form-select">
                         <option value=''>Select Agent Method</option>
@@ -561,34 +555,34 @@ const agentoptions = agentPersons.map((agent) => ({
                         <option value='Fixed'>On Fixed_Amount</option>
                       </select>
                     </div>
-                    </>
+                  </>
                 )}
 
-                    {formData.project_agent_type === 'Percentage' && (
-                      <div className="mb-3">
-                        <input
-                          type="number"
-                          name="project_agent_percentage"
-                          value={formData.project_agent_percentage}
-                          onChange={handleChange}
-                          className="form-control"
-                          placeholder="Agent Percentage"
-                        />
-                      </div>
-                    )}
+                {formData.project_agent_type === 'Percentage' && (
+                  <div className="mb-3">
+                    <input
+                      type="number"
+                      name="project_agent_percentage"
+                      value={formData.project_agent_percentage}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="Agent Percentage"
+                    />
+                  </div>
+                )}
 
-                    {formData.project_agent_type === 'Fixed' && (
-                      <div className="mb-3">
-                        <input
-                          type="text"
-                          name="project_agent_fixed_amount"
-                          value={formData.project_agent_fixed_amount}
-                          onChange={handleChange}
-                          className="form-control"
-                          placeholder="Agent Amount"
-                        />
-                      </div>
-                    )}
+                {formData.project_agent_type === 'Fixed' && (
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      name="project_agent_fixed_amount"
+                      value={formData.project_agent_fixed_amount}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="Agent Amount"
+                    />
+                  </div>
+                )}
 
 
                 <button type="submit" className="btn btn-sm btn-primary">
