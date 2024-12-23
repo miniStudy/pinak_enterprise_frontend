@@ -55,7 +55,7 @@ function SingleProject() {
 
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
         <div className="p-1">
-          <span className="font-semibold">{languageData[30].lang} : </span>{" "}
+          <span className="font-semibold">પ્રોજેક્ટ નેમ  : </span>{" "}
           {singleprojectdata.project_name}
         </div>
         <div className="p-1">
