@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Machine_insert from './insert_update/machine_insert';
+
 
 const ProjectDayDetails = ({project_id}) => {
     const [ProjectDayDetailsData, setProjectDayDetailsData] = useState([]);
@@ -250,6 +252,7 @@ const ProjectDayDetails = ({project_id}) => {
                             <h5 className="modal-title">
                                 {formData.project_day_detail_id ? 'Edit Project-Day-Detail' : 'Add Project-Day-Detail'}
                             </h5>
+                            <Machine_insert fetchdata={fetchProjectDayDetails} />
                             <button
                                 type="button"
                                 className="btn-close"
