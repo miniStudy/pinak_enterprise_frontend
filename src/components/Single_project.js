@@ -106,17 +106,17 @@ function SingleProject() {
       <hr />
 
       <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-3 mt-3">
+      <div
+          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
+          onClick={() => sectionss("projectdaydetail")}
+        >
+          <i class="fa-regular fa-sun text-xl"></i> Project Day Details
+        </div>
         <div
           className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
           onClick={() => sectionss("projectmachine")}
         >
           <i class="fa-solid fa-van-shuttle text-xl"></i> Project Machines
-        </div>
-        <div
-          className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
-          onClick={() => sectionss("projectdaydetail")}
-        >
-          <i class="fa-regular fa-sun text-xl"></i> Project Day Details
         </div>
         <div
           className="card text-center max-w-xs p-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg font-semibold"
