@@ -13,6 +13,7 @@ const MachineMaintenance = () => {
   const [machineData, setmachineData] = useState([]);
   const [personData, setpersonData] = useState([]);
   const [driverpersonData, setdriverpersonData] = useState([]);
+  const [repairpersonData, setrepairpersonData] = useState([]);
   const [projectData, setprojectData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,7 +41,7 @@ const MachineMaintenance = () => {
     label: x.person_name,
   }));
 
-  const repairpersonoptions = personData.map((x) => ({
+  const repairpersonoptions = repairpersonData.map((x) => ({
     value: x.person_id,
     label: x.person_name,
   }));
@@ -120,6 +121,7 @@ const MachineMaintenance = () => {
       setmachineData(response.data.machines_data || []);
       setpersonData(response.data.persons_data || []);
       setdriverpersonData(response.data.driver_persons_data || []);
+      setrepairpersonData(response.data.repair_persons_data || []);
       setprojectData(response.data.projects_data || []);
       setTitle(response.data.title);
       setLoading(false);
@@ -446,7 +448,7 @@ const MachineMaintenance = () => {
 
                 <Select
                   options={repairpersonoptions}
-                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_person_id)}
+                  value={repairpersonoptions.find((option) => option.value === formData.machine_maintenance_person_id)}
                   onChange={handleRepairPersonChange}
                   placeholder="Select Repair Person*"
                   isSearchable
@@ -457,7 +459,7 @@ const MachineMaintenance = () => {
 
                 <Select
                   options={driverpersonoptions}
-                  value={machineoptions.find((option) => option.value === formData.machine_maintenance_driver_id)}
+                  value={driverpersonoptions.find((option) => option.value === formData.machine_maintenance_driver_id)}
                   onChange={handleDriverPersonChange}
                   placeholder="Select Driver Person*"
                   isSearchable
