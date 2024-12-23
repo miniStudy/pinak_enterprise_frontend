@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Select from 'react-select';
 import Person_insert from './insert_update/person_insert';
+import Work_types_insert from './insert_update/work_types_insert';
 
 
 const ProjectPersons = ({project_id}) => {
@@ -34,6 +36,19 @@ const ProjectPersons = ({project_id}) => {
 
 
     });
+
+    const personoptions = PersonData.map((x) => ({
+        value: x.person_id,
+        label: x.person_name,
+    }));
+    
+    
+    const handlePersonChange = (selectedOption) => {
+        setFormData({
+        ...formData,
+        person_id: selectedOption ? selectedOption.value : "",
+    });
+    };
 
 
     const fetchProjectPersons = async () => {
@@ -101,9 +116,11 @@ const ProjectPersons = ({project_id}) => {
                 `http://127.0.0.1:8000/insert_update_project_person/?getdata_id=${id}`
             );
             setFormData(response.data.data);
-            setPersonData(response.data.persons_data || []);
-            setWorkTypeData(response.data.work_types_data || []);
-            setProjectMachineData(response.data.project_machine_data || []);
+            const ProjectPersonData = response.data.data;
+            setFormData({
+                ...ProjectPersonData,
+                project_id: project_id // Ensure project_id is set here
+            });
             openModal();
         } catch (err) {
             alert('Failed to load project person data');
@@ -272,6 +289,7 @@ const ProjectPersons = ({project_id}) => {
                                 {formData.project_person_id ? 'Edit Project-Person' : 'Add Project-Person'}
                             </h5>
                             <Person_insert fetchdata={fetchProjectPersons} />
+                            <Work_types_insert fetchdata={fetchProjectPersons} />
                             <button
                                 type="button"
                                 className="btn-close"
@@ -280,8 +298,9 @@ const ProjectPersons = ({project_id}) => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+                                {formData.project_person_id && (
                                 <div className="mb-3">
-                                    <label htmlFor="workNoInput" className="form-label">Enter Date here*</label>
+                                    <label htmlFor="workNoInput" className="form-label">Enter Date here</label>
                                     <input
                                         type="date"
                                         name="project_person_date"
@@ -291,26 +310,18 @@ const ProjectPersons = ({project_id}) => {
                                         required
                                     />
                                 </div>
+                                )}
 
-                                <div className="mb-3">
-                                    <select
-                                        name="person_id"
-                                        value={formData.person_id}
-                                        onChange={handleChange}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Person*</option>
-                                        {PersonData.map((type) => (
-                                            <option
-                                                key={type.person_id}
-                                                value={type.person_id}
-                                            >
-                                                {type.person_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                                <Select
+                                    options={personoptions}
+                                    value={personoptions.find((option) => option.value === formData.person_id)}
+                                    onChange={handlePersonChange}
+                                    placeholder="Select Person*"
+                                    isSearchable
+                                    isClearable
+                                    className="react-select-container mb-3"
+                                    classNamePrefix="react-select"
+                                />
 
                                 <div className="mb-3">
                                     <select
@@ -338,9 +349,8 @@ const ProjectPersons = ({project_id}) => {
                                         value={formData.project_machine_data_id}
                                         onChange={handleChange}
                                         className="form-select"
-                                        required
                                     >
-                                        <option value="">Select Project Machine*</option>
+                                        <option value="">Select Project Machine</option>
                                         {ProjectMachineData.map((type) => (
                                             <option
                                                 key={type.project_machine_data_id}
@@ -379,20 +389,6 @@ const ProjectPersons = ({project_id}) => {
                                     />
                                 </div>
 
-
-                                {/* Details Textarea */}
-                                <div className="mb-3">
-                                    <label htmlFor="detailsTextarea" className="form-label">Work Details</label>
-                                    <textarea
-                                        id="detailsTextarea"
-                                        name="project_person_payment_details"
-                                        value={formData.project_person_payment_details}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Enter payment details (optional)"
-                                    ></textarea>
-                                </div>
-
                                 <div className="mb-3">
                                 <select
                                     name="project_person_paid_by"
@@ -407,6 +403,21 @@ const ProjectPersons = ({project_id}) => {
                                     <option value="Office">Office</option>
                                 </select>
                             </div>
+
+
+                                {/* Details Textarea */}
+                                <div className="mb-3">
+                                    <label htmlFor="detailsTextarea" className="form-label">Work Details</label>
+                                    <textarea
+                                        id="detailsTextarea"
+                                        name="project_person_payment_details"
+                                        value={formData.project_person_payment_details}
+                                        onChange={handleChange}
+                                        className="form-control"
+                                        placeholder="Enter payment details (optional)"
+                                    ></textarea>
+                                </div>
+
 
                                 {/* Details Textarea */}
                                 <div className="mb-3">

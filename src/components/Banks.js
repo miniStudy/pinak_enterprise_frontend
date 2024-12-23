@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
 import Bank_cash_insert from './insert_update/bank_cash_insert';
+import Person_insert from './insert_update/person_insert';
 import useLanguageData from "./languagedata";
 
 const Banks = () => {
@@ -249,8 +250,9 @@ const Banks = () => {
               <th>acc No</th>
               <th>IFSC</th>
               <th>Account Holder</th>
+              <th>Initial Amount</th>
               <th>Status</th>
-              <th>Contact Number</th>
+              <th>Contact</th>
               <th>Edit</th>
               <th>Delete</th>
       
@@ -304,7 +306,7 @@ const Banks = () => {
               <th>Account Holder</th>
               <th>Initial Amount</th>
               <th>Status</th>
-              <th>Contact number</th>
+              <th>Contact</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -463,6 +465,7 @@ const Banks = () => {
               <h5 className="modal-title" id="bankModalLabel">
                 {formData.bank_id ? "Edit Bank" : "Add Bank"}
               </h5>
+              <Person_insert fetchdata={fetchBankDetails} />
               <button
                 type="button"
                 className="btn-close"
@@ -473,63 +476,67 @@ const Banks = () => {
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label className="form-label">Bank Name:</label>
                   <input
                     type="text"
                     name="bank_name"
                     value={formData.bank_name}
                     onChange={handleChange}
                     className="form-control"
+                    placeholder="Bank Name*"
+                    required
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Branch</label>
                   <input
                     type="text"
                     name="bank_branch"
                     value={formData.bank_branch}
                     onChange={handleChange}
                     className="form-control"
+                    placeholder="Branch*"
+                    required
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Acc No</label>
                   <input
                     type="text"
                     name="bank_account_number"
                     value={formData.bank_account_number}
                     onChange={handleChange}
                     className="form-control"
+                    placeholder="Account No.*"
+                    required
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">IFSC</label>
                   <input
                     type="text"
                     name="bank_ifsc_code"
                     value={formData.bank_ifsc_code}
                     onChange={handleChange}
                     className="form-control"
+                    placeholder="IFSC Code*"
+                    required
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Initial Amount</label>
                   <input
                     type="text"
                     name="bank_initial_amount"
                     value={formData.bank_initial_amount}
                     onChange={handleChange}
                     className="form-control"
+                    placeholder="Initial Amount"
                   />
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Acc Holder Name</label>
                   <input
                     type="text"
                     name="bank_account_holder"
                     value={formData.bank_account_holder}
                     onChange={handleChange}
                     className="form-control"
+                    placeholder="Acc Holder Name"
                   />
                 </div>
 
@@ -589,7 +596,7 @@ const Banks = () => {
                         id="flexCheckChecked"
                     />
                     <label className="form-check-label" htmlFor="flexCheckChecked">
-                    Company Bank Acc
+                    Company Bank Account
                     </label>
                     </div>
                 </div>
