@@ -10,6 +10,7 @@ import Select from 'react-select';
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [agentPersons, setagentPersons] = useState([]);
+  const [investorPersons, setinvestorPersons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState(""); // To store the title from API response
@@ -69,6 +70,11 @@ const Projects = () => {
     project_agent_type: "",
     project_agent_percentage: "",
     project_agent_fixed_amount: "",
+    project_investor: false,
+    project_investor_id: "",
+    project_investor_type: "",
+    project_investor_percentage: "",
+    project_investor_fixed_amount: "",
   })
 
   const projecttypesoptions = projectTypes.map((type) => ({
@@ -86,12 +92,18 @@ const Projects = () => {
     label: agent.person_name + agent.person_contact_number,
   }))
 
+  const investoroptions = investorPersons.map((investor) => ({
+    value: investor.person_id,
+    label: investor.person_name + investor.person_contact_number,
+  }))
+
   // Fetch machine details
   const fetchProjects = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/show_projects/');
       setProjects(response.data.data || []);
       setagentPersons(response.data.agent_persons || []);
+      setinvestorPersons(response.data.agent_persons || []);
       setprojectTypes(response.data.project_types_data || []);
       setpersons(response.data.persons_data || []);
       setTitle(response.data.title);
@@ -246,6 +258,11 @@ const Projects = () => {
       project_agent_type: "",
       project_agent_percentage: "",
       project_agent_fixed_amount: "",
+      project_investor: false,
+    project_investor_id: "",
+    project_investor_type: "",
+    project_investor_percentage: "",
+    project_investor_fixed_amount: "",
     });
   };
 
@@ -292,18 +309,15 @@ const Projects = () => {
               <tr>
                 <th>S.N</th>
                 <th>Project Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+                
                 <th>Amount</th>
                 <th>Location</th>
                 <th>Project Type</th>
-                <th>Status</th>
-                <th>Customer Name</th>
-                <th>Customer Contact</th>
-                <th>CGST</th>
-                <th>SGST</th>
-                <th>Tax</th>
-                <th>Discount</th>
+                
+                <th>Customer</th>  
+                <th>Start Date</th>
+                <th>End Date</th> 
+                <th>Status</th>    
                 <th>Update</th>
                 <th>Remove</th>
               </tr>
@@ -314,18 +328,15 @@ const Projects = () => {
                   <tr key={project.project_id}>
                     <td>{index + 1}</td>
                     <td><Link to={`/project/${project.project_id}`}>{project.project_name || "N/A"}</Link></td>
-                    <td>{project.project_start_date || "N/A"}</td>
-                    <td>{project.project_end_date || "N/A"}</td>
+                    
                     <td>{project.project_amount || "N/A"}</td>
                     <td>{project.project_location || "N/A"}</td>
                     <td>{project.project_types_id__project_type_name || "N/A"}</td>
+                    <td>{project.project_owner_name__person_name || "N/A"} - {project.project_owner_name__person_contact_number || "N/A"}</td>
+                    <td>{project.project_start_date || "N/A"}</td>
+                    <td>{project.project_end_date || "N/A"}</td>
                     <td>{project.project_status || "N/A"}</td>
-                    <td>{project.project_owner_name__person_name || "N/A"}</td>
-                    <td>{project.project_owner_name__person_contact_number || "N/A"}</td>
-                    <td>{project.project_cgst || "N/A"}</td>
-                    <td>{project.project_sgst || "N/A"}</td>
-                    <td>{project.project_tax || "N/A"}</td>
-                    <td>{project.project_discount || "N/A"}</td>
+                  
                     <td>
                       <i
                         className="fa-regular fa-pen-to-square"
@@ -580,6 +591,81 @@ const Projects = () => {
                       onChange={handleChange}
                       className="form-control"
                       placeholder="Agent Amount"
+                    />
+                  </div>
+                )}
+
+
+
+
+
+
+
+<div className="mb-3">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      onChange={(e) =>
+                        handleChange({
+                          target: { name: "project_investor", value: e.target.checked },
+                        })
+                      }
+                      checked={formData.project_investor}
+                      name="project_investor"
+                      type="checkbox"
+                      id="isinvestor"
+                    />
+                    <label className="form-check-label" htmlFor="isinvestor">
+                      Is Investor
+                    </label>
+                  </div>
+                </div>
+
+                {formData.project_investor === true && (
+                  <>
+                    <Select
+                      options={investoroptions}
+                      value={investoroptions.find((option) => option.value === formData.project_investor_id)}
+                      onChange={handleAgentChange}
+                      placeholder="Select investor"
+                      isSearchable
+                      isClearable
+                      className="react-select-container mb-3"
+                      classNamePrefix="react-select" />
+
+                    <div className="mb-3">
+                      <select name="project_investor_type"
+                        value={formData.project_investor_type} onChange={handleChange} className="form-select">
+                        <option value=''>Select Agent Method</option>
+                        <option value='Percentage'>On Percentage</option>
+                        <option value='Fixed'>On Fixed_Amount</option>
+                      </select>
+                    </div>
+                  </>
+                )}
+
+                {formData.project_investor_type === 'Percentage' && (
+                  <div className="mb-3">
+                    <input
+                      type="number"
+                      name="project_investor_percentage"
+                      value={formData.project_investor_percentage}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="investor Percentage"
+                    />
+                  </div>
+                )}
+
+                {formData.project_investor_type === 'Fixed' && (
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      name="project_investor_fixed_amount"
+                      value={formData.project_investor_fixed_amount}
+                      onChange={handleChange}
+                      className="form-control"
+                      placeholder="investor Amount"
                     />
                   </div>
                 )}

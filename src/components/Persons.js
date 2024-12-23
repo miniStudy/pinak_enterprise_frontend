@@ -435,6 +435,27 @@ const Persons = () => {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
+
+                            <div className="mb-3">
+                                    <select
+                                        name="person_type_id"
+                                        value={formData.person_type_id}
+                                        onChange={handleChange}
+                                        className="form-select"
+                                        required
+                                    >
+                                        <option value="">Select Person Type*</option>
+                                        {personTypes.map((type) => (
+                                            <option
+                                                key={type.person_type_id}
+                                                value={type.person_type_id}
+                                            >
+                                                {type.person_type_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
                                 <div className="mb-3">
                                     <input
                                         type="text"
@@ -458,17 +479,20 @@ const Persons = () => {
                                         required
                                     />
                                 </div>
-
-                                <div className="mb-3">
-                                    <input
-                                        type="text"
-                                        name="person_salary"
-                                        value={formData.person_salary}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Person Salary"
-                                    />
-                                </div>
+            
+                               {(formData.person_type_id === '5') && (
+                                <><div className="mb-3">
+                                <input
+                                    type="text"
+                                    name="person_salary"
+                                    value={formData.person_salary}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                    placeholder="Person Salary"
+                                />
+                            </div></>
+                               )}
+                                
 
                                 <div className="mb-3">
                                     <textarea
@@ -480,6 +504,8 @@ const Persons = () => {
                                     ></textarea>
                                 </div>
 
+                                {(formData.person_type_id === '1') && (
+                                    <>
                                 <div className="mb-3">
                                     <input
                                         type="text"
@@ -523,34 +549,16 @@ const Persons = () => {
                                         placeholder="GST Number"
                                     />
                                 </div>
+                                    </>
+                                )}
+                                
 
-                                <div className="mb-3">
-                                    <select
-                                        name="person_type_id"
-                                        value={formData.person_type_id}
-                                        onChange={handleChange}
-                                        className="form-select"
-                                        required
-                                    >
-                                        <option value="">Select Person Type*</option>
-                                        {personTypes.map((type) => (
-                                            <option
-                                                key={type.person_type_id}
-                                                value={type.person_type_id}
-                                            >
-                                                {type.person_type_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                     <select
                                         name="person_types_for_project"
                                         value={formData.person_types_for_project}
                                         onChange={handleChange}
                                         className="form-select"
-                                        required
                                     >
                                         <option value="">Select Person Type For Project*</option>
                                         <option value="Worker">Worker</option>
@@ -559,9 +567,9 @@ const Persons = () => {
                                         <option value="Machine">Machine</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                </div>
+                                </div> */}
 
-
+{( formData.person_id) && (
                                 <div className="mb-3">
                                     <div className="form-check">
                                         <input
@@ -571,7 +579,7 @@ const Persons = () => {
                                                     target: { name: "person_status", value: e.target.checked },
                                                 })
                                             }
-                                            checked={formData.material_status}
+                                            checked={formData.person_status}
                                             name="person_status"
                                             type="checkbox"
                                             id="flexCheckChecked"
@@ -581,6 +589,7 @@ const Persons = () => {
                                         </label>
                                     </div>
                                 </div>
+)}
 
 
                                 <div className="mb-3">

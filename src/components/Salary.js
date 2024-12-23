@@ -8,6 +8,7 @@ import Select from 'react-select';
 const Machines = () => {
   const [Salary, setSalary] = useState([]);
   const [TotalSalaryAmount, setTotalSalaryAmount] = useState([]);
+  const [worktypes, setworktypes] = useState([]);
   const [MoneyTransaction, setMoneyTransaction] = useState([]);
   const [TotalAmount, setTotalAmount] = useState(0);
   const [PersonsData, setPersonsData] = useState([]);
@@ -57,6 +58,7 @@ const Machines = () => {
     salary_working_days: "",
     salary_details: "",
     person_id: "",
+    work_type:"",
   });
 
   // Fetch machine details
@@ -64,6 +66,7 @@ const Machines = () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/show_salary/");
       setSalary(response.data.data || []);
+      setworktypes(response.data.worktypes || []);
       setMoneyTransaction(response.data.money_data || []);
       setPersonsData(response.data.persons_data || []);
       setTitle(response.data.title);
@@ -184,6 +187,7 @@ const Machines = () => {
       salary_working_days: "",
       salary_details: "",
       person_id: "",
+      work_type:"",
     });
   };
 
@@ -373,9 +377,32 @@ const Machines = () => {
                 classNamePrefix="react-select"
             />
 
+              <div className="grid grid-cols-2 gap-2">
+                                  <div className="mb-3">
+                                    <select
+                                        name="work_type"
+                                        value={formData.work_type}
+                                        onChange={handleChange}
+                                        className="form-select"
+                                        required
+                                    >
+                                        <option value="">Select Work Type*</option>
+                                        <option value="Fixed_Salary">Fixed Salary</option>
+                                        {worktypes.map((type) => (
+                                            <option
+                                                key={type.work_type_id}
+                                                value={type.work_type_id}
+                                            >
+                                                {type.work_type_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                
+                {formData.work_type !== 'Fixed_Salary' &&(
                 <div className="mb-3">
                   <input
-                    type="text"
+                    type="number"
                     name="salary_amount"
                     value={formData.salary_amount}
                     onChange={handleChange}
@@ -383,6 +410,9 @@ const Machines = () => {
                     className="form-control"
                   />
                 </div>
+                )}
+                </div>
+
                 <div className="mb-3">
                   <input
                     type="text"
