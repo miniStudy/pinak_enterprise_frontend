@@ -25,7 +25,7 @@ const MachineMaintenance = () => {
 
   const machineoptions = machineData.map((machine) => ({
     value: machine.machine_id,
-    label: machine.machine_name,
+    label: machine.machine_name+machine.machine_number_plate,
   }));
 
   const handleMachineChange = (selectedOption) => {
