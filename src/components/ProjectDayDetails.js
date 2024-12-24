@@ -294,10 +294,10 @@ const ProjectDayDetails = ({project_id}) => {
                 </>
             ))}
 
-<tr key={detail.work_type_id}>
+<tr key={detail.work_type_id} className="bgforchange">
             <td>{detail.work_type_name || "N/A"}</td>
-            <td>10 Tyre - {detail.tyre_10_total || "N/A"}</td>
-            <td>12 Tyre - {detail.tyre_12_total || "N/A"}</td>
+            <td>10 Tyre - {detail.tyre_10_total || "0"}</td>
+            <td>12 Tyre - {detail.tyre_12_total || "0"}</td>
         </tr> 
         
         </>
