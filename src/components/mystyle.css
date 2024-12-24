@@ -46,7 +46,6 @@ table th,td:first-child{
 .form-control,.form-select,.react-select__control{background-color: transparent !important; border: 1px solid var(--border1) !important;}
 .css-13cymwt-control:focus{background-color: transparent !important;}
 .form-control,.form-select:hover{border: 2px solid var(--border1);outline: none;box-shadow: none;}
-
 .card {
     transition: transform 0.3s, box-shadow 0.3s;
     border-radius: 10px;
@@ -66,4 +65,5 @@ table th,td:first-child{
     
 }
 
+tr.bgforchange{background-color: rgb(241 245 249 / var(--tw-bg-opacity, 1)) !important;}
 

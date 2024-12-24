@@ -36,6 +36,8 @@ import DocumentTypes from './components/DocumentTypes'
 import Documents from './components/Documents'
 import Single_project from './components/Single_project';
 import CompanyDetails from './components/CompanyDetails';
+import Diary from './components/diary';
+
 
 const App = () => { 
   return (
@@ -74,6 +76,7 @@ const App = () => {
           <Route path="documents" element={<Documents  />} />
           <Route path="daily-report" element={<DailyReports  />} />
           <Route path="project/:project_id" element={<Single_project  />} />
+          <Route path="diary" element={<Diary />} />
         </Route>
       </Routes>
     </Router>
