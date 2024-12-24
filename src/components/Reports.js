@@ -238,11 +238,11 @@ const Reports = () => {
                                                     <tr key={detail.project_day_detail_id}>
                                                         <td>{index + 1 || "N/A"}</td>
                                                         <td>{detail.proejct_day_detail_date || "N/A"}</td>
-                                                        <td>{detail.project_day_detail_machine_id__machine_name || "N/A"}</td>
+                                                        <td>{detail.project_day_detail_machine_id__machine_name || "N/A"} {detail.project_day_detail_machine_id__machine_number_plate}</td>
                                                         <td>{detail.project_day_detail_work_type__work_type_name || "N/A"}</td>
                                                         <td>{detail.project_day_detail_work_no || "N/A"}</td>
-                                                        <td>{detail.project_day_detail_price || "N/A"}</td>
-                                                        <td>{detail.project_day_detail_total_price || "N/A"}</td>
+                                                        <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_day_detail_price || "N/A"}</td>
+                                                        <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_day_detail_total_price || "N/A"}</td>
                                                     </tr>
                                                 ))
                                             )}
@@ -287,11 +287,11 @@ const Reports = () => {
                                                         <tr key={detail.project_machine_data_id}>
                                                             <td>{index + 1 || 'N/A'}</td>
                                                             <td>{detail.project_machine_date || 'N/A'}</td>
-                                                            <td>{detail.machine_project_id__machine_name || 'N/A'}</td>
+                                                            <td>{detail.machine_project_id__machine_name || 'N/A'} {detail.machine_project_id__machine_number_plate}</td>
                                                             <td>{detail.work_type_id__work_type_name || 'N/A'}</td>
                                                             <td>{detail.project_machine_data_work_number || 'N/A'}</td>
-                                                            <td>{detail.project_machine_data_work_price || 'N/A'}</td>
-                                                            <td>{detail.project_machine_data_total_amount || 'N/A'}</td>
+                                                            <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_machine_data_work_price || 'N/A'}</td>
+                                                            <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_machine_data_total_amount || 'N/A'}</td>
                                                         </tr>
                                                     ))
                                                 )}
@@ -342,7 +342,7 @@ const Reports = () => {
                                                             <td>{detail.machine_machine_id__machine_name || 'N/A'} {detail.machine_machine_id__machine_number_plate || 'N/A'}</td>
                                                             <td>{detail.machine_machine_id__machine_types_id__machine_type_name || 'N/A'}</td>
                                                             <td>{detail.machine_machine_id__machine_types_id__machine_type_name || 'N/A'}</td>
-                                                            <td>{detail.machine_maintenance_amount || 'N/A'}</td>
+                                                            <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.machine_maintenance_amount || 'N/A'}</td>
                                                             <td>{detail.machine_maintenance_date || 'N/A'}</td>
                                                             <td>{detail.machine_maintenance_amount_paid_by || 'N/A'}</td>
                                                             <td>{detail.machine_maintenance_person_id__person_name || 'N/A'}</td>
@@ -401,8 +401,8 @@ const Reports = () => {
                                                             <td>{detail.project_material_material_id__material_owner__person_name || 'N/A'}</td>
                                                             <td>{detail.project_material_work_type_id__work_type_name || 'N/A'}</td>
                                                             <td>{detail.project_material_work_no || 'N/A'}</td>
-                                                            <td>{detail.project_material_price || 'N/A'}</td>
-                                                            <td>{detail.project_material_total_amount || 'N/A'}</td>
+                                                            <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_material_price || 'N/A'}</td>
+                                                            <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_material_total_amount || 'N/A'}</td>
                                                             <td>{detail.person_material_information || 'N/A'}</td>
                                                         </tr>
                                                     ))
@@ -455,14 +455,14 @@ const Reports = () => {
                                                             {detail.person_id__person_name || "N/A"}
                                                         </td>
                                                         <td>
-                                                            {detail.project_machine_data_id__machine_project_id__machine_name || "N/A"}
+                                                            {detail.project_machine_data_id__machine_project_id__machine_name || "N/A"} {detail.project_machine_data_id__machine_project_id__machine_number_plate}
                                                         </td>
                                                         <td>
                                                             {detail.work_type_id__work_type_name || "N/A"}
                                                         </td>
                                                         <td>{detail.project_person_work_num || "N/A"}</td>
-                                                        <td>{detail.project_person_price || "N/A"}</td>
-                                                        <td>{detail.project_person_total_price || "N/A"}</td>
+                                                        <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_person_price || "N/A"}</td>
+                                                        <td><i className="fa-solid fa-indian-rupee-sign"></i> {detail.project_person_total_price || "N/A"}</td>
                                                         <td>{detail.project_person_paid_by || "N/A"}</td>
                                                     </tr>
                                                 ))
@@ -508,7 +508,7 @@ const Reports = () => {
                                                         <td>{y.project_expense_name || "N/A"}</td>
                                                         <td>{y.project_id__project_name || "N/A"}</td>
                                                         <td>{y.project_expense_date || "N/A"}</td>
-                                                        <td>{y.project_expense_amount || "N/A"}</td>
+                                                        <td><i className="fa-solid fa-indian-rupee-sign"></i> {y.project_expense_amount || "N/A"}</td>
                                                         <td>{y.project_payment_mode || "N/A"}</td>
                                                         <td>{y.bank_id__bank_name || "N/A"}</td>
 

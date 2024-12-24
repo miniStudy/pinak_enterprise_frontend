@@ -22,7 +22,7 @@ const Machines = () => {
 
   const personsoptions = PersonsData.map((x) => ({
     value: x.person_id,
-    label: x.person_name + x.person_contact_number,
+    label: `${x.person_name} (${x.person_contact_number})`,
   }));
 
   const handlePersonChange = (selectedOption) => {
@@ -157,8 +157,6 @@ const Machines = () => {
         `http://127.0.0.1:8000/insert_update_salary/?getdata_id=${id}`
       );
       setFormData(response.data.data);
-      console.log(response.data.data);
-      setPersonsData(response.data.persons_data || []);
       openModal();
     } catch (err) {
       setError("Failed to load salary details");
@@ -249,7 +247,6 @@ const Machines = () => {
               <tr>
                 <th>S.N</th>
                 <th>Name</th>
-                <th>Contact</th>
                 <th>Date</th>
                 <th>Days</th>
                 <th>Earned</th>
@@ -264,8 +261,7 @@ const Machines = () => {
                 Salary.map((salary, index) => (
                   <tr key={salary.salary_id}>
                     <td>{index + 1}</td>
-                    <td>{salary.person_id__person_name || "N/A"}</td>
-                    <td>{salary.person_id__person_contact_number || "N/A"}</td>
+                    <td>{salary.person_id__person_name || "N/A"} [{salary.person_id__person_contact_number}]</td>
                     <td>{salary.salary_date || "N/A"}</td>
                     <td>{salary.salary_working_days || "N/A"}</td>
                     <td>{salary.salary_amount || "N/A"}</td>
@@ -316,7 +312,7 @@ const Machines = () => {
                 MoneyTransaction.map((x, index) => (
                   <tr key={x.money_id}>
                     <td>{index + 1}</td>
-                    <td>{x.receiver_person_id__person_name || "N/A"}</td>
+                    <td>{x.receiver_person_id__person_name || "N/A"} [{x.receiver_person_id__person_contact_number}]</td>
                     <td>{x.money_date || "N/A"}</td>
                     <td>{x.money_amount || "N/A"}</td>
                     <td>{x.money_payment_mode || "N/A"}</td>
@@ -370,7 +366,7 @@ const Machines = () => {
 
             <Select options={personsoptions} value={personsoptions.find((option) => option.value === formData.person_id)}
             onChange={handlePersonChange}
-            placeholder="Select Person"
+            placeholder="Select Person*"
             isSearchable
                 isClearable
                 className="react-select-container mb-3"

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Modal } from 'bootstrap';
+import Select from 'react-select';
 import Bank_cash_insert from './insert_update/bank_cash_insert';
 import Person_insert from './insert_update/person_insert';
 import useLanguageData from "./languagedata";
@@ -36,8 +37,22 @@ const Banks = () => {
     bank_initial_amount: "",
     bank_open_closed: true,
     person_id: "",
-    company_bank_account: "",
+    company_bank_account: false,
   });
+
+  const personoptions = PersonsData.map((x) => ({
+    value: x.person_id,
+    label: `${x.person_name} (${x.person_contact_number})`
+}));
+
+
+
+const handlePersonChange = (selectedOption) => {
+    setFormData({
+    ...formData,
+    person_id: selectedOption ? selectedOption.value : "",
+});
+};
 
 
   // Fetch bank details
@@ -159,7 +174,6 @@ const Banks = () => {
         `http://127.0.0.1:8000/insert_update_bank_detail/?getdata_id=${id}`
       );
       setFormData(response.data.data);
-      setPersonsData(response.data.persons || []);
       openModal()
     } catch (err) {
       setError("Failed to load bank details");
@@ -205,7 +219,7 @@ const Banks = () => {
       bank_initial_amount: "",
       bank_open_closed: true,
       person_id: "",
-      company_bank_account: "",
+      company_bank_account: false,
     });
   };
 
@@ -262,7 +276,7 @@ const Banks = () => {
             {ComapnyBankDeatils.map((bank,index) => (
               <tr key={bank.bank_id}>
                 <td>{index+1}</td>
-                <td>{bank.person_id__person_name || 'N/A'}</td>
+                <td>{bank.person_id__person_name || 'N/A'} [{bank.person_id__person_contact_number}]</td>
                 <td>{bank.bank_name}</td>
                 <td>{bank.bank_branch}</td>
                 <td>{bank.bank_account_number}</td>
@@ -315,7 +329,7 @@ const Banks = () => {
             {bankDetails.map((bank,index) => (
               <tr key={bank.bank_id}>
                 <td>{index+1}</td>
-                <td>{bank.person_id__person_name || 'N/A'}</td>
+                <td>{bank.person_id__person_name || 'N/A'} [{bank.person_id__person_contact_number}]</td>
                 <td>{bank.bank_name}</td>
                 <td>{bank.bank_branch}</td>
                 <td>{bank.bank_account_number}</td>
@@ -369,10 +383,10 @@ const Banks = () => {
           <td>{index + 1}</td>
           <td>{bank.credit_debit || 'N/A'}</td>
           <td>
-            {bank.sender_person_id__person_name} {bank.sender_bank_id__bank_name}
+            {bank.sender_person_id__person_name} [{bank.sender_person_id__person_contact_number}] - {bank.sender_bank_id__bank_name}
           </td>
           <td>
-            {bank.receiver_person_id__person_name} {bank.receiver_bank_id__bank_name}
+            {bank.receiver_person_id__person_name} [{bank.receiver_person_id__person_contact_number}] - {bank.receiver_bank_id__bank_name}
           </td>
           <td>{bank.credit_debit === 'Credit' ? (
             <span className="text-green-600"><i className="fa-solid fa-indian-rupee-sign"></i> {bank.money_amount}</span>
@@ -435,7 +449,7 @@ const Banks = () => {
                 <td><i className="fa-solid fa-indian-rupee-sign"></i> {bank.amount}</td>
                 <td>{bank.bank_id__bank_name}</td>
                 <td>{bank.date}</td>
-                <td>{bank.details}</td>
+                <td>{bank.details || 'N/A'}</td>
                 <td>
                   <i className="fa-regular fa-trash-can" onClick={() => opendeleteModalBankCash(bank.bank_cash_id)}></i>
                 </td>
@@ -475,6 +489,18 @@ const Banks = () => {
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
+
+              <Select
+                options={personoptions}
+                value={personoptions.find((option) => option.value === formData.person_id)}
+                onChange={handlePersonChange}
+                placeholder="Select Person*"
+                isSearchable
+                isClearable
+                className="react-select-container mb-3"
+                classNamePrefix="react-select"
+            />
+
                 <div className="mb-3">
                   <input
                     type="text"
@@ -560,26 +586,7 @@ const Banks = () => {
                     </div>
                 </div>
 
-                <div className="mb-3">
-                  <label className="form-label">Person</label>
-                  <select
-                    className="form-select"
-                    name="person_id"
-                    value={formData.person_id}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">Select Person</option>
-                    {PersonsData.map((type) => (
-                      <option
-                        key={type.person_id}
-                        value={type.person_id}
-                      >
-                        {type.person_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+
 
                 <div className="mb-3">
                     <div className="form-check">

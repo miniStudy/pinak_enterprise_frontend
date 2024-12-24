@@ -37,7 +37,7 @@ const ProjectDayDetails = ({project_id}) => {
 
     const machineoptions = MachineData.map((machine) => ({
         value: machine.machine_id,
-        label: machine.machine_name,
+        label: `${machine.machine_name} (${machine.machine_number_plate})`,
       }));
     
     const handleMachineChange = (selectedOption) => {
@@ -227,12 +227,12 @@ const ProjectDayDetails = ({project_id}) => {
                                     <tr key={detail.project_day_detail_id}>
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{detail.proejct_day_detail_date || "N/A"}</td>
-                                        <td>{detail.project_day_detail_machine_id__machine_name || "N/A"} - {detail.project_day_detail_machine_id__machine_number_plate}</td>
+                                        <td>{detail.project_day_detail_machine_id__machine_name || "N/A"} {detail.project_day_detail_machine_id__machine_number_plate}</td>
                                         <td>{detail.project_day_detail_work_type__work_type_name || "N/A"}</td>
                                         <td>{detail.project_day_detail_work_no || "N/A"}</td>
                                         <td>{detail.project_day_detail_total_tyres || "N/A"}</td>
-                                        <td>{detail.project_day_detail_price || "N/A"}</td>
-                                        <td>{detail.project_day_detail_total_price || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_day_detail_price || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_day_detail_total_price || "N/A"}</td>
                                         <td>{detail.project_day_detail_details || "N/A"}</td>
                                         <td>
                                             <i

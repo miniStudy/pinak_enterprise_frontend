@@ -211,7 +211,7 @@ const ProjectExpenses = ({ project_id }) => {
                                                 <td>{y.project_expense_name || "N/A"}</td>
                                                 <td>{y.project_id__project_name || "N/A"}</td>
                                                 <td>{y.project_expense_date || "N/A"}</td>
-                                                <td>{y.project_expense_amount || "N/A"}</td>
+                                                <td><i class="fa-solid fa-indian-rupee-sign"></i> {y.project_expense_amount || "N/A"}</td>
                                                 <td>{y.project_payment_mode || "N/A"}</td>
                                                 <td>{y.bank_id__bank_name || "N/A"}</td>
                                                 <td>{y.project_expense_desc || "N/A"}</td>

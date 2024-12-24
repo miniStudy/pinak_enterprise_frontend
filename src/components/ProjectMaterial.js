@@ -212,8 +212,8 @@ const ProjectMaterial = ({project_id}) => {
                                         <td>{detail.project_material_material_type_id__material_type_name || "N/A"}</td>
                                         <td>{detail.project_material_work_type_id__work_type_name || "N/A"}</td>
                                         <td>{detail.project_material_work_no || "N/A"}</td>
-                                        <td>{detail.project_material_price || "N/A"}</td>
-                                        <td>{detail.project_material_total_amount || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_material_price || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_material_total_amount || "N/A"}</td>
                                         <td>{detail.person_material_information || "N/A"}</td>
                                         <td>
                                             <i

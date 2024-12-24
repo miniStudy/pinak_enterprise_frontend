@@ -160,18 +160,6 @@ function Bank_cash_insert({ fetchdata }) {
                                         )}
                                     </select>
                                 </div>
-
-
-                                <div className="mb-3">
-                                    <label className="form-label">Date:</label>
-                                    <input
-                                        type="date"
-                                        name="date"
-                                        value={formData.date}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                    />
-                                </div>
                                 <div className="mb-3">
                                     <label className="form-label">Details:</label>
                                     <textarea

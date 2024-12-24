@@ -39,7 +39,7 @@ const ProjectPersons = ({project_id}) => {
 
     const personoptions = PersonData.map((x) => ({
         value: x.person_id,
-        label: x.person_name,
+        label: `${x.person_name} (${x.person_contact_number})`,
     }));
     
     
@@ -233,17 +233,16 @@ const ProjectPersons = ({project_id}) => {
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{detail.project_person_date || "N/A"}</td>
                                         <td>
-                                            {detail.person_id__person_name || "N/A"}
-                                        </td>
+                                            {detail.person_id__person_name || "N/A"} {detail.person_id__person_contact_number}</td>
                                         <td>
-                                            {detail.project_machine_data_id__machine_project_id__machine_name || "N/A"} - {detail.project_machine_data_id__machine_project_id__machine_number_plate}
+                                            {detail.project_machine_data_id__machine_project_id__machine_name || "N/A"} {detail.project_machine_data_id__machine_project_id__machine_number_plate}
                                         </td>
                                         <td>
                                             {detail.work_type_id__work_type_name || "N/A"}
                                         </td>
                                         <td>{detail.project_person_work_num || "N/A"}</td>
-                                        <td>{detail.project_person_price || "N/A"}</td>
-                                        <td>{detail.project_person_total_price || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_person_price || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_person_total_price || "N/A"}</td>
                                         <td>{detail.project_person_paid_by || "N/A"}</td>
                                         <td>{detail.project_person_payment_details || "N/A"}</td>
                                         <td>{detail.project_person_more_details || "N/A"}</td>
@@ -356,7 +355,7 @@ const ProjectPersons = ({project_id}) => {
                                                 key={type.project_machine_data_id}
                                                 value={type.project_machine_data_id}
                                             >
-                                                {type.machine_project_id__machine_name}
+                                                {type.machine_project_id__machine_name} {type.machine_project_id__machine_number_plate}
                                             </option>
                                         ))}
                                     </select>
