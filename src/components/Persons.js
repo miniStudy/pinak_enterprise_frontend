@@ -313,17 +313,16 @@ const Persons = () => {
                             <tr>
                                 <th>S.N</th>
                                 <th>Name</th>
+                                <th>Status</th>
                                 <th>Type</th>
-                                <th>Contact</th>
                                 <th>Salary</th>
                                 <th>Date</th>
-                                <th>Status</th>
                                 <th>Address</th>
+                                <th>Type Project</th>
                                 <th>Job/Business</th>
                                 <th>Com.Number</th>
                                 <th>Job Address</th>
                                 <th>GST</th>
-                                <th>Type Project</th>
                                 <th>Details</th>
                                 <th>Update</th>
                                 <th>Remove</th>
@@ -338,19 +337,18 @@ const Persons = () => {
                                             onClick={() => displayData(person.person_id, person.person_name)} 
                                             className="cursor-pointer text-blue-600 hover:text-blue-800 font-semibold underline"
                                             >
-                                            {person.person_name || 'N/A'}
+                                            {person.person_name || 'N/A'} [{person.person_contact_number}]
                                         </td>
+                                        <td>{person.person_status ? 'Active' : 'Inactive'}</td>
                                         <td>{person.person_type_id__person_type_name || 'N/A'}</td>
-                                        <td>{person.person_contact_number || 'N/A'}</td>
                                         <td>{person.person_salary || 'N/A'}</td>
                                         <td>{person.person_register_date || 'N/A'}</td>
-                                        <td>{person.person_status ? 'Active' : 'Inactive'}</td>
                                         <td>{person.person_address || 'N/A'}</td>
+                                        <td>{person.person_types_for_project || 'N/A'}</td>
                                         <td>{person.person_business_job_name || 'N/A'}</td>
                                         <td>{person.person_business_job_company_num || 'N/A'}</td>
                                         <td>{person.person_business_job_address || 'N/A'}</td>
                                         <td>{person.person_gst || 'N/A'}</td>
-                                        <td>{person.person_types_for_project || 'N/A'}</td>
                                         <td>{person.person_other_details || 'N/A'}</td>
                                         <td>
                                             <i

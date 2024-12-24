@@ -365,14 +365,14 @@ const ProjectMachines = ({project_id}) => {
                                         <td>{index + 1 || "N/A"}</td>
                                         <td>{detail.project_machine_date || "N/A"}</td>
                                         <td>
-                                            {detail.machine_project_id__machine_name || "N/A"} - {detail.machine_project_id__machine_number_plate}
+                                            {detail.machine_project_id__machine_name || "N/A"} {detail.machine_project_id__machine_number_plate}
                                         </td>
                                         <td>
                                             {detail.work_type_id__work_type_name || "N/A"}
                                         </td>
                                         <td>{detail.project_machine_data_work_number || "N/A"}</td>
-                                        <td>{detail.project_machine_data_work_price || "N/A"}</td>
-                                        <td>{detail.project_machine_data_total_amount || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_machine_data_work_price || "N/A"}</td>
+                                        <td><i class="fa-solid fa-indian-rupee-sign"></i> {detail.project_machine_data_total_amount || "N/A"}</td>
                                         <td>{detail.project_machine_data_work_details || "N/A"}</td>
                                         <td>{detail.project_machine_data_more_details || "N/A"}</td>
                                         <td>
@@ -415,7 +415,6 @@ const ProjectMachines = ({project_id}) => {
                 <th>Amount Paid</th>
                 <th>Paid By</th>
                 <th>Maintenance Person</th>
-                <th>Contact</th>
                 <th>Driver</th>
                 <th>Details</th>
                 <th>Type Name</th>
@@ -428,14 +427,13 @@ const ProjectMachines = ({project_id}) => {
                 MachineMaintenanceData.map((maintenance, index) => (
                   <tr key={maintenance.machine_maintenance_id}>
                     <td>{index + 1}</td>
-                    <td>{maintenance.machine_machine_id__machine_name} - {maintenance.machine_machine_id__machine_number_plate} - {maintenance.machine_machine_id__machine_types_id__machine_type_name}</td>
-                    <td>{maintenance.machine_maintenance_amount || "N/A"}</td>
+                    <td>{maintenance.machine_machine_id__machine_name} {maintenance.machine_machine_id__machine_number_plate} - {maintenance.machine_machine_id__machine_types_id__machine_type_name}</td>
+                    <td><i class="fa-solid fa-indian-rupee-sign"></i> {maintenance.machine_maintenance_amount || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_date || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_amount_paid ? "Yes" : "No"}</td>
                     <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_person_id__person_contact_number || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_driver_id__person_name || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"} [{maintenance.machine_maintenance_person_id__person_contact_number}]</td>
+                    <td>{maintenance.machine_maintenance_driver_id__person_name || "N/A"} [{maintenance.machine_maintenance_driver_id__person_contact_number}]</td>
                     <td>{maintenance.machine_maintenance_details || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
                     {/* <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(maintenance.machine_maintenance_id)}></i></td>

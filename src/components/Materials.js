@@ -24,7 +24,7 @@ const Materials = () => {
 
   const personoptions = Persons.map((x) => ({
     value: x.person_id,
-    label: x.person_name,
+    label: `${x.person_name} (${x.person_contact_number})`,
   }));
 
   const handlePersonChange = (selectedOption) => {
@@ -232,9 +232,7 @@ const Materials = () => {
             <thead>
               <tr>
                 <th>S.N</th>
-                <th>Material ID</th>
                 <th>Material Type</th>
-                <th>Owner ID</th>
                 <th>Owner's Name</th>
                 <th>Status</th>
                 <th>Buy Date</th>
@@ -245,7 +243,6 @@ const Materials = () => {
                 <th>Total Price</th>
                 <th>Is Agent</th>
                 <th>Agent Name</th>
-                <th>Agent Contact</th>
                 <th>Agent Price Choice</th>
                 <th>Agent Percentage</th>
                 <th>Agent Amount</th>
@@ -260,9 +257,7 @@ const Materials = () => {
                 materials.map((material, index) => (
                   <tr key={material.material_id}>
                     <td>{index + 1 || "N/A"}</td>
-                    <td>{material.material_id || "N/A"}</td>
                     <td>{material.material_type_id__material_type_name || "N/A"}</td>
-                    <td>{material.material_owner__person_id || "N/A"}</td>
                     <td>{material.material_owner__person_name || "N/A"}</td>
                     <td>{material.material_status ? "Active" : "Inactive"}</td>
                     <td>{material.material_buy_date || "N/A"}</td>
@@ -272,8 +267,7 @@ const Materials = () => {
                     <td>{material.material_price || "N/A"}</td>
                     <td>{material.material_total_price || "N/A"}</td>
                     <td>{material.material_is_agent ? "Yes" : "No"}</td>
-                    <td>{material.material_agent_name || "N/A"}</td>
-                    <td>{material.material_agent_contact || "N/A"}</td>
+                    <td>{material.material_agent_name || "N/A"} [{material.material_agent_contact}]</td>
                     <td>{material.material_agent_price_choice || "N/A"}</td>
                     <td>{material.material_agent_percentage || "N/A"}</td>
                     <td>{material.material_agent_amount || "N/A"}</td>

@@ -26,7 +26,7 @@ const MachineMaintenance = () => {
 
   const machineoptions = machineData.map((machine) => ({
     value: machine.machine_id,
-    label: machine.machine_name+machine.machine_number_plate,
+    label: `${machine.machine_name} (${machine.machine_number_plate})`,
   }));
 
   const handleMachineChange = (selectedOption) => {
@@ -38,12 +38,12 @@ const MachineMaintenance = () => {
 
   const driverpersonoptions = driverpersonData.map((x) => ({
     value: x.person_id,
-    label: x.person_name,
+    label: `${x.person_name} (${x.person_contact_number})`,
   }));
 
   const repairpersonoptions = repairpersonData.map((x) => ({
     value: x.person_id,
-    label: x.person_name,
+    label: `${x.person_name} (${x.person_contact_number})`,
   }));
 
 
@@ -298,7 +298,6 @@ const MachineMaintenance = () => {
                 <th>Amount Paid</th>
                 <th>Paid By</th>
                 <th>Maintenance Person</th>
-                <th>Contact</th>
                 <th>Driver</th>
                 <th>Details</th>
                 <th>Type Name</th>
@@ -311,15 +310,14 @@ const MachineMaintenance = () => {
                 filter_machineMaintenance.map((maintenance, index) => (
                   <tr key={maintenance.machine_maintenance_id}>
                     <td>{index + 1}</td>
-                    <td>{maintenance.machine_machine_id__machine_name} - {maintenance.machine_machine_id__machine_number_plate} - {maintenance.machine_machine_id__machine_types_id__machine_type_name}</td>
+                    <td>{maintenance.machine_machine_id__machine_name} - {maintenance.machine_machine_id__machine_number_plate}  [{maintenance.machine_machine_id__machine_types_id__machine_type_name}]</td>
                     <td>{maintenance.machine_maintenance_amount || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_date || "N/A"}</td>
                     <td>{maintenance.project_id__project_name || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_amount_paid ? "Yes" : "No"}</td>
                     <td>{maintenance.machine_maintenance_amount_paid_by || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_person_id__person_contact_number || "N/A"}</td>
-                    <td>{maintenance.machine_maintenance_driver_id__person_name || "N/A"}</td>
+                    <td>{maintenance.machine_maintenance_person_id__person_name || "N/A"} [{maintenance.machine_maintenance_person_id__person_contact_number}]</td>
+                    <td>{maintenance.machine_maintenance_driver_id__person_name || "N/A"} [{maintenance.machine_maintenance_driver_id__person_contact_number}]</td>
                     <td>{maintenance.machine_maintenance_details || "N/A"}</td>
                     <td>{maintenance.machine_maintenance_types_id__maintenance_type_name || "N/A"}</td>
                     <td><i className="fa-regular fa-pen-to-square" onClick={() => editDetailsGetData(maintenance.machine_maintenance_id)}></i></td>
@@ -407,6 +405,7 @@ const MachineMaintenance = () => {
                   />
                 </div>
 
+                {formData.machine_maintenance_id && (
                 <div className="mb-3">
                   <label className="form-label">Maintenance Date:</label>
                   <input
@@ -417,6 +416,7 @@ const MachineMaintenance = () => {
                     className="form-control"
                   />
                 </div>
+                )}
 
                 <div className="">
                   <input
@@ -434,6 +434,7 @@ const MachineMaintenance = () => {
                   <label className="form-label">Paid By:</label>
                   <select
                     name="machine_maintenance_amount_paid_by"
+                    value={formData.machine_maintenance_amount_paid_by}
                     onChange={handleChange}
                     className="form-select"
                     required

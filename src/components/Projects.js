@@ -84,17 +84,17 @@ const Projects = () => {
 
   const personsoptions = persons.map((pers) => ({
     value: pers.person_id,
-    label: pers.person_name + pers.person_contact_number,
+    label: `${pers.person_name} (${pers.person_contact_number})`,
   }));
 
   const agentoptions = agentPersons.map((agent) => ({
     value: agent.person_id,
-    label: agent.person_name + agent.person_contact_number,
+    label: `${agent.person_name} (${agent.person_contact_number})`,
   }))
 
   const investoroptions = investorPersons.map((investor) => ({
     value: investor.person_id,
-    label: investor.person_name + investor.person_contact_number,
+    label: `${investor.person_name} (${investor.person_contact_number})`,
   }))
 
   // Fetch machine details

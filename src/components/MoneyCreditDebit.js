@@ -99,7 +99,7 @@ const MoneyCreditDebit = () => {
 
     const personoptions = PersonData.map((x) => ({
         value: x.person_id,
-        label: x.person_name,
+        label: `${x.person_name} (${x.person_contact_number})`,
       }));
     
     const handleSenderPersonChange = (selectedOption) => {
@@ -123,7 +123,7 @@ const MoneyCreditDebit = () => {
 
     const machineoptions = MachineData.map((x) => ({
         value: x.machine_id,
-        label: x.machine_name,
+        label: `${x.machine_name} (${x.machine_number_plate})`,
       }));
     
     const handleMachineChange = (selectedOption) => {
@@ -453,8 +453,8 @@ const MoneyCreditDebit = () => {
                                 Filter_MoneyCreditDebit.map((y, index) => (
                                     <tr key={y.money_id}>
                                         <td>{index + 1 || "N/A"}</td>
-                                        <td>{y.sender_person_id__person_name || "N/A"}</td>
-                                        <td>{y.receiver_person_id__person_name || "N/A"}</td>
+                                        <td>{y.sender_person_id__person_name || "N/A"} [{y.sender_person_id__person_contact_number}]</td>
+                                        <td>{y.receiver_person_id__person_name || "N/A"} [{y.receiver_person_id__person_contact_number}]</td>
                                         <td><i class="fa-solid fa-indian-rupee-sign"></i>{y.money_amount || "N/A"}</td>
                                         <td>{y.pay_type_id__pay_type_name || "N/A"}</td>
                                         <td>{y.money_payment_mode || "N/A"}</td>
@@ -463,7 +463,7 @@ const MoneyCreditDebit = () => {
                                         <td>{y.money_sender_cheque_no || "N/A"}</td>
                                         <td>{y.receiver_bank_id__bank_name || "N/A"}</td>
                                         <td>{y.money_payment_details || "N/A"}</td>
-                                        <td>{y.machine_id__machine_name || "N/A"}</td>
+                                        <td>{y.machine_id__machine_name || "N/A"} [{y.machine_id__machine_number_plate}]</td>
                                         <td>{y.project_id__project_name || "N/A"}</td>
                                         <td>
                                             <i
@@ -511,8 +511,8 @@ const MoneyCreditDebit = () => {
                                     MoneyDebit.map((x, index) => (
                                         <tr key={x.money_id}>
                                             <td>{index + 1}</td>
-                                            <td>{x.sender_person_id__person_name || "N/A"}</td>
-                                            <td>{x.receiver_person_id__person_name || "N/A"}</td>
+                                            <td>{x.sender_person_id__person_name || "N/A"} [{x.sender_person_id__person_contact_number}]</td>
+                                            <td>{x.receiver_person_id__person_name || "N/A"} [{x.receiver_person_id__person_contact_number}]</td>
                                             <td>{x.pay_type_id__pay_type_name || "N/A"}</td>
                                             <td><i class="fa-solid fa-indian-rupee-sign"></i>{x.money_amount || "N/A"}</td>
                                             <td>{x.money_payment_mode || "N/A"}</td>
@@ -556,10 +556,10 @@ const MoneyCreditDebit = () => {
                                     MoneyCredit.map((credit, index) => (
                                         <tr key={credit.money_id}>
                                             <td>{index + 1}</td>
-                                            <td>{credit.sender_person_id__person_name || "N/A"}</td>
-                                            <td>{credit.receiver_person_id__person_name || "N/A"}</td>
+                                            <td>{credit.sender_person_id__person_name || "N/A"} [{credit.sender_person_id__person_contact_number}]</td>
+                                            <td>{credit.receiver_person_id__person_name || "N/A"} [{credit.receiver_person_id__person_contact_number}]</td>
                                             <td>{credit.pay_type_id__pay_type_name || "N/A"}</td>
-                                            <td><i class="fa-solid fa-indian-rupee-sign"></i>{credit.money_amount || "N/A"}</td>
+                                            <td><i class="fa-solid fa-indian-rupee-sign"></i> {credit.money_amount || "N/A"}</td>
                                             <td>{credit.money_payment_mode || "N/A"}</td>
                                             <td>{credit.money_date || "N/A"}</td>
                                             <td>{credit.sender_bank_id__bank_name || "N/A"}</td>
