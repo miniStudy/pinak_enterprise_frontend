@@ -19,6 +19,7 @@ const ProjectDayDetails = ({project_id}) => {
     const deletemodel = useRef();
     const [delid, setdelid] = useState("");
     const [Messages, setMessages] = useState('');
+    const [short_day_detail_data, setshort_day_detail_data] = useState('');
 
     const [formData, setFormData] = useState({
         project_day_detail_id: "",
@@ -54,6 +55,7 @@ const ProjectDayDetails = ({project_id}) => {
             setMachineData(response.data.machines_data || []);
             setTotalAmount(response.data.total_amount || 0);
             setWorkTypeData(response.data.work_types_data || []);
+            setshort_day_detail_data(response.data.short_day_detail_data || []);
             setTitle(response.data.title)
             setLoading(false);
         } catch (err) {
@@ -199,8 +201,8 @@ const ProjectDayDetails = ({project_id}) => {
                 >
                     Add Project Day Details
                 </button>
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-4 mt-1">
-                <div className="card">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 mt-1">
+                <div className="col-span-3 card">
                     <h6 className='mb-2'>PROJECT Day Details</h6>
                 <div className="table-responsive">
                     <table className="table table-hover">
@@ -257,6 +259,57 @@ const ProjectDayDetails = ({project_id}) => {
                     </table>
                     <div className='font-semibold text-base text-green-800'>Total Amount: <i class="fa-solid fa-indian-rupee-sign"></i>{totalAmount}</div>
                     </div>
+                </div>
+
+                <div className="col-span-1 card">
+                <div className="table-responsive">
+                    <table className="table table-hover">
+                        <tbody>
+
+                        {short_day_detail_data.length > 0 ? (
+    short_day_detail_data.map((detail) => (
+        <>
+            {detail.data.map((x, index) => (
+                <>
+                {x.tyre === '12-Tyres' ? (
+                    <>
+                    <tr className="bgforchange">
+                    <td key={index}>{x.work_type || "N/A"}</td>
+                    <td>{x.work_no || "N/A"}</td>
+                    <td>{x.tyre || "N/A"}</td>
+                    </tr>
+                    </>
+                ) : (
+
+                    <>
+                    <tr>
+                    <td key={index}>{x.work_type || "N/A"}</td>
+                    <td>{x.work_no || "N/A"}</td>
+                    <td>{x.tyre || "N/A"}</td>
+                    </tr>
+                    </>
+
+                )}
+                
+                </>
+            ))}
+
+<tr key={detail.work_type_id}>
+            <td>{detail.work_type_name || "N/A"}</td>
+            <td>10 Tyre - {detail.tyre_10_total || "N/A"}</td>
+            <td>12 Tyre - {detail.tyre_12_total || "N/A"}</td>
+        </tr> 
+        
+        </>
+    ))
+) : (
+    <></>
+)}
+                        
+                            
+                        </tbody>
+                        </table>
+                        </div>
                 </div>
 
                 </div>
